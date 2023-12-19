@@ -1,18 +1,19 @@
 import { Handlers, PageProps } from "$fresh/src/server/types.ts";
 import Layout from "../../../components/Layout.tsx";
 import { State } from "../../_middleware.ts";
+import { getOneRoom, getUsersInRoom } from "../../../utils/db.ts";
 
 export const handler: Handlers<any, State> = {
   async GET(_req, ctx) {
-    const { data: rooms, error } = await ctx.state.supabaseClient
-      .from("rooms")
-      .select("*")
-      .eq("id", ctx.params.roomId);
+    const rooms = await getOneRoom(
+      ctx.state.supabaseClient,
+      ctx.params.roomId,
+    );
     ctx.state.rooms = rooms;
-    const { data, err } = await ctx.state.supabaseClient
-      .from("users")
-      .select("*")
-      .eq("room_id", ctx.params.roomId);
+    const data = await getUsersInRoom(
+      ctx.state.supabaseClient,
+      ctx.params.roomId,
+    );
     ctx.state.users = data;
     return ctx.render({ ...ctx.state });
   },

@@ -24,37 +24,10 @@ export const handler: Handlers<any, State> = {
     ctx.state.users = users;
 
     const form = await req.formData();
-    const userIds = form.getAll("userIds");
-    const points = form.getAll("points");
-    console.warn(userIds, points);
-    await createMatch(ctx.state.supabaseClient, ctx.params.roomId, form);
-    // const { data: match } = await ctx.state.supabaseClient.from(
-    //   "matches",
-    // ).upsert({
-    //   room_id: ctx.state.rooms[0].id,
-    // }).select("id");
+    await createMatch(ctx.state.supabaseClient, ctx.params.roomId, form, users);
 
-    // const { data: matchParticipants } = await ctx.state.supabaseClient
-    //   .from(
-    //     "match_participants",
-    //   ).upsert([
-    //     {
-    //       user_id: "bb0c1466-fbed-4125-9521-c533eb9b1676",
-    //       match_id: match[0].id,
-    //       standing: 1,
-    //       old_elo: 1000,
-    //       new_elo: 1020,
-    //     },
-    //     {
-    //       user_id: "4e57de66-a1ca-47cc-a126-d3209065242a",
-    //       match_id: match[0].id,
-    //       standing: 2,
-    //       old_elo: 1000,
-    //       new_elo: 980,
-    //     },
-    //   ]);
     const headers = new Headers();
-    headers.set("location", `/room/${ctx.params.roomId}/new-match`);
+    headers.set("location", `/room/${ctx.params.roomId}`);
     return new Response(null, {
       status: 303,
       headers,
