@@ -28,7 +28,7 @@ export const handler: Handlers<any, State> = {
       .select("*")
       .eq("id", ctx.params.roomId);
 
-    const result = await bcrypt.compare(
+    const result = bcrypt.compareSync(
       password,
       rooms[0].hashed_password,
     );
