@@ -14,52 +14,55 @@ export default function Nav({ loggedIn }: NavProps) {
 
   const nonLoggedInMenus = [
     { name: "Login", href: "/login" },
-    { name: "SignUp", href: "/signup" },
+    { name: "Signup", href: "/signup" },
   ];
 
   return (
-    <div class="bg-white max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-      <div class="text-2xl  ml-1 font-bold">
-        Fresh
-      </div>
-      <ul class="flex gap-6">
-        {menus.map((menu) => (
-          <li>
-            <a
-              href={menu.href}
-              class="text-gray-500 hover:text-gray-700 py-1 border-gray-500"
-            >
-              {menu.name}
-            </a>
-          </li>
-        ))}
+    <header class="bg-[url('/header_bg.svg')] h-[110px] sm:!h-[144px] w-full bg-cover bg-no-repeat relative">
+      <div class="bg-[url('/raindrops-animate.svg')] bg-transparent w-full h-full absolute" />
+      <nav class="w-11/12 h-24 max-w-5xl mx-auto flex items-center justify-between relative">
+        <div class="text-2xl  ml-1 font-bold">
+          Terrrankings
+        </div>
+        <ul class="flex gap-6">
+          {menus.map((menu) => (
+            <li>
+              <a
+                href={menu.href}
+                class="text-zinc-900 hover:text-zinc-950 py-1"
+              >
+                {menu.name}
+              </a>
+            </li>
+          ))}
 
-        {loggedIn
-          ? (
-            loggedInMenus.map((menu) => (
-              <li>
-                <a
-                  href={menu.href}
-                  class="text-gray-500 hover:text-gray-700 py-1 border-gray-500"
-                >
-                  {menu.name}
-                </a>
-              </li>
-            ))
-          )
-          : (
-            nonLoggedInMenus.map((menu) => (
-              <li>
-                <a
-                  href={menu.href}
-                  class="text-gray-500 hover:text-gray-700 py-1 border-gray-500"
-                >
-                  {menu.name}
-                </a>
-              </li>
-            ))
-          )}
-      </ul>
-    </div>
+          {loggedIn
+            ? (
+              loggedInMenus.map((menu) => (
+                <li>
+                  <a
+                    href={menu.href}
+                    class="text-zinc-900 hover:text-zinc-950 py-1"
+                  >
+                    {menu.name}
+                  </a>
+                </li>
+              ))
+            )
+            : (
+              nonLoggedInMenus.map((menu) => (
+                <li>
+                  <a
+                    href={menu.href}
+                    class="text-zinc-900 hover:text-zinc-950 py-1"
+                  >
+                    {menu.name}
+                  </a>
+                </li>
+              ))
+            )}
+        </ul>
+      </nav>
+    </header>
   );
 }

@@ -11,10 +11,10 @@ export default function Layout(props: LayoutProps) {
   return (
     <>
       <Head>
-        <title>Fresh Auth</title>
+        <title>Terrrankings</title>
       </Head>
       <Nav loggedIn={props.isLoggedIn} />
-      <div class="p-4 mx-auto max-w-screen-md">
+      <div class="p-4 mx-auto max-w-screen-md text-white">
         {props.children}
       </div>
     </>

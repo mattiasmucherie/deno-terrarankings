@@ -17,7 +17,9 @@ export default function Home(props: PageProps) {
     <Layout isLoggedIn={props.data.token}>
       <div class="mt-10 px-5 mx-auto flex max-w-screen-md flex-col justify-center">
         <div class="mx-auto text-center">
-          <h1 class="text-2xl font-bold mb-5">Choose a room to join</h1>
+          <h1 class="text-2xl font-bold mb-5 ">
+            Choose a room to join
+          </h1>
           <ul>
             {props.data.rooms.map((
               room: { id: string; created_at: string; name: string },
@@ -31,7 +33,9 @@ export default function Home(props: PageProps) {
 
         {!props.data.token && (
           <div class="mx-auto text-center">
-            <h1 class="text-2xl font-bold mb-5">Login to create a new room</h1>
+            <h1 class="text-2xl font-bold mb-5 ">
+              Login to create a new room
+            </h1>
             <a
               href="/login"
               type="button"
