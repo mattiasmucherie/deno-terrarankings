@@ -23,7 +23,7 @@ export const getOneRoom = async (sb: SupabaseClient<any, "public", any>, id: str
 }
 
 export const getCorporations = async (sb: SupabaseClient<any, "public", any>) => {
-  const {data, error} = await sb.from("corporations").select("*")
+  const {data, error} = await sb.from("corporations").select("*").order("name", {ascending: true})
   if (error) {
     throw new Error(error)
   }
@@ -52,7 +52,6 @@ export const createMatch = async (sb: SupabaseClient<any, "public", any>, roomId
     }
   })
   users.sort((a, b) => b.points - a.points);
-  console.warn(users)
   const eloMap = new Map(userProfiles.map((item) => [item.id, item.elo_rating]));
   users.forEach((item) => {
     item.old_elo = eloMap.get(item.user_id) || 1000
