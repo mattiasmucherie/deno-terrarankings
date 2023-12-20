@@ -3,10 +3,6 @@ interface NavProps {
 }
 
 export default function Nav({ loggedIn }: NavProps) {
-  const menus = [
-    { name: "Home", href: "/" },
-  ];
-
   const loggedInMenus = [
     { name: "Create", href: "/auth/create" },
     { name: "Logout", href: "/logout" },
@@ -18,24 +14,15 @@ export default function Nav({ loggedIn }: NavProps) {
   ];
 
   return (
-    <header class="bg-[url('/header_bg.svg')] h-[110px] sm:!h-[144px] w-full bg-cover bg-no-repeat relative">
+    <header class="bg-amber-600 h-[110px] sm:!h-[144px] w-full bg-cover bg-no-repeat relative">
       <div class="bg-[url('/raindrops-animate.svg')] bg-transparent w-full h-full absolute" />
       <nav class="w-11/12 h-24 max-w-5xl mx-auto flex items-center justify-between relative">
-        <div class="text-2xl  ml-1 font-bold">
-          Terrrankings
+        <div class="text-3xl  ml-1 font-bold">
+          <a href={"/"}>
+            Terrrankings
+          </a>
         </div>
         <ul class="flex gap-6">
-          {menus.map((menu) => (
-            <li>
-              <a
-                href={menu.href}
-                class="text-zinc-900 hover:text-zinc-950 py-1"
-              >
-                {menu.name}
-              </a>
-            </li>
-          ))}
-
           {loggedIn
             ? (
               loggedInMenus.map((menu) => (

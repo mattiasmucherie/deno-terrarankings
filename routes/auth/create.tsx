@@ -8,7 +8,7 @@ export const handler: Handlers<any, State> = {
     const form = await req.formData();
     const roomName = form.get("roomName") as string;
     const roomPassword = form.get("roomPassword") as string;
-    const hash = await bcrypt.hash(roomPassword);
+    const hash = bcrypt.hashSync(roomPassword);
 
     const { error } = await ctx.state.supabaseClient.from("rooms").insert([{
       name: roomName,

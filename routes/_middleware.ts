@@ -3,12 +3,15 @@ import { FreshContext } from "$fresh/server.ts";
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 import { getCookies } from "$std/http/cookie.ts";
 import {Session} from "https://deno.land/x/fresh_session@beta-0.3.0/src/type.ts";
+import { Matches } from "../utils/db.ts";
 
 export interface State {
   token: string | null;
   supabaseClient: SupabaseClient<any, "public", any>;
   rooms: { id: string, created_at: string, name: string }[]
   users: { id: string, created_at: string, name: string, elo_rating: number, room_id: string }[]
+  corps : {id:string, name: string}[]
+  matches: Matches
   session: Session<string, string>
 }
 

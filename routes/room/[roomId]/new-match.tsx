@@ -1,7 +1,12 @@
 import { Handlers, PageProps } from "$fresh/src/server/types.ts";
 import Layout from "../../../components/Layout.tsx";
 import { State } from "../../_middleware.ts";
-import { createMatch, getOneRoom, getUsersInRoom } from "../../../utils/db.ts";
+import {
+  createMatch,
+  getCorporations,
+  getOneRoom,
+  getUsersInRoom,
+} from "../../../utils/db.ts";
 
 export const handler: Handlers<any, State> = {
   async GET(_req, ctx) {
@@ -10,6 +15,8 @@ export const handler: Handlers<any, State> = {
       ctx.state.supabaseClient,
       ctx.params.roomId,
     );
+    const corps = await getCorporations(ctx.state.supabaseClient);
+    ctx.state.corps = corps;
     ctx.state.rooms = rooms;
     ctx.state.users = users;
     return ctx.render({ ...ctx.state });
@@ -61,9 +68,19 @@ export default function NewMatchPage(props: PageProps) {
                   Points for: {user.name}
                   <input
                     name={`points`}
-                    class="border-solid border-2 border-zinc-500"
+                    class="border-solid border-2 border-zinc-500 bg-zinc-800 border-none"
                     type="number"
+                    min="0"
+                    max="300"
                   />
+                </label>
+                <label>
+                  Choose a corporation:
+                  <select name="corp" class="bg-zinc-900">
+                    {props.data.corps.map((c: any) => {
+                      return <option value={c.id}>{c.name}</option>;
+                    })}
+                  </select>
                 </label>
               </div>
             );

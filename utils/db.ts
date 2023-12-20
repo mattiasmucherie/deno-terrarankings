@@ -22,11 +22,19 @@ export const getOneRoom = async (sb: SupabaseClient<any, "public", any>, id: str
   return data
 }
 
+export const getCorporations = async (sb: SupabaseClient<any, "public", any>) => {
+  const {data, error} = await sb.from("corporations").select("*")
+  if (error) {
+    throw new Error(error)
+  }
+  return data
+}
+
 export const getUsersInRoom = async (sb: SupabaseClient<any, "public", any>, id: string) => {
   const {data, error} = await sb
     .from("users")
     .select("*")
-    .eq("room_id", id).order('elo_rating', { ascending: false })
+    .eq("room_id", id).order('elo_rating', {ascending: false})
   if (error) {
     throw new Error(error)
   }
@@ -36,14 +44,15 @@ export const getUsersInRoom = async (sb: SupabaseClient<any, "public", any>, id:
 export const createMatch = async (sb: SupabaseClient<any, "public", any>, roomId: string, form: FormData, userProfiles: any[]) => {
   const userIds = form.getAll("userIds");
   const points = form.getAll("points");
+  const corps = form.getAll("corp")
   const users: any[] = []
   points.forEach((p, i) => {
     if (p && Number(p)) {
-      users.push({user_id: userIds[i], points: Number(p)})
+      users.push({user_id: userIds[i], points: Number(p), corporation_id: corps[i]})
     }
   })
   users.sort((a, b) => b.points - a.points);
-
+  console.warn(users)
   const eloMap = new Map(userProfiles.map((item) => [item.id, item.elo_rating]));
   users.forEach((item) => {
     item.old_elo = eloMap.get(item.user_id) || 1000
@@ -79,4 +88,55 @@ export const createMatch = async (sb: SupabaseClient<any, "public", any>, roomId
     console.error(error)
   }
   return
+}
+
+export type Matches = Match[]
+
+export interface Match {
+  id: string
+  created_at: string
+  match_participants: MatchParticipant[]
+}
+
+export interface MatchParticipant {
+  standing: number
+  new_elo: number
+  old_elo: number
+  user: User
+  corporation: Corporation
+}
+
+export interface User {
+  name: string
+}
+
+export interface Corporation {
+  name: string
+}
+
+export async function fetchMatchDetails(sb: SupabaseClient<any, "public", any>): Promise<Matches> {
+  const {data, error} = await sb
+    .from('matches')
+    .select(`
+            id,
+            created_at,
+            match_participants (
+                standing,
+                new_elo,
+                old_elo,
+                user: users (
+                    name
+                ),
+                corporation: corporations (
+                    name
+                )
+            )
+        `).order('created_at', {ascending: false})
+
+  if (error) {
+    console.error('Error fetching data:', error);
+    throw new Error(error)
+  }
+
+  return data
 }
