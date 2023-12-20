@@ -69,6 +69,7 @@ export default function NewMatchPage(props: PageProps) {
                   <input
                     name={`points`}
                     class="border-solid border-2 border-zinc-500 bg-zinc-800 border-none"
+                    pattern="[0-9]*"
                     type="number"
                     min="0"
                     max="300"
