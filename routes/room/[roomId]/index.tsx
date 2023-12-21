@@ -3,33 +3,25 @@ import Layout from "../../../components/Layout.tsx";
 import { State } from "../../_middleware.ts";
 import {
   fetchMatchDetails,
-  getOneRoom,
-  getUsersInRoom,
+  getRoomWithUsers,
   Matches,
 } from "../../../utils/db.ts";
 
 export const handler: Handlers<any, State> = {
   async GET(_req, ctx) {
-    const rooms = await getOneRoom(
-      ctx.state.supabaseClient,
-      ctx.params.roomId,
-    );
-    ctx.state.rooms = rooms;
-    const data = await getUsersInRoom(
-      ctx.state.supabaseClient,
-      ctx.params.roomId,
-    );
-    ctx.state.users = data;
     const matches = await fetchMatchDetails(ctx.state.supabaseClient);
-    ctx.state.matches = matches;
-    return ctx.render({ ...ctx.state });
+    const roomWithUsers = await getRoomWithUsers(
+      ctx.state.supabaseClient,
+      ctx.params.roomId,
+    );
+    return ctx.render({ ...ctx.state, matches, roomWithUsers });
   },
 };
 
 export default function RoomPage(props: PageProps) {
-  const room = props.data.rooms[0];
+  const room = props.data.roomWithUsers;
   const createdAt = new Date(room.created_at);
-  const users = props.data.users;
+  const users = room.users;
   return (
     <Layout isLoggedIn={props.data.token}>
       <div className="mx-auto flex max-w-screen-md flex-col justify-center">
@@ -53,58 +45,71 @@ export default function RoomPage(props: PageProps) {
         </ul>
         <div class="flex gap-6 justify-end">
           <a
-            className=" text-white bg-red-800 hover:bg-red-900 focus:ring-4 focus:ring-red-700 font-medium focus:outline-none rounded-md text-sm px-5 py-2.5 flex justify-center align-center"
+            className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-red-500 to-amber-400 group-hover:from-red-500 group-hover:to-amber-400 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-800"
             href={`/room/${props.params.roomId}/new-player`}
           >
-            New Player
+            <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-zinc-900 rounded-md group-hover:bg-opacity-0">
+              New Player
+            </span>
           </a>
           <a
-            className=" text-white bg-amber-800 hover:bg-amber-900 focus:ring-4 focus:ring-amber-700 font-medium focus:outline-none rounded-md text-sm px-5 py-2.5 flex justify-center align-center"
+            className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-amber-500 to-red-400 group-hover:from-amber-500 group-hover:to-red-400 hover:text-white focus:ring-4 focus:outline-none focus:ring-amber-800"
             href={`/room/${props.params.roomId}/new-match`}
           >
-            New Match
+            <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-zinc-900 rounded-md group-hover:bg-opacity-0">
+              New Match
+            </span>
           </a>
         </div>
         {!!props.data.matches.length &&
           (
             <div class="my-3">
               <h2 class="font-semibold text-lg">Matches</h2>
-              <ul class="flex flex-col justify-center ">
+              <div class="flex flex-col justify-center ">
                 {(props.data.matches as Matches).map((m) => {
                   return (
-                    <li class="border border-zinc-700 rounded-lg p-6 my-3 flex flex-col gap-2 ">
-                      <span class="font-light text-xs text-zinc-400">
-                        Played{" "}
-                        <time dateTime={new Date(m.created_at).toString()}>
-                          {new Date(m.created_at).toLocaleDateString()}
-                        </time>
-                      </span>
-                      {m.match_participants.map((mp) => {
+                    <div class="border border-zinc-700 rounded-lg p-4 my-2 flex flex-col ">
+                      <time
+                        class="text-xs font-medium px-2.5 py-0.5 rounded bg-amber-900 text-amber-300 w-fit mb-4 self-start"
+                        dateTime={new Date(m.created_at).toString()}
+                      >
+                        {new Date(m.created_at).toLocaleDateString()}
+                      </time>
+                      {m.match_participants.map((mp, index) => {
                         const eloDiffColor = Math.round(
                           mp.new_elo - mp.old_elo,
                         );
                         return (
-                          <div class="flex justify-between">
-                            <span class="font-semibold">{mp.user.name}</span>
-                            <span>{mp.corporation.name}</span>
+                          <div class="flex flex-no-wrap gap-2">
+                            <span class="shrink">
+                              {index + 1}.
+                            </span>
+                            <div class="grow flex flex-col">
+                              <span class="font-semibold col-span-2">
+                                {mp.user.name}
+                              </span>
+                              <span className="col-span-3 col-start-2 row-start-2 font-light text-xs text-zinc-400">
+                                {mp.corporation.name}
+                              </span>
+                            </div>
                             {eloDiffColor > 0
                               ? (
-                                <span class="font-semibold text-emerald-500">
+                                <span class="font-semibold text-emerald-500 col-start-4 justify-self-end">
                                   {eloDiffColor}
                                 </span>
                               )
                               : (
-                                <span className="font-semibold text-red-500">
+                                <span className="font-semibold text-red-500 col-start-4 justify-self-end">
                                   {eloDiffColor}
                                 </span>
                               )}
                           </div>
                         );
                       })}
-                    </li>
+                    </div>
                   );
                 })}
-              </ul>
+              </div>
             </div>
           )}
       </div>

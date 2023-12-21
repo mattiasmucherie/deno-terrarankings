@@ -14,7 +14,7 @@ export default function Nav({ loggedIn }: NavProps) {
   ];
 
   return (
-    <header class="bg-amber-600 h-[110px] sm:!h-[144px] w-full bg-cover bg-no-repeat relative">
+    <header class="bg-amber-600 h-[96px]  w-full bg-cover bg-no-repeat relative">
       <div class="bg-[url('/raindrops-animate.svg')] bg-transparent w-full h-full absolute" />
       <nav class="w-11/12 h-24 max-w-5xl mx-auto flex items-center justify-between relative">
         <div class="text-3xl  ml-1 font-bold">

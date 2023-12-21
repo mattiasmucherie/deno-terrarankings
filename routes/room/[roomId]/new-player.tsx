@@ -22,7 +22,8 @@ export const handler: Handlers<any, State> = {
     const headers = new Headers();
     let redirect = `/room/${ctx.params.roomId}`;
     if (error) {
-      redirect = `/room/${ctx.params.roomId}/new-player?error=wrong password`;
+      redirect =
+        `/room/${ctx.params.roomId}/new-player?error=could not create new player`;
     }
     headers.set("location", redirect);
     return new Response(null, {
