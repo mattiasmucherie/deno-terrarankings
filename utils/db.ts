@@ -3,7 +3,12 @@ import { elo } from "./elo.ts";
 
 export const getAllRooms = async (sb: SupabaseClient<any, "public", any>) => {
   const { data, error } = await sb.from("rooms")
-    .select("*");
+    .select(`
+      *,
+      users (
+        *
+      )
+    `);
   if (error) {
     throw new Error(error);
   }
@@ -157,6 +162,7 @@ export interface MatchParticipant {
   standing: number;
   new_elo: number;
   old_elo: number;
+  points: number;
   user: User;
   corporation: Corporation;
 }
@@ -171,6 +177,7 @@ export interface Corporation {
 
 export async function fetchMatchDetails(
   sb: SupabaseClient<any, "public", any>,
+  limit: number | boolean = 3,
 ): Promise<Matches> {
   const { data, error } = await sb
     .from("matches")
@@ -181,6 +188,7 @@ export async function fetchMatchDetails(
                 standing,
                 new_elo,
                 old_elo,
+                points,
                 user: users (
                     name
                 ),
@@ -188,7 +196,7 @@ export async function fetchMatchDetails(
                     name
                 )
             )
-        `).order("created_at", { ascending: false }).limit(3);
+        `).order("created_at", { ascending: false }).limit(limit);
 
   if (error) {
     console.error("Error fetching data:", error);

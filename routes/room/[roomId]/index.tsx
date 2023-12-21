@@ -6,6 +6,7 @@ import {
   getRoomWithUsers,
   Matches,
 } from "../../../utils/db.ts";
+import { LinkButton } from "../../../components/LinkButton.tsx";
 
 export const handler: Handlers<any, State> = {
   async GET(_req, ctx) {
@@ -44,22 +45,16 @@ export default function RoomPage(props: PageProps) {
           })}
         </ul>
         <div class="flex gap-6 justify-end">
-          <a
-            className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-red-500 to-amber-400 group-hover:from-red-500 group-hover:to-amber-400 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-800"
+          <LinkButton
             href={`/room/${props.params.roomId}/new-player`}
           >
-            <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-zinc-900 rounded-md group-hover:bg-opacity-0">
-              New Player
-            </span>
-          </a>
-          <a
-            className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-amber-500 to-red-400 group-hover:from-amber-500 group-hover:to-red-400 hover:text-white focus:ring-4 focus:outline-none focus:ring-amber-800"
+            New Player
+          </LinkButton>
+          <LinkButton
             href={`/room/${props.params.roomId}/new-match`}
           >
-            <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-zinc-900 rounded-md group-hover:bg-opacity-0">
-              New Match
-            </span>
-          </a>
+            New Match
+          </LinkButton>
         </div>
         {!!props.data.matches.length &&
           (
@@ -80,7 +75,7 @@ export default function RoomPage(props: PageProps) {
                           mp.new_elo - mp.old_elo,
                         );
                         return (
-                          <div class="flex flex-no-wrap gap-2">
+                          <div class="flex flex-no-wrap gap-2 items-baseline">
                             <span class="shrink">
                               {index + 1}.
                             </span>
@@ -95,14 +90,17 @@ export default function RoomPage(props: PageProps) {
                             {eloDiffColor > 0
                               ? (
                                 <span class="font-semibold text-emerald-500 col-start-4 justify-self-end">
-                                  {eloDiffColor}
+                                  &#9650; {eloDiffColor}
                                 </span>
                               )
                               : (
                                 <span className="font-semibold text-red-500 col-start-4 justify-self-end">
-                                  {eloDiffColor}
+                                  &#9660; {eloDiffColor}
                                 </span>
                               )}
+                            <span class="font-normal text-xs text-zinc-400">
+                              {mp.points} VP
+                            </span>
                           </div>
                         );
                       })}
