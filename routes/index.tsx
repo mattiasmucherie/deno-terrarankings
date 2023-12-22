@@ -23,7 +23,7 @@ export default function Home(props: PageProps) {
           <h1 class="text-2xl font-bold mb-5 ">
             Choose a room to join
           </h1>
-          <ul>
+          <ul class="flex flex-col gap-2">
             {props.data.rooms.map((
               room: {
                 id: string;
@@ -36,11 +36,12 @@ export default function Home(props: PageProps) {
                 <a
                   href={`/join/${room.id}`}
                 >
-                  <div class="border border-amber-800 border-2 rounded p-3">
+                  <div class="border border-zinc-500 border-2 rounded p-3 flex justify-between items-center">
                     {room.name}{" "}
                     <span class="text-sm text-zinc-500">
                       {room.users.length} Players
                     </span>
+                    &#10140;
                   </div>
                 </a>
               </li>

@@ -1,7 +1,11 @@
-import { type ComponentChildren } from "preact";
+import { type ComponentChildren, type JSX } from "preact";
 
+interface LinkButtonProps extends JSX.HTMLAttributes<HTMLAnchorElement> {
+  children: ComponentChildren;
+  href: string;
+}
 export const LinkButton = (
-  { href, children }: { href: string; children: ComponentChildren },
+  { href, children }: LinkButtonProps,
 ) => {
   return (
     <a

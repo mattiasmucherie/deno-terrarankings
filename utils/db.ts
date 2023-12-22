@@ -177,6 +177,7 @@ export interface Corporation {
 
 export async function fetchMatchDetails(
   sb: SupabaseClient<any, "public", any>,
+  roomId: string,
   limit: number | boolean = 3,
 ): Promise<Matches> {
   const { data, error } = await sb
@@ -184,6 +185,7 @@ export async function fetchMatchDetails(
     .select(`
             id,
             created_at,
+            room_id,
             match_participants (
                 standing,
                 new_elo,
@@ -196,7 +198,8 @@ export async function fetchMatchDetails(
                     name
                 )
             )
-        `).order("created_at", { ascending: false }).limit(limit);
+        `).eq("room_id", roomId).order("created_at", { ascending: false })
+    .limit(limit);
 
   if (error) {
     console.error("Error fetching data:", error);
@@ -205,3 +208,30 @@ export async function fetchMatchDetails(
 
   return data;
 }
+
+export const getCorporationPlayStats = async (
+  sb: SupabaseClient<any, "public", any>,
+) => {
+  const { data, error } = await sb.from("corporation_stats").select("*");
+
+  if (error) {
+    throw new Error(error.message);
+  }
+  console.warn(data);
+  return data;
+};
+
+export const getRoomStats = async (
+  sb: SupabaseClient<any, "public", any>,
+  roomId: string,
+) => {
+  const { data, error } = await sb.from("room_stats")
+    .select("*")
+    .eq("room_id", roomId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+  console.warn(data);
+  return data;
+};
