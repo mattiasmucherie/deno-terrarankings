@@ -69,6 +69,7 @@ export default function JoinRoomPage(props: PageProps) {
               className=" border text-sm rounded-lg block w-full p-2.5 bg-zinc-700 border-zinc-600 placeholder-zinc-400 text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Enter room password"
               required
+              autoFocus
             />
           </div>
           <button

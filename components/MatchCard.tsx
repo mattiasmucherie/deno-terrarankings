@@ -15,7 +15,7 @@ export const MatchCard = ({ match }: { match: Match }) => {
         );
         return (
           <div class="flex flex-no-wrap gap-2 items-baseline">
-            <span class="shrink">
+            <span class="shrink-0">
               {index + 1}.
             </span>
             <div class="grow flex flex-col">
@@ -28,16 +28,16 @@ export const MatchCard = ({ match }: { match: Match }) => {
             </div>
             {eloDiffColor > 0
               ? (
-                <span class="font-semibold text-emerald-500 col-start-4 justify-self-end">
+                <span class="font-semibold text-emerald-500 col-start-4 justify-self-end shrink-0">
                   &#9650; {eloDiffColor}
                 </span>
               )
               : (
-                <span className="font-semibold text-red-500 col-start-4 justify-self-end">
+                <span className="font-semibold text-red-500 col-start-4 justify-self-end shrink-0">
                   &#9660; {eloDiffColor}
                 </span>
               )}
-            <span class="font-normal text-xs text-zinc-400">
+            <span class="font-normal text-xs text-zinc-400 shrink-0">
               {mp.points} VP
             </span>
           </div>

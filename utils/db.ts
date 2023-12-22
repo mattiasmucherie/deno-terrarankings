@@ -92,6 +92,25 @@ export async function getRoomDetailsWithMatches(
   return data;
 }
 
+function checkUniqueElementsWithEmptyAllowed(arr: FormDataEntryValue[]) {
+  const uniqueElements = new Set();
+
+  for (const elem of arr) {
+    // Skip empty strings
+    if (elem === "") continue;
+
+    // Check if the element is already in the set (not unique)
+    if (uniqueElements.has(elem)) {
+      return false;
+    }
+
+    // Add the element to the set
+    uniqueElements.add(elem);
+  }
+
+  // If all non-empty elements are unique
+  return true;
+}
 export const createMatch = async (
   sb: SupabaseClient<any, "public", any>,
   roomId: string,
@@ -101,6 +120,9 @@ export const createMatch = async (
   const userIds = form.getAll("userIds");
   const points = form.getAll("points");
   const corps = form.getAll("corp");
+  if (!checkUniqueElementsWithEmptyAllowed(corps)) {
+    throw new Error("Cannot have the same corporation for multiple players");
+  }
   const users: any[] = [];
   points.forEach((p, i) => {
     if (p && Number(p)) {
