@@ -37,17 +37,21 @@ export default function RoomPage(props: PageProps) {
         >
           Created at {createdAt.toLocaleDateString()}
         </time>
-        <ul class="divide-y divide-zinc-700 flex flex-col justify-center border border-zinc-700 rounded-lg p-6 my-3">
-          <h3 className="my-2 font-semibold text-lg">Ranking</h3>
-          {users.map((user: any) => {
-            return (
-              <li class="flex justify-between items-center py-3">
-                <span>{user.name}</span>{" "}
-                <span class="font-semibold">{Math.round(user.elo_rating)}</span>
-              </li>
-            );
-          })}
-        </ul>
+        <div class=" flex flex-col justify-center border border-zinc-700 rounded-lg p-6 my-3">
+          <h3 className="my-2 font-bold text-xl">Ranking</h3>
+          <ul class="divide-y divide-zinc-700">
+            {users.map((user: any) => {
+              return (
+                <li class="flex justify-between items-center py-3">
+                  <span>{user.name}</span>{" "}
+                  <span class="font-semibold">
+                    {Math.round(user.elo_rating)}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
         <div class="flex gap-6 justify-end">
           <LinkButton
             href={`/room/${props.params.roomId}/new-player`}
