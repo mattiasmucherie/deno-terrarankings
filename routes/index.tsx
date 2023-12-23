@@ -34,7 +34,7 @@ export default function Home(props: PageProps) {
             ) => (
               <li>
                 <a href={`/join/${room.id}`} className="block">
-                  <div className="bg-gradient-to-r from-engineeringOrange to-chocolateCosmos hover:from-engineeringOrange hover:to-flame p-3 rounded-lg shadow-lg transform transition-all duration-150">
+                  <div className="bg-gradient-to-r from-guardsman-red-900 to-trinidad-900 hover:from-guardsman-red-700 hover:to-trinidad-700 p-3 rounded-lg shadow-lg transform transition-all duration-150">
                     <div className="flex justify-between items-center">
                       <span class="font-bold text-lg">{room.name}</span>
                       <div className="flex items-center gap-2">

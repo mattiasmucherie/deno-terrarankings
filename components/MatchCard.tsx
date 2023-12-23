@@ -1,13 +1,15 @@
 import { Match } from "../utils/db.ts";
+import { formattedDate } from "../utils/formattedDate.ts";
+import { getPositionEmoji } from "../utils/getPositionEmoji.ts";
 
 export const MatchCard = ({ match }: { match: Match }) => {
   return (
-    <div class="border border-zinc-700 rounded-lg p-4 my-2 flex flex-col ">
+    <div class="border border-stone-600 shadow-lg bg-stone-900 rounded-lg p-4 my-2 flex flex-col ">
       <time
-        class="text-xs font-medium px-2.5 py-0.5 rounded bg-princetonOrange text-licorice w-fit mb-4 self-start"
+        class="text-xs font-medium px-2.5 py-0.5 rounded bg-trinidad-900 text-ivory w-fit mb-4 self-start"
         dateTime={new Date(match.created_at).toString()}
       >
-        {new Date(match.created_at).toLocaleDateString()}
+        {formattedDate(new Date(match.created_at))}
       </time>
       {match.match_participants.map((mp, index) => {
         const eloDiffColor = Math.round(
@@ -16,13 +18,13 @@ export const MatchCard = ({ match }: { match: Match }) => {
         return (
           <div class="flex flex-no-wrap gap-2 items-baseline">
             <span class="shrink-0">
-              {index + 1}.
+              {getPositionEmoji(index)}
             </span>
             <div class="grow flex flex-col">
               <span class="font-semibold col-span-2">
                 {mp.user.name}
               </span>
-              <span className="col-span-3 col-start-2 row-start-2 font-light text-xs text-zinc-400">
+              <span className="col-span-3 col-start-2 row-start-2 font-light text-xs text-stone-400">
                 {mp.corporation.name}
               </span>
             </div>
@@ -37,7 +39,7 @@ export const MatchCard = ({ match }: { match: Match }) => {
                   &#9660; {eloDiffColor}
                 </span>
               )}
-            <span class="font-normal text-xs text-zinc-400 shrink-0">
+            <span class="font-normal text-xs text-stone-400 shrink-0">
               {mp.points} VP
             </span>
           </div>

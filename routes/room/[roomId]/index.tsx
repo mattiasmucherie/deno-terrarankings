@@ -8,6 +8,8 @@ import {
 } from "../../../utils/db.ts";
 import { LinkButton } from "../../../components/LinkButton.tsx";
 import { MatchCard } from "../../../components/MatchCard.tsx";
+import { formattedDate } from "../../../utils/formattedDate.ts";
+import { getPositionEmoji } from "../../../utils/getPositionEmoji.ts";
 
 export const handler: Handlers<any, State> = {
   async GET(_req, ctx) {
@@ -27,23 +29,24 @@ export default function RoomPage(props: PageProps) {
   const room = props.data.roomWithUsers;
   const createdAt = new Date(room.created_at);
   const users = room.users;
+
   return (
     <Layout isLoggedIn={props.data.token}>
       <div className="mx-auto flex max-w-screen-md flex-col justify-center">
         <h2 class="font-bold text-2xl mb-1">{room.name}</h2>
         <time
-          class="font-light text-xs text-zinc-400"
+          class="font-light text-xs text-stone-400"
           dateTime={createdAt.toString()}
         >
-          Created at {createdAt.toLocaleDateString()}
+          Created at {formattedDate(createdAt)}
         </time>
-        <div class=" flex flex-col justify-center border border-zinc-700 rounded-lg p-6 my-3">
+        <div class=" flex flex-col justify-center border border-stone-600 shadow-lg bg-stone-900 rounded-lg px-6 py-3 my-3">
           <h3 className="my-2 font-bold text-xl">Ranking</h3>
-          <ul class="divide-y divide-zinc-700">
-            {users.map((user: any) => {
+          <ul class="divide-y divide-stone-700">
+            {users.map((user: any, index: number) => {
               return (
-                <li class="flex justify-between items-center py-3">
-                  <span>{user.name}</span>{" "}
+                <li class="flex justify-between items-center py-2">
+                  <span>{getPositionEmoji(index)} {user.name}</span>{" "}
                   <span class="font-semibold">
                     {Math.round(user.elo_rating)}
                   </span>
@@ -68,10 +71,10 @@ export default function RoomPage(props: PageProps) {
           (
             <div class="my-3">
               <div class="flex justify-between items-baseline">
-                <h2 class="font-semibold text-lg">Three latest Matches</h2>
+                <h2 class="font-semibold text-lg">Latest matches</h2>
                 <a
                   href={`/room/${props.params.roomId}/matches`}
-                  class="text-md text-orange-400"
+                  class="text-md text-trinidad-400"
                 >
                   View all matches
                 </a>

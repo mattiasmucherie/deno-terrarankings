@@ -59,7 +59,7 @@ export default function NewMatchPage(props: PageProps) {
         method="post"
         class="flex flex-col"
       >
-        <div class="divide-y divide-zinc-500">
+        <div class="divide-y divide-stone-500">
           {props.data.roomWithUsers.users.map(
             (user: {
               id: string;
@@ -81,7 +81,7 @@ export default function NewMatchPage(props: PageProps) {
                     <div class="flex gap-2">
                       <input
                         name={`points`}
-                        class="border-solid border-2 border-zinc-500 bg-zinc-800 border-none rounded p-1"
+                        class="border-solid border-2 border-stone-500 bg-stone-800 border-none rounded p-1"
                         pattern="[0-9]*"
                         type="number"
                         min="0"
@@ -94,9 +94,9 @@ export default function NewMatchPage(props: PageProps) {
                     <span class="font-bold">Corporation</span>
                     <select
                       name="corp"
-                      class="border-solid border-2 border-zinc-500 bg-zinc-800 border-none rounded p-1"
+                      class="border-solid border-2 border-stone-500 bg-stone-800 border-none rounded p-1"
                     >
-                      <option value="">Please choose a corp</option>
+                      <option value="">{" "}</option>
                       {props.data.corps.map((c: any) => {
                         return <option value={c.id}>{c.name}</option>;
                       })}
@@ -110,7 +110,7 @@ export default function NewMatchPage(props: PageProps) {
         <div class="flex justify-center divide-none">
           <button
             type="submit"
-            className=" my-2 px-6 py-2 w-fit font-semibold rounded-lg bg-transparent text-zinc-100 border-2 border-zinc-100 hover:bg-zinc-800 focus:bg-zinc-800"
+            className=" my-2 px-6 py-2 w-fit font-semibold rounded-lg bg-transparent text-stone-100 border-2 border-stone-100 hover:bg-stone-800 focus:bg-stone-800"
           >
             Create match
           </button>

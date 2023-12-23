@@ -14,12 +14,12 @@ export default function Nav({ loggedIn }: NavProps) {
   ];
 
   return (
-    <header class="bg-[#55000B] h-[96px] w-full bg-cover bg-no-repeat relative">
-      <div class="bg-[url('/raindrops-animate.svg')] bg-transparent w-full h-full absolute" />
-      <nav class="w-11/12 h-24 max-w-5xl mx-auto flex items-center justify-between relative">
-        <div class="text-3xl ml-1 font-bold text-zinc-100">
+    <header class="bg-trinidad-950 h-[96px] w-full bg-cover bg-no-repeat relative">
+      <div class="bg-[url('/raindrops-animate.svg')] bg-transparent w-full h-full absolute " />
+      <nav class="w-11/12 h-24 max-w-5xl mx-auto flex items-center justify-between relative ">
+        <div class="text-3xl ml-1 font-bold text-ivory">
           <a href={"/"}>
-            Terrrankings
+            Terrarankings
           </a>
         </div>
         <ul class="flex gap-6">
@@ -29,7 +29,7 @@ export default function Nav({ loggedIn }: NavProps) {
                 <li>
                   <a
                     href={menu.href}
-                    class="text-zinc-100 hover:text-zinc-300   py-1"
+                    class="text-stone-100 hover:text-stone-300   py-1"
                   >
                     {menu.name}
                   </a>
@@ -41,7 +41,7 @@ export default function Nav({ loggedIn }: NavProps) {
                 <li>
                   <a
                     href={menu.href}
-                    class="text-zinc-900 hover:text-zinc-950 py-1"
+                    class="text-stone-900 hover:text-stone-950 py-1"
                   >
                     {menu.name}
                   </a>

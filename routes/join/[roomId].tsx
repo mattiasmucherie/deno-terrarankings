@@ -75,7 +75,7 @@ export default function JoinRoomPage(props: PageProps) {
           </div>
           <button
             type="submit"
-            className="px-6 py-2 w-fit font-semibold rounded-lg bg-transparent text-ivory border border-ivory hover:bg-ivory-100 focus:ivory-100"
+            className="px-6 py-2 w-fit font-semibold rounded-lg bg-transparent text-ivory border border-ivory "
           >
             Enter rooom
           </button>
