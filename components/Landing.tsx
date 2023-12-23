@@ -9,7 +9,7 @@ export const Landing = () => {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 512 512"
-            class="w-5 h-5 fill-current dark:text-amber-400 shrink-0 "
+            class="w-5 h-5 fill-current text-princetonOrange shrink-0 "
           >
             <path d="M426.072,86.928A238.75,238.75,0,0,0,88.428,424.572,238.75,238.75,0,0,0,426.072,86.928ZM257.25,462.5c-114,0-206.75-92.748-206.75-206.75S143.248,49,257.25,49,464,141.748,464,255.75,371.252,462.5,257.25,462.5Z">
             </path>
@@ -24,7 +24,7 @@ export const Landing = () => {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 512 512"
-            class="w-5 h-5 fill-current dark:text-amber-400 shrink-0 "
+            class="w-5 h-5 fill-current text-princetonOrange shrink-0 "
           >
             <path d="M426.072,86.928A238.75,238.75,0,0,0,88.428,424.572,238.75,238.75,0,0,0,426.072,86.928ZM257.25,462.5c-114,0-206.75-92.748-206.75-206.75S143.248,49,257.25,49,464,141.748,464,255.75,371.252,462.5,257.25,462.5Z">
             </path>
@@ -39,7 +39,7 @@ export const Landing = () => {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 512 512"
-            className="w-5 h-5 fill-current dark:text-amber-400 shrink-0 "
+            className="w-5 h-5 fill-current text-princetonOrange shrink-0 "
           >
             <path d="M426.072,86.928A238.75,238.75,0,0,0,88.428,424.572,238.75,238.75,0,0,0,426.072,86.928ZM257.25,462.5c-114,0-206.75-92.748-206.75-206.75S143.248,49,257.25,49,464,141.748,464,255.75,371.252,462.5,257.25,462.5Z">
             </path>
@@ -54,7 +54,7 @@ export const Landing = () => {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 512 512"
-            className="w-5 h-5 fill-current dark:text-amber-400 shrink-0 "
+            className="w-5 h-5 fill-current text-princetonOrange shrink-0 "
           >
             <path d="M426.072,86.928A238.75,238.75,0,0,0,88.428,424.572,238.75,238.75,0,0,0,426.072,86.928ZM257.25,462.5c-114,0-206.75-92.748-206.75-206.75S143.248,49,257.25,49,464,141.748,464,255.75,371.252,462.5,257.25,462.5Z">
             </path>

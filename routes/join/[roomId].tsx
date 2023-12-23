@@ -54,19 +54,20 @@ export default function JoinRoomPage(props: PageProps) {
   return (
     <Layout isLoggedIn={props.data.token}>
       <div className="mt-10 px-5 mx-auto flex max-w-screen-md flex-col justify-center">
-        <form method="post" class="flex flex-col gap-4 items-center">
+        <form method="post" className="flex flex-col gap-4 items-center">
           <div class="w-full">
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-white mb-2"
+              className="block mb-2 text-sm font-medium text-ivory"
             >
               Room Password
             </label>
+
             <input
               type="password"
               id="roomPassword"
               name="roomPassword"
-              className=" border text-sm rounded-lg block w-full p-2.5 bg-zinc-700 border-zinc-600 placeholder-zinc-400 text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-licorice border border-ivory rounded-lg text-sm block w-full p-2.5 placeholder-ivory text-ivory"
               placeholder="Enter room password"
               required
               autoFocus
@@ -74,7 +75,7 @@ export default function JoinRoomPage(props: PageProps) {
           </div>
           <button
             type="submit"
-            className="px-6 py-2 w-fit font-semibold rounded-lg bg-transparent text-zinc-100 border-2 border-zinc-100 hover:bg-zinc-800 focus:bg-zinc-800"
+            className="px-6 py-2 w-fit font-semibold rounded-lg bg-transparent text-ivory border border-ivory hover:bg-ivory-100 focus:ivory-100"
           >
             Enter rooom
           </button>

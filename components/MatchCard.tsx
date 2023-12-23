@@ -4,7 +4,7 @@ export const MatchCard = ({ match }: { match: Match }) => {
   return (
     <div class="border border-zinc-700 rounded-lg p-4 my-2 flex flex-col ">
       <time
-        class="text-xs font-medium px-2.5 py-0.5 rounded bg-amber-900 text-amber-300 w-fit mb-4 self-start"
+        class="text-xs font-medium px-2.5 py-0.5 rounded bg-princetonOrange text-licorice w-fit mb-4 self-start"
         dateTime={new Date(match.created_at).toString()}
       >
         {new Date(match.created_at).toLocaleDateString()}
@@ -26,7 +26,7 @@ export const MatchCard = ({ match }: { match: Match }) => {
                 {mp.corporation.name}
               </span>
             </div>
-            {eloDiffColor > 0
+            {mp.new_elo - mp.old_elo > 0
               ? (
                 <span class="font-semibold text-emerald-500 col-start-4 justify-self-end shrink-0">
                   &#9650; {eloDiffColor}

@@ -14,7 +14,7 @@ export default function Layout(props: LayoutProps) {
         <title>Terrrankings</title>
       </Head>
       <Nav loggedIn={props.isLoggedIn} />
-      <div class="p-4 mx-auto max-w-screen-md text-white">
+      <div class="p-4 mx-auto max-w-screen-md text-ivory">
         {props.children}
       </div>
     </>

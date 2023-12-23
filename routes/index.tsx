@@ -17,8 +17,8 @@ export const handler: Handlers<any, State> = {
 export default function Home(props: PageProps) {
   return (
     <Layout isLoggedIn={props.data.token}>
-      <div class=" px-5 mx-auto flex gap-6 max-w-screen-md flex-col justify-center">
-        <div class="mx-auto text-center">
+      <div className=" px-5 mx-auto flex gap-6 max-w-screen-md flex-col justify-center">
+        <div className="mx-auto text-center">
           <Landing />
           <h1 class="text-2xl font-bold mb-5 ">
             Choose a room to join
@@ -33,15 +33,30 @@ export default function Home(props: PageProps) {
               },
             ) => (
               <li>
-                <a
-                  href={`/join/${room.id}`}
-                >
-                  <div class="border border-zinc-500 border-2 rounded p-3 flex justify-between items-center">
-                    {room.name}{" "}
-                    <span class="text-sm text-zinc-500">
-                      {room.users.length} Players
-                    </span>
-                    &#10140;
+                <a href={`/join/${room.id}`} className="block">
+                  <div className="bg-gradient-to-r from-engineeringOrange to-chocolateCosmos hover:from-engineeringOrange hover:to-flame p-3 rounded-lg shadow-lg transform transition-all duration-150">
+                    <div className="flex justify-between items-center">
+                      <span class="font-bold text-lg">{room.name}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm">
+                          {room.users.length} Players
+                        </span>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5 transform transition duration-150 ease-in-out"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </div>
+                    </div>
                   </div>
                 </a>
               </li>
@@ -50,7 +65,7 @@ export default function Home(props: PageProps) {
         </div>
 
         {!props.data.token && (
-          <div class="mx-auto text-center">
+          <div className="mx-auto text-center">
             <h1 class="text-xl font-bold mb-5 ">
               Login to create a new room
             </h1>
