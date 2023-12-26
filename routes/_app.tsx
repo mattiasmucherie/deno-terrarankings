@@ -1,4 +1,5 @@
 import { type PageProps } from "$fresh/server.ts";
+import { asset } from "$fresh/runtime.ts";
 export default function App({ Component }: PageProps) {
   return (
     <html lang="en" class="dark">
@@ -11,6 +12,7 @@ export default function App({ Component }: PageProps) {
       <body class="dark">
         <Component />
       </body>
+      <script type="text/javascript" src={asset("/ms.js")} defer></script>
     </html>
   );
 }
