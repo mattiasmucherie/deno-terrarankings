@@ -41,7 +41,7 @@ export default function Nav({ loggedIn }: NavProps) {
                 <li>
                   <a
                     href={menu.href}
-                    class="text-stone-900 hover:text-stone-950 py-1"
+                    class="text-stone-100 hover:text-stone-300 py-1"
                   >
                     {menu.name}
                   </a>

@@ -14,6 +14,7 @@ import * as $index from "./routes/index.tsx";
 import * as $join_roomId_ from "./routes/join/[roomId].tsx";
 import * as $login from "./routes/login.tsx";
 import * as $logout from "./routes/logout.tsx";
+import * as $room_roomId_userId_ from "./routes/room/[roomId]/[userId].tsx";
 import * as $room_roomId_corporations from "./routes/room/[roomId]/corporations.tsx";
 import * as $room_roomId_index from "./routes/room/[roomId]/index.tsx";
 import * as $room_roomId_matches from "./routes/room/[roomId]/matches.tsx";
@@ -38,6 +39,7 @@ const manifest = {
     "./routes/join/[roomId].tsx": $join_roomId_,
     "./routes/login.tsx": $login,
     "./routes/logout.tsx": $logout,
+    "./routes/room/[roomId]/[userId].tsx": $room_roomId_userId_,
     "./routes/room/[roomId]/corporations.tsx": $room_roomId_corporations,
     "./routes/room/[roomId]/index.tsx": $room_roomId_index,
     "./routes/room/[roomId]/matches.tsx": $room_roomId_matches,

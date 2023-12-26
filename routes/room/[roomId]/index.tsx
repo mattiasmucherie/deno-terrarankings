@@ -33,29 +33,36 @@ export default function RoomPage(props: PageProps) {
   return (
     <Layout isLoggedIn={props.data.token}>
       <div className="mx-auto flex max-w-screen-md flex-col justify-center">
-        <h2 class="font-bold text-2xl mb-1">{room.name}</h2>
+        <h2 className="font-bold text-2xl mb-1">{room.name}</h2>
         <time
-          class="font-light text-xs text-stone-400"
+          className="font-light text-xs text-stone-400"
           dateTime={createdAt.toString()}
         >
           Created at {formattedDate(createdAt)}
         </time>
-        <div class=" flex flex-col justify-center border border-stone-600 shadow-lg bg-stone-900 rounded-lg px-6 py-3 my-3">
-          <h3 className="my-2 font-bold text-xl">Ranking</h3>
-          <ul class="divide-y divide-stone-700">
-            {users.map((user: any, index: number) => {
-              return (
-                <li class="flex justify-between items-center py-2">
-                  <span>{getPositionEmoji(index)} {user.name}</span>{" "}
-                  <span class="font-semibold">
-                    {Math.round(user.elo_rating)}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-        <div class="flex gap-6 justify-end">
+        {!!users.length && (
+          <div className=" flex flex-col justify-center border border-stone-600 shadow-lg bg-stone-900 rounded-lg px-6 py-3 my-3">
+            <h3 className="my-2 font-bold text-xl">Ranking</h3>
+            <ul className="divide-y divide-stone-700">
+              {users.map((user: any, index: number) => {
+                return (
+                  <li>
+                    <a
+                      className="flex justify-between items-center py-2"
+                      href={`/room/${props.params.roomId}/${user.id}`}
+                    >
+                      <span>{getPositionEmoji(index)} {user.name}</span>{" "}
+                      <span className="font-semibold">
+                        {Math.round(user.elo_rating)}
+                      </span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
+        <div className="flex gap-6 justify-end">
           <LinkButton
             href={`/room/${props.params.roomId}/new-player`}
           >
@@ -69,23 +76,30 @@ export default function RoomPage(props: PageProps) {
         </div>
         {!!props.data.matches.length &&
           (
-            <div class="my-3">
-              <div class="flex justify-between items-baseline">
-                <h2 class="font-semibold text-lg">Latest matches</h2>
+            <div className="my-3">
+              <div className="flex justify-between items-baseline">
+                <h2 className="font-semibold text-lg">Latest matches</h2>
                 <a
                   href={`/room/${props.params.roomId}/matches`}
-                  class="text-md text-trinidad-400"
+                  className="text-md text-trinidad-400"
                 >
                   View all matches
                 </a>
               </div>
-              <div class="flex flex-col justify-center ">
+              <div className="flex flex-col justify-center ">
                 {(props.data.matches as Matches).map((m) => {
                   return <MatchCard match={m} />;
                 })}
               </div>
             </div>
           )}
+        <div className="flex justify-center">
+          <LinkButton
+            href={`/corporations`}
+          >
+            See corporation stats
+          </LinkButton>
+        </div>
       </div>
     </Layout>
   );

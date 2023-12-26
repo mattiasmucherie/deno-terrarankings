@@ -4,7 +4,7 @@ export const Landing = () => {
       <h2 class="mb-8 text-4xl font-bold leadi text-center">
         What is Terraranking?
       </h2>
-      <ul class="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+      <ul class="grid gap-3">
         <li class="flex items-center gap-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"

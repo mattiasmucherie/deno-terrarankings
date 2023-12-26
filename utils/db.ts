@@ -257,3 +257,56 @@ export const getRoomStats = async (
   console.warn(data);
   return data;
 };
+
+type MatchDetails = {
+  standing: number;
+  old_elo: number;
+  new_elo: number;
+  points: number;
+  matches: {
+    created_at: string;
+  };
+  corporations: {
+    name: string;
+  };
+  users: {
+    name: string;
+    elo_rating: number;
+  };
+};
+
+export type UserMatchData = MatchDetails[];
+
+export async function getUserLatestMatches(
+  sb: SupabaseClient<any, "public", any>,
+  userId: string,
+) {
+  const { data, error } = await sb
+    .from("match_participants")
+    .select(`
+        standing,
+        old_elo,
+        new_elo,
+        points,
+        matches (
+          created_at
+        ),
+        corporations (
+          name
+        ),
+        users (
+          name,
+          elo_rating
+        )
+      `)
+    .eq("user_id", userId);
+
+  if (error) throw error;
+  (data as UserMatchData).sort((a, b) => {
+    const dateA = new Date(a.matches.created_at);
+    const dateB = new Date(b.matches.created_at);
+
+    return dateB.getTime() - dateA.getTime();
+  });
+  return (data as UserMatchData);
+}

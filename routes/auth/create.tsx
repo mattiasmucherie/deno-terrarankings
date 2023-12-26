@@ -39,21 +39,41 @@ export default function Create(props: PageProps) {
 
   return (
     <Layout isLoggedIn={true}>
-      <div class="mt-10 px-5 mx-auto flex max-w-screen-md flex-col justify-center">
-        <h1 class="text-2xl font-bold mb-5 text-center">
-          This route is protected!
-        </h1>
-        <form method="post" class="space-y-4">
+      <div class="my-5 px-2 md:px-5 mx-auto flex max-w-screen-md flex-col justify-center">
+        <div className="max-w-lg mx-auto mb-4 p-6 bg-stone-800 text-white shadow-lg rounded-lg">
+          <h2 className="text-xl font-semibold mb-4">
+            Room Password Creation Guidelines
+          </h2>
+          <p className="text-stone-300 mb-3">
+            Please consider the following guidelines when creating a password
+            for your private room:
+          </p>
+          <ul className="list-disc list-inside text-stone-400">
+            <li>Avoid sensitive or personal information in your password.</li>
+            <li>Choose a password that's simple to remember and share.</li>
+            <li>Do not reuse passwords from other accounts.</li>
+            <li>Only share the password with trusted individuals.</li>
+            <li>Remember, you are responsible for your password's security.</li>
+          </ul>
+          <p className="mt-4 text-stone-300">
+            By setting a password, you agree to these guidelines. We are not
+            liable for any security breaches resulting from your password
+            choices.
+          </p>
+        </div>
+
+        <form method="post" className=" my-5 space-y-4">
           <div>
-            <label for="roomName" class="sr-only">
+            <label htmlFor="roomName" className="sr-only">
               Enter room name
             </label>
             <input
               id="roomName"
               type="text"
               name="roomName"
-              class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
+              className="bg-licorice border border-ivory rounded-lg text-sm block w-full p-2.5 placeholder-ivory text-ivory"
               placeholder="Enter room name"
+              autoComplete="organization"
             />
           </div>
           <div>
@@ -64,13 +84,14 @@ export default function Create(props: PageProps) {
               type="password"
               name="roomPassword"
               id="roomPassword"
-              class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
+              className="bg-licorice border border-ivory rounded-lg text-sm block w-full p-2.5 placeholder-ivory text-ivory"
               placeholder="Enter room password"
+              autoComplete="new-password"
             />
           </div>
           <button
             type="submit"
-            class="inline-block rounded-lg bg-red-500 px-5 py-3 text-sm font-medium text-white"
+            className="px-6 py-2 w-fit font-semibold rounded-lg bg-transparent text-ivory border border-ivory "
           >
             Create
           </button>
