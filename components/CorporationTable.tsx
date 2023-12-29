@@ -11,13 +11,13 @@ interface CorporationTableProps {
 
 const CorporationTable = ({ data }: CorporationTableProps) => {
   return (
-    <div className="p-4 text-fantasy-100 rounded">
+    <div className="p-2 text-fantasy-100 rounded">
       <h2 className="text-2xl font-bold mb-4 font-sansman">
         Corporations Statistics
       </h2>
-      <div className="overflow-x-auto">
+      <div className="">
         <table className="min-w-full text-sm text-left text-fantasy-100">
-          <thead className="text-xs text-fantasy-200 uppercase bg-black-pearl-900 rounded-lg font-sansman">
+          <thead className="text-xs text-fantasy-200 bg-black-pearl-900 rounded-lg font-sansman sticky top-0">
             <tr>
               <th scope="col" className="px-4 py-2">
                 Name
