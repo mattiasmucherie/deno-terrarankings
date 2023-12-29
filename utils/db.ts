@@ -231,6 +231,37 @@ export async function fetchMatchDetails(
   return data;
 }
 
+interface GameStat {
+  id: string;
+  name: string;
+  total_plays: number;
+  winrate: number; // Assuming this is a percentage
+}
+function calculateAdjustedWinRates(
+  data: GameStat[],
+) {
+  // Calculate the overall average win rate
+  const totalWinRate = data.reduce(
+    (acc, game) => acc + (game.winrate / 100),
+    0,
+  );
+  const M = totalWinRate / data.length;
+  // Calculate the average number of games played
+  const totalPlays = data.reduce((acc, game) => acc + game.total_plays, 0);
+  const C = totalPlays / data.length;
+
+  // Function to calculate Bayesian adjusted win rate
+  const getAdjustedWinRate = (game: GameStat): number => {
+    return ((C * M) + (game.total_plays * (game.winrate / 100))) /
+      (C + game.total_plays);
+  };
+
+  // Calculate and return the adjusted win rates
+  return data.map((game) => ({
+    ...game,
+    adjustedWinRate: getAdjustedWinRate(game) * 100,
+  })).sort((a, b) => b.adjustedWinRate - a.adjustedWinRate);
+}
 export const getCorporationPlayStats = async (
   sb: SupabaseClient<any, "public", any>,
 ) => {
@@ -239,8 +270,7 @@ export const getCorporationPlayStats = async (
   if (error) {
     throw new Error(error.message);
   }
-  console.warn(data);
-  return data;
+  return calculateAdjustedWinRates(data);
 };
 
 export const getRoomStats = async (

@@ -32,7 +32,7 @@ export default function UserPage(props: PageProps<UserPageProps, State>) {
   return (
     <Layout isLoggedIn={!!props.state.token}>
       <div>
-        <h2 className="text-2xl font-bold">
+        <h2 className="text-2xl font-bold font-sansman mb-1">
           {user.name}
         </h2>
         <div className="flex gap-2 items-baseline mb-2">
@@ -68,7 +68,7 @@ export default function UserPage(props: PageProps<UserPageProps, State>) {
       </div>
       <div className="overflow-x-scroll">
         <table className="min-w-full leading-normal">
-          <thead>
+          <thead className="font-sansman">
             <tr>
               <th className="px-5 py-3 border-b-2 border-stone-300 text-left text-xs font-semibold text-stone-400 uppercase tracking-wider ">
                 #

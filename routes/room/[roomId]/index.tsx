@@ -33,7 +33,7 @@ export default function RoomPage(props: PageProps) {
   return (
     <Layout isLoggedIn={props.data.token}>
       <div className="mx-auto flex max-w-screen-md flex-col justify-center">
-        <h2 className="font-bold text-2xl mb-1">{room.name}</h2>
+        <h2 className="font-bold text-2xl mb-1 font-sansman">{room.name}</h2>
         <time
           className="font-light text-xs text-stone-400"
           dateTime={createdAt.toString()}
@@ -41,8 +41,8 @@ export default function RoomPage(props: PageProps) {
           Created at {formattedDate(createdAt)}
         </time>
         {!!users.length && (
-          <div className=" flex flex-col justify-center border border-stone-600 shadow-lg bg-stone-900 rounded-lg px-6 py-3 my-3">
-            <h3 className="my-2 font-bold text-xl">Ranking</h3>
+          <div className=" flex flex-col justify-center border border-black-pearl-900 shadow-lg bg-gradient-to-b from-black-pearl-900 to-black-pearl-950 rounded px-4 py-2 my-3">
+            <h3 className="my-2 font-bold text-xl font-sansman">Ranking</h3>
             <ul className="divide-y divide-stone-700">
               {users.map((user: any, index: number) => {
                 return (
@@ -51,9 +51,11 @@ export default function RoomPage(props: PageProps) {
                       className="flex justify-between items-center py-2"
                       href={`/room/${props.params.roomId}/${user.id}`}
                     >
-                      <span>{getPositionEmoji(index)} {user.name}</span>{" "}
+                      <span>
+                        {getPositionEmoji(index)} {user.name}
+                      </span>{" "}
                       <span className="font-semibold">
-                        {Math.round(user.elo_rating)}
+                        {Math.round(user.elo_rating)} &#10140;
                       </span>
                     </a>
                   </li>
@@ -78,7 +80,9 @@ export default function RoomPage(props: PageProps) {
           (
             <div className="my-3">
               <div className="flex justify-between items-baseline">
-                <h2 className="font-semibold text-lg">Latest matches</h2>
+                <h2 className="font-semibold text-lg font-sansman">
+                  Latest matches
+                </h2>
                 <a
                   href={`/room/${props.params.roomId}/matches`}
                   className="text-md text-trinidad-400"

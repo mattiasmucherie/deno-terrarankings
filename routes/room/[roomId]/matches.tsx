@@ -18,7 +18,7 @@ export const handler: Handlers<any, State> = {
 export default function MatchPage(props: PageProps) {
   return (
     <Layout isLoggedIn={props.data.token}>
-      <h2>Matches</h2>
+      <h2 className="font-semibold text-lg font-sansman">Matches</h2>
       {(props.data.matches as Matches).map((m) => <MatchCard match={m} />)}
     </Layout>
   );

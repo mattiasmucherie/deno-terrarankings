@@ -14,22 +14,22 @@ export default function Nav({ loggedIn }: NavProps) {
   ];
 
   return (
-    <header class="bg-trinidad-950 h-[96px] w-full bg-cover bg-no-repeat relative">
-      <div class="bg-[url('/raindrops-animate.svg')] bg-transparent w-full h-full absolute " />
-      <nav class="w-11/12 h-24 max-w-5xl mx-auto flex items-center justify-between relative ">
-        <div class="text-3xl ml-1 font-bold text-ivory">
+    <header className="bg-carnation-900 h-[96px] w-full bg-cover bg-no-repeat relative text-fantasy-100">
+      <div className="bg-[url('/raindrops-animate.svg')] bg-transparent w-full h-full absolute " />
+      <nav className="w-11/12 h-24 max-w-5xl mx-auto flex items-center justify-between relative ">
+        <div className="text-2xl ml-1 font-bold font-sansman">
           <a href={"/"}>
-            Terrarankings
+            TerraRanking
           </a>
         </div>
-        <ul class="flex gap-6">
+        <ul className="flex gap-6">
           {loggedIn
             ? (
               loggedInMenus.map((menu) => (
                 <li>
                   <a
                     href={menu.href}
-                    class="text-stone-100 hover:text-stone-300   py-1"
+                    className=" hover:underline   py-1"
                   >
                     {menu.name}
                   </a>
@@ -41,7 +41,7 @@ export default function Nav({ loggedIn }: NavProps) {
                 <li>
                   <a
                     href={menu.href}
-                    class="text-stone-100 hover:text-stone-300 py-1"
+                    className="hover:underline py-1"
                   >
                     {menu.name}
                   </a>

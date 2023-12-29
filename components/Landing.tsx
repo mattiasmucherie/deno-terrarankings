@@ -1,15 +1,15 @@
 export const Landing = () => {
   return (
-    <div class="pb-8 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20 ">
-      <h2 class="mb-8 text-4xl font-bold leadi text-center">
+    <div className="pb-8 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20 ">
+      <h2 className="mb-4 text-4xl font-bold leading-normal text-center font-sansman">
         What is Terraranking?
       </h2>
-      <ul class="grid gap-3">
-        <li class="flex items-center gap-2">
+      <ul className="grid gap-3">
+        <li className="flex items-center gap-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 512 512"
-            class="w-5 h-5 fill-current text-princetonOrange shrink-0 "
+            className="w-5 h-5 fill-current text-fantasy-200 shrink-0 "
           >
             <path d="M426.072,86.928A238.75,238.75,0,0,0,88.428,424.572,238.75,238.75,0,0,0,426.072,86.928ZM257.25,462.5c-114,0-206.75-92.748-206.75-206.75S143.248,49,257.25,49,464,141.748,464,255.75,371.252,462.5,257.25,462.5Z">
             </path>
@@ -20,11 +20,11 @@ export const Landing = () => {
             Track your wins in Terraforming Mars
           </span>
         </li>
-        <li class="flex items-center gap-2">
+        <li className="flex items-center gap-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 512 512"
-            class="w-5 h-5 fill-current text-princetonOrange shrink-0 "
+            className="w-5 h-5 fill-current text-fantasy-200 shrink-0 "
           >
             <path d="M426.072,86.928A238.75,238.75,0,0,0,88.428,424.572,238.75,238.75,0,0,0,426.072,86.928ZM257.25,462.5c-114,0-206.75-92.748-206.75-206.75S143.248,49,257.25,49,464,141.748,464,255.75,371.252,462.5,257.25,462.5Z">
             </path>
@@ -39,7 +39,7 @@ export const Landing = () => {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 512 512"
-            className="w-5 h-5 fill-current text-princetonOrange shrink-0 "
+            className="w-5 h-5 fill-current text-fantasy-200 shrink-0 "
           >
             <path d="M426.072,86.928A238.75,238.75,0,0,0,88.428,424.572,238.75,238.75,0,0,0,426.072,86.928ZM257.25,462.5c-114,0-206.75-92.748-206.75-206.75S143.248,49,257.25,49,464,141.748,464,255.75,371.252,462.5,257.25,462.5Z">
             </path>
@@ -54,7 +54,7 @@ export const Landing = () => {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 512 512"
-            className="w-5 h-5 fill-current text-princetonOrange shrink-0 "
+            className="w-5 h-5 fill-current text-fantasy-200 shrink-0 "
           >
             <path d="M426.072,86.928A238.75,238.75,0,0,0,88.428,424.572,238.75,238.75,0,0,0,426.072,86.928ZM257.25,462.5c-114,0-206.75-92.748-206.75-206.75S143.248,49,257.25,49,464,141.748,464,255.75,371.252,462.5,257.25,462.5Z">
             </path>

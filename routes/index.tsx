@@ -20,9 +20,9 @@ export default function Home(props: PageProps) {
       <div className=" px-5 mx-auto flex gap-6 max-w-screen-md flex-col justify-center">
         <div className="mx-auto text-center">
           <Landing />
-          <h1 class="text-2xl font-bold mb-5 ">
+          <h2 class="text-md mb-3 font-sansman ">
             Choose a room to join
-          </h1>
+          </h2>
           <ul class="flex flex-col gap-2">
             {props.data.rooms.map((
               room: {
@@ -34,9 +34,11 @@ export default function Home(props: PageProps) {
             ) => (
               <li>
                 <a href={`/join/${room.id}`} className="block">
-                  <div className="bg-gradient-to-r from-guardsman-red-900 to-trinidad-900 hover:from-guardsman-red-700 hover:to-trinidad-700 p-3 rounded-lg shadow-lg transform transition-all duration-150">
+                  <div className="bg-gradient-to-r from-black-pearl-950 to-carnation-950 via-black-pearl-950 hover:from-black-pearl-950 hover:to-carnation-900 p-3 rounded shadow-lg border-2 border-carnation-900">
                     <div className="flex justify-between items-center">
-                      <span class="font-bold text-lg">{room.name}</span>
+                      <span class="font-bold text-lg font-sansman tracking-wide">
+                        {room.name}
+                      </span>
                       <div className="flex items-center gap-2">
                         <span className="text-sm">
                           {room.users.length} Players
@@ -66,7 +68,7 @@ export default function Home(props: PageProps) {
 
         {!props.data.token && (
           <div className="mx-auto text-center">
-            <h1 class="text-xl font-bold mb-5 ">
+            <h1 class="text-xl font-bold mb-5 font-sansman ">
               Login to create a new room
             </h1>
             <LinkButton href="/login">Login</LinkButton>
