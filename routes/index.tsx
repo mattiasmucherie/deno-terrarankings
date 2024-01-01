@@ -1,42 +1,37 @@
-// deno-lint-ignore-file no-explicit-any
 import { Handlers, PageProps } from "$fresh/server.ts";
 import Layout from "../components/Layout.tsx";
 import { State } from "./_middleware.ts";
 import { getAllRooms } from "../utils/db.ts";
 import { LinkButton } from "../components/LinkButton.tsx";
 import { Landing } from "../components/Landing.tsx";
+import { Rooms } from "../utils/types/types.ts";
 
-export const handler: Handlers<any, State> = {
+type HomeProps = {
+  rooms: Rooms;
+};
+export const handler: Handlers<HomeProps, State> = {
   async GET(_req, ctx) {
     const rooms = await getAllRooms(ctx.state.supabaseClient);
-    ctx.state.rooms = rooms;
-    return ctx.render({ ...ctx.state });
+    return ctx.render({ ...ctx.state, rooms });
   },
 };
 
-export default function Home(props: PageProps) {
+export default function Home(props: PageProps<HomeProps, State>) {
   return (
-    <Layout isLoggedIn={props.data.token}>
+    <Layout isLoggedIn={!!props.state.token}>
       <div className=" px-5 mx-auto flex gap-6 max-w-screen-md flex-col justify-center">
         <div className="mx-auto text-center">
           <Landing />
-          <h2 class="text-md mb-3 font-sansman ">
+          <h2 className="text-md mb-3 font-sansman ">
             Choose a room to join
           </h2>
-          <ul class="flex flex-col gap-2">
-            {props.data.rooms.map((
-              room: {
-                id: string;
-                created_at: string;
-                name: string;
-                users: any[];
-              },
-            ) => (
+          <ul className="flex flex-col gap-2">
+            {props.data.rooms.map((room) => (
               <li>
                 <a href={`/join/${room.id}`} className="block">
                   <div className="bg-gradient-to-r from-black-pearl-950 to-carnation-950 via-black-pearl-950 hover:from-black-pearl-950 hover:to-carnation-900 p-3 rounded shadow-lg border-2 border-carnation-900">
                     <div className="flex justify-between items-center">
-                      <span class="font-bold text-lg font-sansman tracking-wide">
+                      <span className="font-bold text-lg font-sansman tracking-wide">
                         {room.name}
                       </span>
                       <div className="flex items-center gap-2">
@@ -51,9 +46,9 @@ export default function Home(props: PageProps) {
                           stroke="currentColor"
                         >
                           <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
                             d="M9 5l7 7-7 7"
                           />
                         </svg>
@@ -66,9 +61,9 @@ export default function Home(props: PageProps) {
           </ul>
         </div>
 
-        {!props.data.token && (
+        {!props.state.token && (
           <div className="mx-auto text-center">
-            <h1 class="text-xl font-bold mb-5 font-sansman ">
+            <h1 className="text-xl font-bold mb-5 font-sansman ">
               Login to create a new room
             </h1>
             <LinkButton href="/login">Login</LinkButton>

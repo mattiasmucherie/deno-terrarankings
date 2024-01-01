@@ -6,8 +6,8 @@ export const formattedDate = (date: Date) =>
     year: "numeric",
   }).format(date);
 
-export const formattedDateShort = (date: Date) =>
-  new Intl.DateTimeFormat("en-gb", {
+export const formattedDateShort = (date: Date, lang = "en-gb") =>
+  new Intl.DateTimeFormat(lang, {
     day: "numeric",
     month: "numeric",
     year: "2-digit",

@@ -6,7 +6,6 @@ import * as $_404 from "./routes/_404.tsx";
 import * as $_500 from "./routes/_500.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $_middleware from "./routes/_middleware.ts";
-import * as $api_corporations from "./routes/api/corporations.ts";
 import * as $auth_middleware from "./routes/auth/_middleware.ts";
 import * as $auth_create from "./routes/auth/create.tsx";
 import * as $corporations from "./routes/corporations.tsx";
@@ -15,7 +14,6 @@ import * as $join_roomId_ from "./routes/join/[roomId].tsx";
 import * as $login from "./routes/login.tsx";
 import * as $logout from "./routes/logout.tsx";
 import * as $room_roomId_userId_ from "./routes/room/[roomId]/[userId].tsx";
-import * as $room_roomId_corporations from "./routes/room/[roomId]/corporations.tsx";
 import * as $room_roomId_index from "./routes/room/[roomId]/index.tsx";
 import * as $room_roomId_matches from "./routes/room/[roomId]/matches.tsx";
 import * as $room_roomId_new_match from "./routes/room/[roomId]/new-match.tsx";
@@ -31,7 +29,6 @@ const manifest = {
     "./routes/_500.tsx": $_500,
     "./routes/_app.tsx": $_app,
     "./routes/_middleware.ts": $_middleware,
-    "./routes/api/corporations.ts": $api_corporations,
     "./routes/auth/_middleware.ts": $auth_middleware,
     "./routes/auth/create.tsx": $auth_create,
     "./routes/corporations.tsx": $corporations,
@@ -40,7 +37,6 @@ const manifest = {
     "./routes/login.tsx": $login,
     "./routes/logout.tsx": $logout,
     "./routes/room/[roomId]/[userId].tsx": $room_roomId_userId_,
-    "./routes/room/[roomId]/corporations.tsx": $room_roomId_corporations,
     "./routes/room/[roomId]/index.tsx": $room_roomId_index,
     "./routes/room/[roomId]/matches.tsx": $room_roomId_matches,
     "./routes/room/[roomId]/new-match.tsx": $room_roomId_new_match,

@@ -6,8 +6,13 @@ import {
   getCorporations,
   getRoomWithUsers,
 } from "../../../utils/db.ts";
+import { Corporation, RoomWithUsers } from "../../../utils/types/types.ts";
 
-export const handler: Handlers<any, State> = {
+interface NewMatchProps {
+  roomWithUsers: RoomWithUsers;
+  corps: Corporation[];
+}
+export const handler: Handlers<NewMatchProps, State> = {
   async GET(_req, ctx) {
     const roomWithUsers = await getRoomWithUsers(
       ctx.state.supabaseClient,
@@ -50,54 +55,48 @@ export const handler: Handlers<any, State> = {
     });
   },
 };
-export default function NewMatchPage(props: PageProps) {
+export default function NewMatchPage(props: PageProps<NewMatchProps, State>) {
   const err = props.url.searchParams.get("error");
   return (
-    <Layout isLoggedIn={props.data.token}>
-      <h2 class="text-xl font-bold mb-5">New match!</h2>
+    <Layout isLoggedIn={!!props.state.token}>
+      <h2 className="text-xl font-bold mb-5">New match!</h2>
       <form
         method="post"
-        class="flex flex-col"
+        className="flex flex-col"
       >
-        <div class="divide-y divide-stone-500">
+        <div className="divide-y divide-stone-500">
           {props.data.roomWithUsers.users.map(
-            (user: {
-              id: string;
-              created_at: string;
-              name: string;
-              elo_rating: number;
-              room_id: string;
-            }) => {
+            (user) => {
               return (
-                <div class="py-3 flex flex-col gap-2">
+                <div className="py-3 flex flex-col gap-2">
                   <input
                     name="userIds"
                     value={user.id}
                     type={"text"}
-                    class={"hidden"}
+                    className={"hidden"}
                   />
-                  <label class="flex gap-2 justify-between ">
-                    <span class="font-bold">{user.name}</span>
-                    <div class="flex gap-2">
+                  <label className="flex gap-2 justify-between ">
+                    <span className="font-bold">{user.name}</span>
+                    <div className="flex gap-2">
                       <input
                         name={`points`}
-                        class="border-solid border-2 border-stone-500 bg-stone-800 border-none rounded p-1"
+                        className="border-solid border-2 border-stone-500 bg-stone-800 border-none rounded p-1"
                         pattern="[0-9]*"
                         type="number"
                         min="0"
-                        max="300"
+                        max="250"
                       />
                       <span>VP</span>
                     </div>
                   </label>
-                  <label class="flex justify-between">
-                    <span class="font-bold">Corporation</span>
+                  <label className="flex justify-between">
+                    <span className="font-bold">Corporation</span>
                     <select
                       name="corp"
-                      class="border-solid border-2 border-stone-500 bg-stone-800 border-none rounded p-1"
+                      className="border-solid border-2 border-stone-500 bg-stone-800 border-none rounded p-1"
                     >
                       <option value="">{" "}</option>
-                      {props.data.corps.map((c: any) => {
+                      {props.data.corps.map((c) => {
                         return <option value={c.id}>{c.name}</option>;
                       })}
                     </select>
@@ -107,7 +106,7 @@ export default function NewMatchPage(props: PageProps) {
             },
           )}
         </div>
-        <div class="flex justify-center divide-none">
+        <div className="flex justify-center divide-none">
           <button
             type="submit"
             className=" my-2 px-6 py-2 w-fit font-semibold rounded-lg bg-transparent text-stone-100 border-2 border-stone-100 hover:bg-stone-800 focus:bg-stone-800"

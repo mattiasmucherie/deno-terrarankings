@@ -2,13 +2,9 @@ import { Handlers, PageProps } from "$fresh/src/server/types.ts";
 import Layout from "../../components/Layout.tsx";
 import { State } from "../_middleware.ts";
 import * as bcrypt from "$bcrypt";
-export const handler: Handlers<any, State> = {
-  async GET(_req, ctx) {
-    let { data: rooms, error } = await ctx.state.supabaseClient
-      .from("rooms")
-      .select("*")
-      .eq("id", ctx.params.roomId);
-    ctx.state.rooms = rooms;
+import { getOneRoom } from "../../utils/db.ts";
+export const handler: Handlers<unknown, State> = {
+  GET(_req, ctx) {
     const allowedToRoom = ctx.state.session.get(`room-${ctx.params.roomId}`);
 
     if (allowedToRoom === true) {
@@ -23,14 +19,10 @@ export const handler: Handlers<any, State> = {
   async POST(req, ctx) {
     const form = await req.formData();
     const password = form.get("roomPassword") as string;
-    let { data: rooms, error } = await ctx.state.supabaseClient
-      .from("rooms")
-      .select("*")
-      .eq("id", ctx.params.roomId);
-
+    const room = await getOneRoom(ctx.state.supabaseClient, ctx.params.roomId);
     const result = bcrypt.compareSync(
       password,
-      rooms[0].hashed_password,
+      room[0].hashed_password,
     );
 
     const headers = new Headers();
@@ -48,14 +40,14 @@ export const handler: Handlers<any, State> = {
   },
 };
 
-export default function JoinRoomPage(props: PageProps) {
+export default function JoinRoomPage(props: PageProps<unknown, State>) {
   const err = props.url.searchParams.get("error");
 
   return (
-    <Layout isLoggedIn={props.data.token}>
+    <Layout isLoggedIn={!!props.state.token}>
       <div className="mt-10 px-5 mx-auto flex max-w-screen-md flex-col justify-center">
         <form method="post" className="flex flex-col gap-4 items-center">
-          <div class="w-full">
+          <div className="w-full">
             <label
               htmlFor="password"
               className="block mb-2 text-sm font-medium text-ivory"
@@ -77,9 +69,9 @@ export default function JoinRoomPage(props: PageProps) {
             type="submit"
             className="px-6 py-2 w-fit font-semibold rounded-lg bg-transparent text-ivory border border-ivory "
           >
-            Enter rooom
+            Enter room
           </button>
-          <p>{err}</p>
+          {err && <p>{err}</p>}
         </form>
       </div>
     </Layout>

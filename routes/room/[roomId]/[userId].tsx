@@ -11,14 +11,17 @@ import { calculateUserWinRate } from "../../../utils/calculateUserWinRate.ts";
 
 type UserPageProps = {
   usersLatestMatches: UserMatchData;
+  lang?: string;
 };
 export const handler: Handlers<UserPageProps, State> = {
-  async GET(_req, ctx) {
+  async GET(req, ctx) {
     const usersLatestMatches = await getUserLatestMatches(
       ctx.state.supabaseClient,
       ctx.params.userId,
     );
-    return ctx.render({ ...ctx.state, usersLatestMatches });
+    const lang = req.headers.get("Accept-Language")?.split(",")[0];
+    console.warn(lang);
+    return ctx.render({ ...ctx.state, usersLatestMatches, lang });
   },
 };
 export default function UserPage(props: PageProps<UserPageProps, State>) {
@@ -47,28 +50,26 @@ export default function UserPage(props: PageProps<UserPageProps, State>) {
           </span>
         </div>
         <div className="text-sm font-light">
-          <span className="font-bold">Favourite Corp:</span> {favCorp}{" "}
+          <span className="font-bold">Most played:</span> {favCorp}{" "}
           ({favCorpNum})
         </div>
         {bestCorpElo > 0 && (
           <div className="text-sm font-light">
-            <span className="font-bold">Best Corp:</span> {bestCorp}{" "}
-            {bestCorpElo}
+            <span className="font-bold">Best:</span> {bestCorp} {bestCorpElo}
           </div>
         )}
         {worstCorpElo < 0 && (
           <div className="text-sm font-light">
-            <span className="font-bold">Worst Corp:</span> {worstCorp}{" "}
-            {worstCorpElo}
+            <span className="font-bold">Worst:</span> {worstCorp} {worstCorpElo}
           </div>
         )}
         <div className="text-sm font-light">
           <span className="font-bold">Win Rate:</span> {winRate}
         </div>
       </div>
-      <div className="overflow-x-scroll">
+      <div className="">
         <table className="min-w-full leading-normal">
-          <thead className="font-sansman">
+          <thead className="font-sansman  bg-black-pearl-950 sticky top-0">
             <tr>
               <th className="px-5 py-3 border-b-2 border-stone-300 text-left text-xs font-semibold text-stone-400 uppercase tracking-wider ">
                 #
@@ -113,7 +114,10 @@ export default function UserPage(props: PageProps<UserPageProps, State>) {
                 </td>
                 <td className="px-5 py-2 border-b border-stone-700 text-sm text-white">
                   <time dateTime={m.matches.created_at}>
-                    {formattedDateShort(new Date(m.matches.created_at))}
+                    {formattedDateShort(
+                      new Date(m.matches.created_at),
+                      props.data.lang,
+                    )}
                   </time>
                 </td>
               </tr>

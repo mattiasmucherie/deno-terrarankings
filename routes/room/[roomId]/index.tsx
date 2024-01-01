@@ -1,17 +1,18 @@
 import { Handlers, PageProps } from "$fresh/src/server/types.ts";
 import Layout from "../../../components/Layout.tsx";
 import { State } from "../../_middleware.ts";
-import {
-  fetchMatchDetails,
-  getRoomWithUsers,
-  Matches,
-} from "../../../utils/db.ts";
+import { fetchMatchDetails, getRoomWithUsers } from "../../../utils/db.ts";
 import { LinkButton } from "../../../components/LinkButton.tsx";
 import { MatchCard } from "../../../components/MatchCard.tsx";
 import { formattedDate } from "../../../utils/formattedDate.ts";
 import { getPositionEmoji } from "../../../utils/getPositionEmoji.ts";
+import { MatchDetails, RoomWithUsers } from "../../../utils/types/types.ts";
 
-export const handler: Handlers<any, State> = {
+interface RoomPageProps {
+  matches: MatchDetails[];
+  roomWithUsers: RoomWithUsers;
+}
+export const handler: Handlers<RoomPageProps, State> = {
   async GET(_req, ctx) {
     const matches = await fetchMatchDetails(
       ctx.state.supabaseClient,
@@ -25,13 +26,13 @@ export const handler: Handlers<any, State> = {
   },
 };
 
-export default function RoomPage(props: PageProps) {
+export default function RoomPage(props: PageProps<RoomPageProps, State>) {
   const room = props.data.roomWithUsers;
   const createdAt = new Date(room.created_at);
   const users = room.users;
 
   return (
-    <Layout isLoggedIn={props.data.token}>
+    <Layout isLoggedIn={!!props.state.token}>
       <div className="mx-auto flex max-w-screen-md flex-col justify-center">
         <h2 className="font-bold text-2xl mb-1 font-sansman">{room.name}</h2>
         <time
@@ -44,7 +45,7 @@ export default function RoomPage(props: PageProps) {
           <div className=" flex flex-col justify-center border border-black-pearl-900 shadow-lg bg-gradient-to-b from-black-pearl-900 to-black-pearl-950 rounded px-4 py-2 my-3">
             <h3 className="my-2 font-bold text-xl font-sansman">Ranking</h3>
             <ul className="divide-y divide-stone-700">
-              {users.map((user: any, index: number) => {
+              {users.map((user, index) => {
                 return (
                   <li>
                     <a
@@ -85,13 +86,13 @@ export default function RoomPage(props: PageProps) {
                 </h2>
                 <a
                   href={`/room/${props.params.roomId}/matches`}
-                  className="text-md text-trinidad-400"
+                  className="text-md text-fantasy-100"
                 >
                   View all matches
                 </a>
               </div>
               <div className="flex flex-col justify-center ">
-                {(props.data.matches as Matches).map((m) => {
+                {props.data.matches.map((m) => {
                   return <MatchCard match={m} />;
                 })}
               </div>

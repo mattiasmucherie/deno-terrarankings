@@ -1,12 +1,7 @@
-interface GameStat {
-  id: string;
-  name: string;
-  total_plays: number;
-  winrate: number;
-}
+import { CorporationData } from "../utils/types/types.ts";
 
 interface CorporationTableProps {
-  data: GameStat[];
+  data: CorporationData[];
 }
 
 const CorporationTable = ({ data }: CorporationTableProps) => {

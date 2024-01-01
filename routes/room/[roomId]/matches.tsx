@@ -1,10 +1,14 @@
 import { Handlers, PageProps } from "$fresh/src/server/types.ts";
 import Layout from "../../../components/Layout.tsx";
 import { State } from "../../_middleware.ts";
-import { fetchMatchDetails, Matches } from "../../../utils/db.ts";
+import { fetchMatchDetails } from "../../../utils/db.ts";
 import { MatchCard } from "../../../components/MatchCard.tsx";
+import { MatchDetails } from "../../../utils/types/types.ts";
 
-export const handler: Handlers<any, State> = {
+interface MatchPageProps {
+  matches: MatchDetails[];
+}
+export const handler: Handlers<MatchPageProps, State> = {
   async GET(_req, ctx) {
     const matches = await fetchMatchDetails(
       ctx.state.supabaseClient,
@@ -15,11 +19,11 @@ export const handler: Handlers<any, State> = {
   },
 };
 
-export default function MatchPage(props: PageProps) {
+export default function MatchPage(props: PageProps<MatchPageProps, State>) {
   return (
-    <Layout isLoggedIn={props.data.token}>
+    <Layout isLoggedIn={!!props.state.token}>
       <h2 className="font-semibold text-lg font-sansman">Matches</h2>
-      {(props.data.matches as Matches).map((m) => <MatchCard match={m} />)}
+      {props.data.matches.map((m) => <MatchCard match={m} />)}
     </Layout>
   );
 }

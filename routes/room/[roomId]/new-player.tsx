@@ -2,7 +2,7 @@ import { Handlers, PageProps } from "$fresh/src/server/types.ts";
 import Layout from "../../../components/Layout.tsx";
 import { State } from "../../_middleware.ts";
 
-export const handler: Handlers<any, State> = {
+export const handler: Handlers<unknown, State> = {
   GET(_req, ctx) {
     return ctx.render({ ...ctx.state });
   },
@@ -33,9 +33,9 @@ export const handler: Handlers<any, State> = {
   },
 };
 
-export default function NewPlayerPage(props: PageProps) {
+export default function NewPlayerPage(props: PageProps<unknown, State>) {
   return (
-    <Layout isLoggedIn={props.data.token}>
+    <Layout isLoggedIn={!!props.state.token}>
       <div className="mt-10 px-5 mx-auto flex max-w-screen-md flex-col justify-center">
         <form method="post" className="flex flex-col gap-4 items-center">
           <div className="w-full">

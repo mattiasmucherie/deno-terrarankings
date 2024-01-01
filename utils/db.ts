@@ -1,10 +1,22 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { elo } from "./elo.ts";
+import { Database } from "./types/supabase.ts";
+import {
+  Corporation,
+  CorporationData,
+  MatchDetails,
+  OneRoom,
+  Rooms,
+  RoomWithUsers,
+} from "./types/types.ts";
 
-export const getAllRooms = async (sb: SupabaseClient<any, "public", any>) => {
-  const { data, error } = await sb.from("rooms")
-    .select(`
-      *,
+export const getAllRooms = async (
+  sb: SupabaseClient<Database, "public", any>,
+): Promise<Rooms> => {
+  const { data, error } = await sb.from("rooms").select(`
+      id,
+      created_at,
+      name,
       users (
         *
       )
@@ -18,10 +30,8 @@ export const getAllRooms = async (sb: SupabaseClient<any, "public", any>) => {
 export const getOneRoom = async (
   sb: SupabaseClient<any, "public", any>,
   id: string,
-) => {
-  const { data, error } = await sb.from("rooms")
-    .select("*")
-    .eq("id", id);
+): Promise<[OneRoom]> => {
+  const { data, error } = await sb.from("rooms").select("*").eq("id", id);
   if (error) {
     throw new Error(error);
   }
@@ -30,11 +40,11 @@ export const getOneRoom = async (
 
 export const getCorporations = async (
   sb: SupabaseClient<any, "public", any>,
-) => {
-  const { data, error } = await sb.from("corporations").select("*").order(
-    "name",
-    { ascending: true },
-  );
+): Promise<Corporation[]> => {
+  const { data, error } = await sb
+    .from("corporations")
+    .select("*")
+    .order("name", { ascending: true });
   if (error) {
     throw new Error(error);
   }
@@ -48,7 +58,8 @@ export const getUsersInRoom = async (
   const { data, error } = await sb
     .from("users")
     .select("*")
-    .eq("room_id", id).order("elo_rating", { ascending: false });
+    .eq("room_id", id)
+    .order("elo_rating", { ascending: false });
   if (error) {
     throw new Error(error);
   }
@@ -58,15 +69,17 @@ export const getUsersInRoom = async (
 export const getRoomWithUsers = async (
   sb: SupabaseClient<any, "public", any>,
   roomId: string,
-) => {
+): Promise<RoomWithUsers> => {
   const { data, error } = await sb
     .from("rooms")
-    .select(`
+    .select(
+      `
       *,
       users (
         *
       )
-    `)
+    `,
+    )
     .eq("id", roomId)
     .single();
 
@@ -81,8 +94,9 @@ export async function getRoomDetailsWithMatches(
   sb: SupabaseClient<any, "public", any>,
   roomId: string,
 ) {
-  const { data, error } = await sb
-    .rpc("get_room_details_with_matches", { room_id: roomId });
+  const { data, error } = await sb.rpc("get_room_details_with_matches", {
+    room_id: roomId,
+  });
 
   if (error) {
     console.error("Error fetching data:", error);
@@ -141,13 +155,17 @@ export const createMatch = async (
     item.old_elo = eloMap.get(item.user_id) || 1000;
   });
 
-  const newElo = elo(users.map((u) => u.old_elo), users.map((u) => u.points));
+  const newElo = elo(
+    users.map((u) => u.old_elo),
+    users.map((u) => u.points),
+  );
 
-  const { data: match } = await sb.from(
-    "matches",
-  ).upsert({
-    room_id: roomId,
-  }).select("id");
+  const { data: match } = await sb
+    .from("matches")
+    .upsert({
+      room_id: roomId,
+    })
+    .select("id");
 
   users.forEach((item, index) => {
     item.standing = index + 1;
@@ -155,13 +173,11 @@ export const createMatch = async (
     item.match_id = match[0].id;
   });
 
-  const { error } = await sb
-    .from(
-      "match_participants",
-    ).upsert(users);
+  const { error } = await sb.from("match_participants").upsert(users);
 
   for (const user of users) {
-    await sb.from("users")
+    await sb
+      .from("users")
       .update({ elo_rating: user.new_elo })
       .eq("id", user.user_id)
       .single();
@@ -172,39 +188,15 @@ export const createMatch = async (
   return;
 };
 
-export type Matches = Match[];
-
-export interface Match {
-  id: string;
-  created_at: string;
-  match_participants: MatchParticipant[];
-}
-
-export interface MatchParticipant {
-  standing: number;
-  new_elo: number;
-  old_elo: number;
-  points: number;
-  user: User;
-  corporation: Corporation;
-}
-
-export interface User {
-  name: string;
-}
-
-export interface Corporation {
-  name: string;
-}
-
 export async function fetchMatchDetails(
   sb: SupabaseClient<any, "public", any>,
   roomId: string,
   limit: number | boolean = 3,
-): Promise<Matches> {
+): Promise<MatchDetails[]> {
   const { data, error } = await sb
     .from("matches")
-    .select(`
+    .select(
+      `
             id,
             created_at,
             room_id,
@@ -220,14 +212,16 @@ export async function fetchMatchDetails(
                     name
                 )
             )
-        `).eq("room_id", roomId).order("created_at", { ascending: false })
+        `,
+    )
+    .eq("room_id", roomId)
+    .order("created_at", { ascending: false })
     .limit(limit);
 
   if (error) {
     console.error("Error fetching data:", error);
     throw new Error(error);
   }
-
   return data;
 }
 
@@ -235,36 +229,30 @@ interface GameStat {
   id: string;
   name: string;
   total_plays: number;
-  winrate: number; // Assuming this is a percentage
+  winrate: number;
 }
-function calculateAdjustedWinRates(
-  data: GameStat[],
-) {
-  // Calculate the overall average win rate
-  const totalWinRate = data.reduce(
-    (acc, game) => acc + (game.winrate / 100),
-    0,
-  );
+function calculateAdjustedWinRates(data: GameStat[]) {
+  const totalWinRate = data.reduce((acc, game) => acc + game.winrate / 100, 0);
   const M = totalWinRate / data.length;
-  // Calculate the average number of games played
   const totalPlays = data.reduce((acc, game) => acc + game.total_plays, 0);
   const C = totalPlays / data.length;
 
-  // Function to calculate Bayesian adjusted win rate
   const getAdjustedWinRate = (game: GameStat): number => {
-    return ((C * M) + (game.total_plays * (game.winrate / 100))) /
-      (C + game.total_plays);
+    return (
+      (C * M + game.total_plays * (game.winrate / 100)) / (C + game.total_plays)
+    );
   };
 
-  // Calculate and return the adjusted win rates
-  return data.map((game) => ({
-    ...game,
-    adjustedWinRate: getAdjustedWinRate(game) * 100,
-  })).sort((a, b) => b.adjustedWinRate - a.adjustedWinRate);
+  return data
+    .map((game) => ({
+      ...game,
+      adjustedWinRate: getAdjustedWinRate(game) * 100,
+    }))
+    .sort((a, b) => b.adjustedWinRate - a.adjustedWinRate);
 }
 export const getCorporationPlayStats = async (
   sb: SupabaseClient<any, "public", any>,
-) => {
+): Promise<CorporationData[]> => {
   const { data, error } = await sb.from("corporation_stats").select("*");
 
   if (error) {
@@ -277,7 +265,8 @@ export const getRoomStats = async (
   sb: SupabaseClient<any, "public", any>,
   roomId: string,
 ) => {
-  const { data, error } = await sb.from("room_stats")
+  const { data, error } = await sb
+    .from("room_stats")
     .select("*")
     .eq("room_id", roomId);
 
@@ -288,24 +277,7 @@ export const getRoomStats = async (
   return data;
 };
 
-type MatchDetails = {
-  standing: number;
-  old_elo: number;
-  new_elo: number;
-  points: number;
-  matches: {
-    created_at: string;
-  };
-  corporations: {
-    name: string;
-  };
-  users: {
-    name: string;
-    elo_rating: number;
-  };
-};
-
-export type UserMatchData = MatchDetails[];
+export type UserMatchData = any[];
 
 export async function getUserLatestMatches(
   sb: SupabaseClient<any, "public", any>,
@@ -313,7 +285,8 @@ export async function getUserLatestMatches(
 ) {
   const { data, error } = await sb
     .from("match_participants")
-    .select(`
+    .select(
+      `
         standing,
         old_elo,
         new_elo,
@@ -328,7 +301,8 @@ export async function getUserLatestMatches(
           name,
           elo_rating
         )
-      `)
+      `,
+    )
     .eq("user_id", userId);
 
   if (error) throw error;
@@ -338,5 +312,5 @@ export async function getUserLatestMatches(
 
     return dateB.getTime() - dateA.getTime();
   });
-  return (data as UserMatchData);
+  return data as UserMatchData;
 }

@@ -3,26 +3,18 @@ import { FreshContext } from "$fresh/server.ts";
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 import { getCookies } from "$std/http/cookie.ts";
 import { Session } from "https://deno.land/x/fresh_session@beta-0.3.0/src/type.ts";
-import { Matches } from "../utils/db.ts";
+import { Database } from "../utils/types/supabase.ts";
 
 export interface State {
   token: string | null;
-  supabaseClient: SupabaseClient<any, "public", any>;
-  rooms: { id: string; created_at: string; name: string }[];
-  users: {
-    id: string;
-    created_at: string;
-    name: string;
-    elo_rating: number;
-    room_id: string;
-  }[];
-  corps: { id: string; name: string }[];
-  matches: Matches;
+  supabaseClient: SupabaseClient<Database, "public", any>;
   session: Session<string, string>;
 }
 
 export async function handler(req: Request, ctx: FreshContext<State>) {
-  const client = createClient(
+  const client: SupabaseClient<Database, "public", any> = createClient<
+    Database
+  >(
     Deno.env.get("SUPABASE_URL") || "",
     Deno.env.get("SUPABASE_KEY") || "",
   );

@@ -1,8 +1,8 @@
-import { Match } from "../utils/db.ts";
 import { formattedDate } from "../utils/formattedDate.ts";
 import { getPositionEmoji } from "../utils/getPositionEmoji.ts";
+import { MatchDetails } from "../utils/types/types.ts";
 
-export const MatchCard = ({ match }: { match: Match }) => {
+export const MatchCard = ({ match }: { match: MatchDetails }) => {
   return (
     <div className="border border-carnation-950 shadow-lg bg-gradient-to-br from-carnation-900 via-black-pearl-950 to-black-pearl-950 rounded p-4 my-2 flex flex-col ">
       <time
