@@ -8,6 +8,8 @@ import { getPositionEmoji } from "../../../utils/getPositionEmoji.ts";
 import { MatchDetails, RoomWithUsers } from "../../../utils/types/types.ts";
 import RankingChart from "@/islands/RankingChart.tsx";
 
+const NUMBER_OF_MATCHES = 40;
+
 interface RoomPageProps {
   matches: MatchDetails[];
   roomWithUsers: RoomWithUsers;
@@ -18,7 +20,7 @@ export const handler: Handlers<RoomPageProps, State> = {
     const matches = await fetchMatchDetails(
       ctx.state.supabaseClient,
       ctx.params.roomId,
-      20,
+      NUMBER_OF_MATCHES,
     );
     const roomWithUsers = await getRoomWithUsers(
       ctx.state.supabaseClient,
@@ -113,7 +115,7 @@ export default function RoomPage(props: PageProps<RoomPageProps, State>) {
             Ranking Chart
           </h2>
           <p className="font-light text-xs text-stone-400">
-            Max 20 latest games
+            Max {NUMBER_OF_MATCHES} latest games
           </p>
         </div>
         <RankingChart

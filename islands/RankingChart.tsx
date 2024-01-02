@@ -31,7 +31,7 @@ export default function RankingChart(props: RankingChartProps) {
       label: userName,
       data: [],
       fill: false,
-      tension: 0.5,
+      tension: 0.3,
       borderColor: nameToColor(userName),
     };
   });
@@ -57,9 +57,21 @@ export default function RankingChart(props: RankingChartProps) {
           responsive: true,
           showLine: true,
           maintainAspectRatio: true,
-          aspectRatio: 1,
+          aspectRatio: 1.5,
           scales: {
-            y: { display: true },
+            x: {
+              type: "linear",
+              ticks: { precision: 0 },
+              display: true,
+              title: { display: true, text: "Game #" },
+              grid: { color: "#48070a" },
+            },
+            y: {
+              display: true,
+              type: "linear",
+              title: { display: true, text: "Elo" },
+              grid: { color: "#48070a" },
+            },
           },
           plugins: {
             legend: {
@@ -73,24 +85,6 @@ export default function RankingChart(props: RankingChartProps) {
           labels: props.matches.map((_, i) => i + 1),
           datasets: datasetsArray,
         }}
-        plugins={[{
-          id: "custom-line",
-          beforeDraw: (chart) => {
-            const yAxis = chart.scales["y"];
-            const xAxis = chart.scales["x"];
-            const y = yAxis.getPixelForValue(1000);
-            const ctx = chart.ctx;
-
-            ctx.save();
-            ctx.beginPath();
-            ctx.moveTo(xAxis.left, y);
-            ctx.lineTo(xAxis.right, y);
-            ctx.lineWidth = 1;
-            ctx.strokeStyle = "red"; // or any color you prefer
-            ctx.stroke();
-            ctx.restore();
-          },
-        }]}
       />
     </div>
   );
