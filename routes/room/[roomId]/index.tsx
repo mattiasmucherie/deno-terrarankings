@@ -1,5 +1,4 @@
 import { Handlers, PageProps } from "$fresh/src/server/types.ts";
-import Layout from "../../../components/Layout.tsx";
 import { State } from "../../_middleware.ts";
 import { fetchMatchDetails, getRoomWithUsers } from "../../../utils/db.ts";
 import { LinkButton } from "../../../components/LinkButton.tsx";
@@ -7,6 +6,7 @@ import { MatchCard } from "../../../components/MatchCard.tsx";
 import { formattedDate } from "../../../utils/formattedDate.ts";
 import { getPositionEmoji } from "../../../utils/getPositionEmoji.ts";
 import { MatchDetails, RoomWithUsers } from "../../../utils/types/types.ts";
+import RankingChart from "@/islands/RankingChart.tsx";
 
 interface RoomPageProps {
   matches: MatchDetails[];
@@ -18,6 +18,7 @@ export const handler: Handlers<RoomPageProps, State> = {
     const matches = await fetchMatchDetails(
       ctx.state.supabaseClient,
       ctx.params.roomId,
+      20,
     );
     const roomWithUsers = await getRoomWithUsers(
       ctx.state.supabaseClient,
@@ -93,7 +94,7 @@ export default function RoomPage(props: PageProps<RoomPageProps, State>) {
               </a>
             </div>
             <div className="flex flex-col justify-center ">
-              {props.data.matches.map((m) => {
+              {props.data.matches.toSpliced(3).map((m) => {
                 return <MatchCard match={m} lang={props.data.lang} />;
               })}
             </div>
@@ -105,6 +106,19 @@ export default function RoomPage(props: PageProps<RoomPageProps, State>) {
         >
           See corporation stats
         </LinkButton>
+      </div>
+      <div>
+        <div className="my-4">
+          <h2 className="font-semibold text-lg font-sansman">
+            Ranking Chart
+          </h2>
+          <p className="font-light text-xs text-stone-400">
+            Max 20 latest games
+          </p>
+        </div>
+        <RankingChart
+          matches={props.data.matches.toReversed()}
+        />
       </div>
     </div>
   );

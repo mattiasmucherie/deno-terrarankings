@@ -21,7 +21,7 @@ import * as $room_roomId_new_match_preview from "./routes/room/[roomId]/new-matc
 import * as $room_roomId_new_player from "./routes/room/[roomId]/new-player.tsx";
 import * as $room_middleware from "./routes/room/_middleware.ts";
 import * as $signup from "./routes/signup.tsx";
-
+import * as $RankingChart from "./islands/RankingChart.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -47,7 +47,9 @@ const manifest = {
     "./routes/room/_middleware.ts": $room_middleware,
     "./routes/signup.tsx": $signup,
   },
-  islands: {},
+  islands: {
+    "./islands/RankingChart.tsx": $RankingChart,
+  },
   baseUrl: import.meta.url,
 } satisfies Manifest;
 

@@ -284,7 +284,7 @@ export const getRoomStats = async (
   if (error) {
     throw new Error(error.message);
   }
-  console.warn(data);
+
   return data;
 };
 
