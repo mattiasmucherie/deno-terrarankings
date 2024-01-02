@@ -1,4 +1,4 @@
-export function getPositionEmoji(index: number): string {
+export function getPositionEmoji(index: number, noDot = false): string {
   switch (index) {
     case 0:
       return "🥇"; // 1st place
@@ -7,6 +7,6 @@ export function getPositionEmoji(index: number): string {
     case 2:
       return "🥉"; // 3rd place
     default:
-      return `${index + 1}.`; // Other positions
+      return `${index + 1}${noDot ? "" : "."}`; // Other positions
   }
 }

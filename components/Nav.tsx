@@ -2,9 +2,10 @@ import { asset } from "$fresh/src/runtime/utils.ts";
 
 interface NavProps {
   loggedIn: boolean;
+  roomId?: string;
 }
 
-export default function Nav({ loggedIn }: NavProps) {
+export default function Nav({ loggedIn, roomId }: NavProps) {
   const loggedInMenus = [
     { name: "Create", href: "/auth/create" },
     { name: "Logout", href: "/logout" },
@@ -42,17 +43,15 @@ export default function Nav({ loggedIn }: NavProps) {
                 </li>
               ))
             )
-            : (
-              nonLoggedInMenus.map((menu) => (
-                <li>
-                  <a
-                    href={menu.href}
-                    className="hover:underline py-1"
-                  >
-                    {menu.name}
-                  </a>
-                </li>
-              ))
+            : roomId && (
+              <li>
+                <a
+                  href={`/room/${roomId}`}
+                  className="hover:underline py-1"
+                >
+                  Back to room
+                </a>
+              </li>
             )}
         </ul>
       </nav>

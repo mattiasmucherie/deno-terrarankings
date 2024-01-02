@@ -1,5 +1,6 @@
 import { Handlers, PageProps } from "$fresh/src/server/types.ts";
-import { State } from "../../_middleware.ts";
+import { newNameSchema } from "@/utils/validationSchemas.ts";
+import { State } from "@/routes/_middleware.ts";
 
 export const handler: Handlers<unknown, State> = {
   GET(_req, ctx) {
@@ -7,7 +8,7 @@ export const handler: Handlers<unknown, State> = {
   },
   async POST(req, ctx) {
     const form = await req.formData();
-    const playerName = form.get("playerName") as string;
+    const playerName = newNameSchema.parse(form.get("playerName"));
 
     const { error } = await ctx.state.supabaseClient
       .from("users")
@@ -32,7 +33,7 @@ export const handler: Handlers<unknown, State> = {
   },
 };
 
-export default function NewPlayerPage(props: PageProps<unknown, State>) {
+export default function NewPlayerPage() {
   return (
     <div className="mt-10 px-5 mx-auto flex max-w-screen-md flex-col justify-center">
       <form method="post" className="flex flex-col gap-4 items-center">

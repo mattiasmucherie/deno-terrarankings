@@ -15,7 +15,7 @@ export default defineApp<State>((_, ctx) => {
         <link rel="stylesheet" href={asset("/styles.css")} />
       </Head>
       <body className="dark">
-        <Layout isLoggedIn={!!ctx.state.token}>
+        <Layout isLoggedIn={!!ctx.state.token} roomId={ctx.params.roomId}>
           <ctx.Component />
         </Layout>
       </body>

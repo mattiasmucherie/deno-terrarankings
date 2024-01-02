@@ -8,6 +8,7 @@ import { getWorstCorporation } from "../../../utils/getWorstCorporation.ts";
 import { getBestCorporation } from "../../../utils/getBestCorporation.ts";
 import { calculateUserWinRate } from "../../../utils/calculateUserWinRate.ts";
 import { LatestMatches } from "../../../utils/types/types.ts";
+import { getPositionEmoji } from "@/utils/getPositionEmoji.ts";
 
 type UserPageProps = {
   usersLatestMatches: LatestMatches[];
@@ -89,7 +90,7 @@ export default function UserPage(props: PageProps<UserPageProps, State>) {
             {usersLatestMatches.map((m) => (
               <tr className="bg-stone-800 border-b border-stone-700">
                 <td className="px-5 py-2 border-b border-stone-700 text-sm text-white">
-                  {m.standing}
+                  {getPositionEmoji(m.standing - 1, true)}
                 </td>
                 <td className="px-5 py-2 border-b border-stone-700 text-sm text-white">
                   {m.points}

@@ -28,7 +28,8 @@
     "$std/": "https://deno.land/std@0.208.0/",
     "$bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts",
     "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2.39.0",
-    "djwt": "https://deno.land/x/djwt@v3.0.1/mod.ts"
+    "djwt": "https://deno.land/x/djwt@v3.0.1/mod.ts",
+    "z": "https://deno.land/x/zod/mod.ts"
   },
   "compilerOptions": {
     "jsx": "react-jsx",
