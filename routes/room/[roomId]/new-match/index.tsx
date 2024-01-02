@@ -1,12 +1,12 @@
 import { Handlers, PageProps } from "$fresh/src/server/types.ts";
-import Layout from "../../../components/Layout.tsx";
-import { State } from "../../_middleware.ts";
+import Layout from "../../../../components/Layout.tsx";
+import { State } from "../../../_middleware.ts";
 import {
   createMatch,
   getCorporations,
   getRoomWithUsers,
-} from "../../../utils/db.ts";
-import { Corporation, RoomWithUsers } from "../../../utils/types/types.ts";
+} from "../../../../utils/db.ts";
+import { Corporation, RoomWithUsers } from "../../../../utils/types/types.ts";
 
 interface NewMatchProps {
   roomWithUsers: RoomWithUsers;

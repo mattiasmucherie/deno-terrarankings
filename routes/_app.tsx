@@ -1,5 +1,6 @@
 import { type PageProps } from "$fresh/server.ts";
 import { asset } from "$fresh/runtime.ts";
+import { SITE_DESCRIPTION } from "../utils/constants.ts";
 export default function App({ Component }: PageProps) {
   return (
     <html lang="en" class="dark bg-black-pearl-950">
@@ -7,6 +8,7 @@ export default function App({ Component }: PageProps) {
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>deno-terraranking</title>
+        <meta name="description" content={SITE_DESCRIPTION} />
         <link rel="stylesheet" href="/styles.css" />
       </head>
       <body class="dark">

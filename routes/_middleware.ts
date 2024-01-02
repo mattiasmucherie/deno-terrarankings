@@ -1,4 +1,3 @@
-// deno-lint-ignore-file no-explicit-any
 import { FreshContext } from "$fresh/server.ts";
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 import { getCookies } from "$std/http/cookie.ts";
@@ -7,12 +6,12 @@ import { Database } from "../utils/types/supabase.ts";
 
 export interface State {
   token: string | null;
-  supabaseClient: SupabaseClient<Database, "public", any>;
+  supabaseClient: SupabaseClient<Database, "public">;
   session: Session<string, string>;
 }
 
 export async function handler(req: Request, ctx: FreshContext<State>) {
-  const client: SupabaseClient<Database, "public", any> = createClient<
+  const client = createClient<
     Database
   >(
     Deno.env.get("SUPABASE_URL") || "",

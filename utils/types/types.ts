@@ -13,7 +13,7 @@ export interface OneRoom {
   name: string;
   hashed_password: string;
 }
-interface User {
+export interface User {
   id: string;
   created_at: string;
   name: string;

@@ -8,10 +8,11 @@ import {
   OneRoom,
   Rooms,
   RoomWithUsers,
+  User,
 } from "./types/types.ts";
 
 export const getAllRooms = async (
-  sb: SupabaseClient<Database, "public", any>,
+  sb: SupabaseClient<Database, "public">,
 ): Promise<Rooms> => {
   const { data, error } = await sb.from("rooms").select(`
       id,
@@ -28,10 +29,11 @@ export const getAllRooms = async (
 };
 
 export const getOneRoom = async (
-  sb: SupabaseClient<any, "public", any>,
+  sb: SupabaseClient<Database, "public", any>,
   id: string,
-): Promise<[OneRoom]> => {
-  const { data, error } = await sb.from("rooms").select("*").eq("id", id);
+): Promise<OneRoom> => {
+  const { data, error } = await sb.from("rooms").select("*").eq("id", id)
+    .single();
   if (error) {
     throw new Error(error);
   }
@@ -52,7 +54,7 @@ export const getCorporations = async (
 };
 
 export const getUsersInRoom = async (
-  sb: SupabaseClient<any, "public", any>,
+  sb: SupabaseClient<Database, "public">,
   id: string,
 ) => {
   const { data, error } = await sb
@@ -91,7 +93,7 @@ export const getRoomWithUsers = async (
 };
 
 export async function getRoomDetailsWithMatches(
-  sb: SupabaseClient<any, "public", any>,
+  sb: SupabaseClient<Database, "public">,
   roomId: string,
 ) {
   const { data, error } = await sb.rpc("get_room_details_with_matches", {
@@ -110,26 +112,19 @@ function checkUniqueElementsWithEmptyAllowed(arr: FormDataEntryValue[]) {
   const uniqueElements = new Set();
 
   for (const elem of arr) {
-    // Skip empty strings
     if (elem === "") continue;
-
-    // Check if the element is already in the set (not unique)
     if (uniqueElements.has(elem)) {
       return false;
     }
-
-    // Add the element to the set
     uniqueElements.add(elem);
   }
-
-  // If all non-empty elements are unique
   return true;
 }
 export const createMatch = async (
-  sb: SupabaseClient<any, "public", any>,
+  sb: SupabaseClient<Database, "public">,
   roomId: string,
   form: FormData,
-  userProfiles: any[],
+  userProfiles: User[],
 ) => {
   const userIds = form.getAll("userIds");
   const points = form.getAll("points");
@@ -137,13 +132,25 @@ export const createMatch = async (
   if (!checkUniqueElementsWithEmptyAllowed(corps)) {
     throw new Error("Cannot have the same corporation for multiple players");
   }
-  const users: any[] = [];
+  const users: {
+    user_id: string;
+    points: number;
+    corporation_id: string;
+    old_elo: number;
+    match_id: string;
+    standing: number;
+    new_elo: number;
+  }[] = [];
   points.forEach((p, i) => {
     if (p && Number(p)) {
       users.push({
-        user_id: userIds[i],
+        user_id: userIds[i] as string,
         points: Number(p),
-        corporation_id: corps[i],
+        corporation_id: corps[i] as string,
+        old_elo: 0,
+        new_elo: 0,
+        standing: 0,
+        match_id: "",
       });
     }
   });

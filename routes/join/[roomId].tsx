@@ -22,7 +22,7 @@ export const handler: Handlers<unknown, State> = {
     const room = await getOneRoom(ctx.state.supabaseClient, ctx.params.roomId);
     const result = bcrypt.compareSync(
       password,
-      room[0].hashed_password,
+      room.hashed_password,
     );
 
     const headers = new Headers();
