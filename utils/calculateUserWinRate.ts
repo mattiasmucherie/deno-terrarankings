@@ -1,6 +1,6 @@
-import { UserMatchData } from "./db.ts";
+import { LatestMatches } from "./types/types.ts";
 
-export function calculateUserWinRate(matchData: UserMatchData): string {
+export function calculateUserWinRate(matchData: LatestMatches[]): string {
   const totalMatches = matchData.length;
   if (totalMatches === 0) {
     return "No matches played";

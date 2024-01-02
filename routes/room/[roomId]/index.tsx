@@ -11,9 +11,10 @@ import { MatchDetails, RoomWithUsers } from "../../../utils/types/types.ts";
 interface RoomPageProps {
   matches: MatchDetails[];
   roomWithUsers: RoomWithUsers;
+  lang?: string;
 }
 export const handler: Handlers<RoomPageProps, State> = {
-  async GET(_req, ctx) {
+  async GET(req, ctx) {
     const matches = await fetchMatchDetails(
       ctx.state.supabaseClient,
       ctx.params.roomId,
@@ -22,7 +23,8 @@ export const handler: Handlers<RoomPageProps, State> = {
       ctx.state.supabaseClient,
       ctx.params.roomId,
     );
-    return ctx.render({ ...ctx.state, matches, roomWithUsers });
+    const lang = req.headers.get("Accept-Language")?.split(",")[0];
+    return ctx.render({ ...ctx.state, matches, roomWithUsers, lang });
   },
 };
 
@@ -32,80 +34,78 @@ export default function RoomPage(props: PageProps<RoomPageProps, State>) {
   const users = room.users;
 
   return (
-    <Layout isLoggedIn={!!props.state.token}>
-      <div className="mx-auto flex max-w-screen-md flex-col justify-center">
-        <h2 className="font-bold text-2xl mb-1 font-sansman">{room.name}</h2>
-        <time
-          className="font-light text-xs text-stone-400"
-          dateTime={createdAt.toString()}
+    <div className="mx-auto flex max-w-screen-md flex-col justify-center">
+      <h2 className="font-bold text-2xl mb-1 font-sansman">{room.name}</h2>
+      <time
+        className="font-light text-xs text-stone-400"
+        dateTime={createdAt.toString()}
+      >
+        Created at {formattedDate(createdAt, props.data.lang)}
+      </time>
+      {!!users.length && (
+        <div className=" flex flex-col justify-center border border-black-pearl-900 shadow-lg bg-gradient-to-b from-black-pearl-900 to-black-pearl-950 rounded px-4 py-2 my-3">
+          <h3 className="my-2 font-bold text-xl font-sansman">Ranking</h3>
+          <ul className="divide-y divide-stone-700">
+            {users.map((user, index) => {
+              return (
+                <li>
+                  <a
+                    className="flex justify-between items-center py-2"
+                    href={`/room/${props.params.roomId}/${user.id}`}
+                  >
+                    <span>
+                      {getPositionEmoji(index)} {user.name}
+                    </span>{" "}
+                    <span className="font-semibold">
+                      {Math.round(user.elo_rating)} &#10140;
+                    </span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+      <div className="flex gap-6 justify-end">
+        <LinkButton
+          href={`/room/${props.params.roomId}/new-player`}
         >
-          Created at {formattedDate(createdAt)}
-        </time>
-        {!!users.length && (
-          <div className=" flex flex-col justify-center border border-black-pearl-900 shadow-lg bg-gradient-to-b from-black-pearl-900 to-black-pearl-950 rounded px-4 py-2 my-3">
-            <h3 className="my-2 font-bold text-xl font-sansman">Ranking</h3>
-            <ul className="divide-y divide-stone-700">
-              {users.map((user, index) => {
-                return (
-                  <li>
-                    <a
-                      className="flex justify-between items-center py-2"
-                      href={`/room/${props.params.roomId}/${user.id}`}
-                    >
-                      <span>
-                        {getPositionEmoji(index)} {user.name}
-                      </span>{" "}
-                      <span className="font-semibold">
-                        {Math.round(user.elo_rating)} &#10140;
-                      </span>
-                    </a>
-                  </li>
-                );
+          New Player
+        </LinkButton>
+        <LinkButton
+          href={`/room/${props.params.roomId}/new-match`}
+        >
+          New Match
+        </LinkButton>
+      </div>
+      {!!props.data.matches.length &&
+        (
+          <div className="my-3">
+            <div className="flex justify-between items-baseline">
+              <h2 className="font-semibold text-lg font-sansman">
+                Latest matches
+              </h2>
+              <a
+                href={`/room/${props.params.roomId}/matches`}
+                className="text-md text-fantasy-100"
+              >
+                View all matches
+              </a>
+            </div>
+            <div className="flex flex-col justify-center ">
+              {props.data.matches.map((m) => {
+                return <MatchCard match={m} lang={props.data.lang} />;
               })}
-            </ul>
+            </div>
           </div>
         )}
-        <div className="flex gap-6 justify-end">
-          <LinkButton
-            href={`/room/${props.params.roomId}/new-player`}
-          >
-            New Player
-          </LinkButton>
-          <LinkButton
-            href={`/room/${props.params.roomId}/new-match`}
-          >
-            New Match
-          </LinkButton>
-        </div>
-        {!!props.data.matches.length &&
-          (
-            <div className="my-3">
-              <div className="flex justify-between items-baseline">
-                <h2 className="font-semibold text-lg font-sansman">
-                  Latest matches
-                </h2>
-                <a
-                  href={`/room/${props.params.roomId}/matches`}
-                  className="text-md text-fantasy-100"
-                >
-                  View all matches
-                </a>
-              </div>
-              <div className="flex flex-col justify-center ">
-                {props.data.matches.map((m) => {
-                  return <MatchCard match={m} />;
-                })}
-              </div>
-            </div>
-          )}
-        <div className="flex justify-center">
-          <LinkButton
-            href={`/corporations`}
-          >
-            See corporation stats
-          </LinkButton>
-        </div>
+      <div className="flex justify-center">
+        <LinkButton
+          href={`/corporations`}
+        >
+          See corporation stats
+        </LinkButton>
       </div>
-    </Layout>
+    </div>
   );
 }

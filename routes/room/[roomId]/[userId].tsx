@@ -1,16 +1,16 @@
 import { Handlers, PageProps } from "$fresh/src/server/types.ts";
-import Layout from "../../../components/Layout.tsx";
 import { State } from "../../_middleware.ts";
-import { getUserLatestMatches, UserMatchData } from "../../../utils/db.ts";
+import { getUserLatestMatches } from "../../../utils/db.ts";
 import { formattedDateShort } from "../../../utils/formattedDate.ts";
 import { getFavoriteCorporation } from "../../../utils/getFavoriteCorporation.ts";
 import { getEloChangeInLastMatches } from "../../../utils/getEloChangeInLastMatches.ts";
 import { getWorstCorporation } from "../../../utils/getWorstCorporation.ts";
 import { getBestCorporation } from "../../../utils/getBestCorporation.ts";
 import { calculateUserWinRate } from "../../../utils/calculateUserWinRate.ts";
+import { LatestMatches } from "../../../utils/types/types.ts";
 
 type UserPageProps = {
-  usersLatestMatches: UserMatchData;
+  usersLatestMatches: LatestMatches[];
   lang?: string;
 };
 export const handler: Handlers<UserPageProps, State> = {
@@ -20,7 +20,6 @@ export const handler: Handlers<UserPageProps, State> = {
       ctx.params.userId,
     );
     const lang = req.headers.get("Accept-Language")?.split(",")[0];
-    console.warn(lang);
     return ctx.render({ ...ctx.state, usersLatestMatches, lang });
   },
 };
@@ -33,14 +32,12 @@ export default function UserPage(props: PageProps<UserPageProps, State>) {
   const winRate = calculateUserWinRate(usersLatestMatches);
   const user = usersLatestMatches[0].users;
   return (
-    <Layout isLoggedIn={!!props.state.token}>
+    <>
       <div>
-        <h2 className="text-2xl font-bold font-sansman mb-1">
-          {user.name}
-        </h2>
+        <h2 className="text-2xl font-bold font-sansman mb-1">{user?.name}</h2>
         <div className="flex gap-2 items-baseline mb-2">
           <span className="text-xl font-semibold">
-            {Math.round(user.elo_rating)}
+            {user && Math.round(user.elo_rating)}
           </span>
           <span className="text-sm text-stone-400">
             {eloChange > 0
@@ -67,23 +64,23 @@ export default function UserPage(props: PageProps<UserPageProps, State>) {
           <span className="font-bold">Win Rate:</span> {winRate}
         </div>
       </div>
-      <div className="">
+      <div className="overflow-x-scroll py-2">
         <table className="min-w-full leading-normal">
-          <thead className="font-sansman  bg-black-pearl-950 sticky top-0">
+          <thead className="font-sansman bg-carnation-900 text-stone-300 uppercase text-xs font-semibold">
             <tr>
-              <th className="px-5 py-3 border-b-2 border-stone-300 text-left text-xs font-semibold text-stone-400 uppercase tracking-wider ">
+              <th className="px-5 py-3 border-b-2 border-stone-300 text-left  tracking-wider ">
                 #
               </th>
-              <th className="px-5 py-3 border-b-2 border-stone-300 text-left text-xs font-semibold text-stone-400 uppercase tracking-wider ">
+              <th className="px-5 py-3 border-b-2 border-stone-300 text-left  tracking-wider ">
                 VP
               </th>
-              <th className="px-5 py-3 border-b-2 border-stone-300 text-left text-xs font-semibold text-stone-400 uppercase tracking-wider ">
+              <th className="px-5 py-3 border-b-2 border-stone-300 text-left  tracking-wider ">
                 Elo Change
               </th>
-              <th className="px-5 py-3 border-b-2 border-stone-300 text-left text-xs font-semibold text-stone-400 uppercase tracking-wider ">
+              <th className="px-5 py-3 border-b-2 border-stone-300 text-left tracking-wider ">
                 Corporation
               </th>
-              <th className="px-5 py-3 border-b-2 border-stone-300 text-left text-xs font-semibold text-stone-400 uppercase tracking-wider ">
+              <th className="px-5 py-3 border-b-2 border-stone-300 text-left tracking-wider ">
                 Date
               </th>
             </tr>
@@ -110,12 +107,12 @@ export default function UserPage(props: PageProps<UserPageProps, State>) {
                   )}
 
                 <td className="px-5 py-2 border-b border-stone-700 text-sm text-white truncate max-w-36">
-                  {m.corporations.name}
+                  {m.corporations?.name}
                 </td>
                 <td className="px-5 py-2 border-b border-stone-700 text-sm text-white">
-                  <time dateTime={m.matches.created_at}>
+                  <time dateTime={m.matches?.created_at}>
                     {formattedDateShort(
-                      new Date(m.matches.created_at),
+                      new Date(m.matches?.created_at || ""),
                       props.data.lang,
                     )}
                   </time>
@@ -125,6 +122,6 @@ export default function UserPage(props: PageProps<UserPageProps, State>) {
           </tbody>
         </table>
       </div>
-    </Layout>
+    </>
   );
 }

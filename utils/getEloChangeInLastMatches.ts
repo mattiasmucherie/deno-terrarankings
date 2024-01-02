@@ -1,7 +1,7 @@
-import { UserMatchData } from "./db.ts";
+import { LatestMatches } from "./types/types.ts";
 
 export function getEloChangeInLastMatches(
-  matchData: UserMatchData,
+  matchData: LatestMatches[],
   numberOfMatches = 4,
 ): number {
   const recentMatches = matchData.slice(0, numberOfMatches);

@@ -1,7 +1,7 @@
-if (!window.location.host.includes('localhost')) {
+if (!window.location.host.includes("localhost")) {
   (function (c, l, a, r, i, t, y) {
     c[a] = c[a] || function () {
-      (c[a].q = c[a].q || []).push(arguments)
+      (c[a].q = c[a].q || []).push(arguments);
     };
     t = l.createElement(r);
     t.async = 1;

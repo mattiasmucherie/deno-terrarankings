@@ -190,10 +190,10 @@ export interface Database {
     Views: {
       corporation_stats: {
         Row: {
-          id: string | null;
-          name: string | null;
-          total_plays: number | null;
-          winrate: number | null;
+          id: string;
+          name: string;
+          total_plays: number;
+          winrate: number;
         };
         Relationships: [];
       };

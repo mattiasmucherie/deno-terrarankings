@@ -18,7 +18,7 @@ export interface User {
   created_at: string;
   name: string;
   elo_rating: number;
-  room_id: string;
+  room_id: string | null;
 }
 
 export type CorporationData = {
@@ -41,8 +41,8 @@ export interface MatchParticipant {
   new_elo: number;
   old_elo: number;
   points: number;
-  user: { name: string };
-  corporation: { name: string };
+  user: { name: string } | null;
+  corporation: { name: string | null } | null;
 }
 export interface RoomWithUsers {
   id: string;
@@ -54,5 +54,18 @@ export interface RoomWithUsers {
 export interface Corporation {
   id: string;
   created_at: string;
-  name: string;
+  name: string | null;
+}
+
+export interface LatestMatches {
+  standing: number;
+  old_elo: number;
+  new_elo: number;
+  points: number;
+  matches: { created_at: string } | null;
+  corporations: { name: string | null } | null;
+  users: {
+    name: string;
+    elo_rating: number;
+  } | null;
 }

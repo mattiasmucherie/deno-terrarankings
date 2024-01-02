@@ -2,7 +2,6 @@ import { Handlers, PageProps } from "$fresh/src/server/types.ts";
 import { State } from "./_middleware.ts";
 import { getCorporationPlayStats } from "../utils/db.ts";
 import CorporationTable from "../components/CorporationTable.tsx";
-import Layout from "../components/Layout.tsx";
 import { CorporationData } from "../utils/types/types.ts";
 
 type CorporationsPage = {
@@ -19,9 +18,7 @@ export default function Corporations(
 ) {
   return (
     <div>
-      <Layout isLoggedIn={!!props.state.token}>
-        <CorporationTable data={props.data.corps} />
-      </Layout>
+      <CorporationTable data={props.data.corps} />
     </div>
   );
 }

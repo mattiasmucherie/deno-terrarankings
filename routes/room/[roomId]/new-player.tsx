@@ -1,5 +1,4 @@
 import { Handlers, PageProps } from "$fresh/src/server/types.ts";
-import Layout from "../../../components/Layout.tsx";
 import { State } from "../../_middleware.ts";
 
 export const handler: Handlers<unknown, State> = {
@@ -35,31 +34,29 @@ export const handler: Handlers<unknown, State> = {
 
 export default function NewPlayerPage(props: PageProps<unknown, State>) {
   return (
-    <Layout isLoggedIn={!!props.state.token}>
-      <div className="mt-10 px-5 mx-auto flex max-w-screen-md flex-col justify-center">
-        <form method="post" className="flex flex-col gap-4 items-center">
-          <div className="w-full">
-            <label
-              htmlFor="playerName"
-              className="block mb-2 text-sm font-medium text-ivory"
-            >
-              New Player Name
-            </label>
-            <input
-              id="playerName"
-              type="name"
-              name="playerName"
-              className="bg-licorice border border-ivory rounded-lg text-sm block w-full p-2.5 placeholder-ivory text-ivory"
-            />
-          </div>
-          <button
-            type="submit"
-            className="px-6 py-2 w-fit font-semibold rounded-lg bg-transparent text-ivory border border-ivory"
+    <div className="mt-10 px-5 mx-auto flex max-w-screen-md flex-col justify-center">
+      <form method="post" className="flex flex-col gap-4 items-center">
+        <div className="w-full">
+          <label
+            htmlFor="playerName"
+            className="block mb-2 text-sm font-medium text-ivory"
           >
-            Create New Player
-          </button>
-        </form>
-      </div>
-    </Layout>
+            New Player Name
+          </label>
+          <input
+            id="playerName"
+            type="name"
+            name="playerName"
+            className="bg-licorice border border-ivory rounded-lg text-sm block w-full p-2.5 placeholder-ivory text-ivory"
+          />
+        </div>
+        <button
+          type="submit"
+          className="px-6 py-2 w-fit font-semibold rounded-lg bg-transparent text-ivory border border-ivory"
+        >
+          Create New Player
+        </button>
+      </form>
+    </div>
   );
 }

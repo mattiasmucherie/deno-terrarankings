@@ -1,3 +1,5 @@
+import { asset } from "$fresh/src/runtime/utils.ts";
+
 interface NavProps {
   loggedIn: boolean;
 }
@@ -15,7 +17,11 @@ export default function Nav({ loggedIn }: NavProps) {
 
   return (
     <header className="bg-carnation-900 h-[96px] w-full bg-cover bg-no-repeat relative text-fantasy-100">
-      <div className="bg-[url('/raindrops-animate.svg')] bg-transparent w-full h-full absolute " />
+      <img
+        src={asset("/raindrops-animate.svg")}
+        alt="raindrops"
+        className="bg-transparent  h-full object-cover absolute"
+      />
       <nav className="w-11/12 h-24 max-w-5xl mx-auto flex items-center justify-between relative ">
         <div className="text-2xl ml-1 font-bold font-sansman">
           <a href={"/"}>
@@ -29,7 +35,7 @@ export default function Nav({ loggedIn }: NavProps) {
                 <li>
                   <a
                     href={menu.href}
-                    className=" hover:underline   py-1"
+                    className=" hover:underline py-1"
                   >
                     {menu.name}
                   </a>

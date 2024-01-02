@@ -1,5 +1,5 @@
-export const formattedDate = (date: Date) =>
-  new Intl.DateTimeFormat("en-gb", {
+export const formattedDate = (date: Date, lang = "en-gb") =>
+  new Intl.DateTimeFormat(lang, {
     weekday: "short",
     day: "numeric",
     month: "long",

@@ -1,18 +1,20 @@
-import { UserMatchData } from "./db.ts";
+import { LatestMatches } from "./types/types.ts";
 
 export function getWorstCorporation(
-  matchData: UserMatchData,
+  matchData: LatestMatches[],
 ): [string, number] {
   const eloChangesByCorporation: Record<string, number> = {};
 
   matchData.forEach((match) => {
-    const corporationName = match.corporations.name;
-    const eloChange = match.new_elo - match.old_elo;
+    if (match?.corporations?.name) {
+      const corporationName = match.corporations.name;
+      const eloChange = match.new_elo - match.old_elo;
 
-    if (eloChangesByCorporation[corporationName]) {
-      eloChangesByCorporation[corporationName] += eloChange;
-    } else {
-      eloChangesByCorporation[corporationName] = eloChange;
+      if (eloChangesByCorporation[corporationName]) {
+        eloChangesByCorporation[corporationName] += eloChange;
+      } else {
+        eloChangesByCorporation[corporationName] = eloChange;
+      }
     }
   });
 

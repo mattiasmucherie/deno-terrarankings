@@ -1,5 +1,4 @@
 import { Handlers, PageProps } from "$fresh/src/server/types.ts";
-import Layout from "../../../../components/Layout.tsx";
 import { State } from "../../../_middleware.ts";
 import {
   createMatch,
@@ -58,7 +57,7 @@ export const handler: Handlers<NewMatchProps, State> = {
 export default function NewMatchPage(props: PageProps<NewMatchProps, State>) {
   const err = props.url.searchParams.get("error");
   return (
-    <Layout isLoggedIn={!!props.state.token}>
+    <>
       <h2 className="text-xl font-bold mb-5">New match!</h2>
       <form
         method="post"
@@ -116,6 +115,6 @@ export default function NewMatchPage(props: PageProps<NewMatchProps, State>) {
         </div>
       </form>
       {err && <span>{err}</span>}
-    </Layout>
+    </>
   );
 }

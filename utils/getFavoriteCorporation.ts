@@ -1,16 +1,16 @@
-import { UserMatchData } from "./db.ts";
+import { LatestMatches } from "./types/types.ts";
 
-export function getFavoriteCorporation(
-  matchData: UserMatchData,
-) {
+export function getFavoriteCorporation(matchData: LatestMatches[]) {
   const corporationCount: Record<string, number> = {};
 
   matchData.forEach((match) => {
-    const corporationName = match.corporations.name;
-    if (corporationCount[corporationName]) {
-      corporationCount[corporationName]++;
-    } else {
-      corporationCount[corporationName] = 1;
+    if (match?.corporations?.name) {
+      const corporationName = match.corporations.name;
+      if (corporationCount[corporationName]) {
+        corporationCount[corporationName]++;
+      } else {
+        corporationCount[corporationName] = 1;
+      }
     }
   });
 

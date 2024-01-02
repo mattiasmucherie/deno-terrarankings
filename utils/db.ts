@@ -1,15 +1,16 @@
 import { SupabaseClient } from "@supabase/supabase-js";
-import { elo } from "./elo.ts";
-import { Database } from "./types/supabase.ts";
+import { elo } from "@/utils/elo.ts";
+import { Database } from "@/utils/types/supabase.ts";
 import {
   Corporation,
   CorporationData,
+  LatestMatches,
   MatchDetails,
   OneRoom,
   Rooms,
   RoomWithUsers,
   User,
-} from "./types/types.ts";
+} from "@/utils/types/types.ts";
 
 export const getAllRooms = async (
   sb: SupabaseClient<Database, "public">,
@@ -23,32 +24,35 @@ export const getAllRooms = async (
       )
     `);
   if (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
   return data;
 };
 
 export const getOneRoom = async (
-  sb: SupabaseClient<Database, "public", any>,
+  sb: SupabaseClient<Database, "public">,
   id: string,
 ): Promise<OneRoom> => {
-  const { data, error } = await sb.from("rooms").select("*").eq("id", id)
+  const { data, error } = await sb
+    .from("rooms")
+    .select("*")
+    .eq("id", id)
     .single();
   if (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
   return data;
 };
 
 export const getCorporations = async (
-  sb: SupabaseClient<any, "public", any>,
+  sb: SupabaseClient<Database, "public">,
 ): Promise<Corporation[]> => {
   const { data, error } = await sb
     .from("corporations")
     .select("*")
     .order("name", { ascending: true });
   if (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
   return data;
 };
@@ -63,13 +67,13 @@ export const getUsersInRoom = async (
     .eq("room_id", id)
     .order("elo_rating", { ascending: false });
   if (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
   return data;
 };
 
 export const getRoomWithUsers = async (
-  sb: SupabaseClient<any, "public", any>,
+  sb: SupabaseClient<Database, "public">,
   roomId: string,
 ): Promise<RoomWithUsers> => {
   const { data, error } = await sb
@@ -88,7 +92,7 @@ export const getRoomWithUsers = async (
   if (error) {
     throw new Error(error.message);
   }
-  data.users.sort((a: any, b: any) => b.elo_rating - a.elo_rating);
+  data.users.sort((a: User, b: User) => b.elo_rating - a.elo_rating);
   return data;
 };
 
@@ -173,13 +177,13 @@ export const createMatch = async (
       room_id: roomId,
     })
     .select("id");
-
-  users.forEach((item, index) => {
-    item.standing = index + 1;
-    item.new_elo = newElo[index];
-    item.match_id = match[0].id;
-  });
-
+  if (match) {
+    users.forEach((item, index) => {
+      item.standing = index + 1;
+      item.new_elo = newElo[index];
+      item.match_id = match[0].id;
+    });
+  }
   const { error } = await sb.from("match_participants").upsert(users);
 
   for (const user of users) {
@@ -196,7 +200,7 @@ export const createMatch = async (
 };
 
 export async function fetchMatchDetails(
-  sb: SupabaseClient<any, "public", any>,
+  sb: SupabaseClient<Database, "public">,
   roomId: string,
   limit: number | boolean = 3,
 ): Promise<MatchDetails[]> {
@@ -223,11 +227,11 @@ export async function fetchMatchDetails(
     )
     .eq("room_id", roomId)
     .order("created_at", { ascending: false })
-    .limit(limit);
+    .limit(limit as number);
 
   if (error) {
     console.error("Error fetching data:", error);
-    throw new Error(error);
+    throw new Error(error.message);
   }
   return data;
 }
@@ -258,7 +262,7 @@ function calculateAdjustedWinRates(data: GameStat[]) {
     .sort((a, b) => b.adjustedWinRate - a.adjustedWinRate);
 }
 export const getCorporationPlayStats = async (
-  sb: SupabaseClient<any, "public", any>,
+  sb: SupabaseClient<Database, "public">,
 ): Promise<CorporationData[]> => {
   const { data, error } = await sb.from("corporation_stats").select("*");
 
@@ -269,7 +273,7 @@ export const getCorporationPlayStats = async (
 };
 
 export const getRoomStats = async (
-  sb: SupabaseClient<any, "public", any>,
+  sb: SupabaseClient<Database, "public">,
   roomId: string,
 ) => {
   const { data, error } = await sb
@@ -284,12 +288,10 @@ export const getRoomStats = async (
   return data;
 };
 
-export type UserMatchData = any[];
-
 export async function getUserLatestMatches(
-  sb: SupabaseClient<any, "public", any>,
+  sb: SupabaseClient<Database, "public">,
   userId: string,
-) {
+): Promise<LatestMatches[]> {
   const { data, error } = await sb
     .from("match_participants")
     .select(
@@ -313,11 +315,11 @@ export async function getUserLatestMatches(
     .eq("user_id", userId);
 
   if (error) throw error;
-  (data as UserMatchData).sort((a, b) => {
-    const dateA = new Date(a.matches.created_at);
-    const dateB = new Date(b.matches.created_at);
+  data.sort((a, b) => {
+    const dateA = new Date(a.matches!.created_at);
+    const dateB = new Date(b.matches!.created_at);
 
     return dateB.getTime() - dateA.getTime();
   });
-  return data as UserMatchData;
+  return data;
 }

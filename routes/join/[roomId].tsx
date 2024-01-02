@@ -1,5 +1,4 @@
 import { Handlers, PageProps } from "$fresh/src/server/types.ts";
-import Layout from "../../components/Layout.tsx";
 import { State } from "../_middleware.ts";
 import * as bcrypt from "$bcrypt";
 import { getOneRoom } from "../../utils/db.ts";
@@ -44,36 +43,34 @@ export default function JoinRoomPage(props: PageProps<unknown, State>) {
   const err = props.url.searchParams.get("error");
 
   return (
-    <Layout isLoggedIn={!!props.state.token}>
-      <div className="mt-10 px-5 mx-auto flex max-w-screen-md flex-col justify-center">
-        <form method="post" className="flex flex-col gap-4 items-center">
-          <div className="w-full">
-            <label
-              htmlFor="password"
-              className="block mb-2 text-sm font-medium text-ivory"
-            >
-              Room Password
-            </label>
-
-            <input
-              type="password"
-              id="roomPassword"
-              name="roomPassword"
-              className="bg-licorice border border-ivory rounded-lg text-sm block w-full p-2.5 placeholder-ivory text-ivory"
-              placeholder="Enter room password"
-              required
-              autoFocus
-            />
-          </div>
-          <button
-            type="submit"
-            className="px-6 py-2 w-fit font-semibold rounded-lg bg-transparent text-ivory border border-ivory "
+    <div className="mt-10 px-5 mx-auto flex max-w-screen-md flex-col justify-center">
+      <form method="post" className="flex flex-col gap-4 items-center">
+        <div className="w-full">
+          <label
+            htmlFor="password"
+            className="block mb-2 text-sm font-medium text-ivory"
           >
-            Enter room
-          </button>
-          {err && <p>{err}</p>}
-        </form>
-      </div>
-    </Layout>
+            Room Password
+          </label>
+
+          <input
+            type="password"
+            id="roomPassword"
+            name="roomPassword"
+            className="bg-licorice border border-ivory rounded-lg text-sm block w-full p-2.5 placeholder-ivory text-ivory"
+            placeholder="Enter room password"
+            required
+            autoFocus
+          />
+        </div>
+        <button
+          type="submit"
+          className="px-6 py-2 w-fit font-semibold rounded-lg bg-transparent text-ivory border border-ivory "
+        >
+          Enter room
+        </button>
+        {err && <p>{err}</p>}
+      </form>
+    </div>
   );
 }
