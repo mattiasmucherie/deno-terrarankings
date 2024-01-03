@@ -197,6 +197,22 @@ export interface Database {
         };
         Relationships: [];
       };
+      rival_stats: {
+        Row: {
+          games_played: number | null;
+          main_user_id: string | null;
+          rival_name: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "match_participants_user_id_fkey";
+            columns: ["main_user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       room_stats: {
         Row: {
           corporation_id: string | null;

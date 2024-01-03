@@ -1,6 +1,8 @@
 import { LatestMatches } from "./types/types.ts";
 
-export function getFavoriteCorporation(matchData: LatestMatches[]) {
+export function getFavoriteCorporation(
+  matchData: LatestMatches[],
+): [string, number] {
   const corporationCount: Record<string, number> = {};
 
   matchData.forEach((match) => {

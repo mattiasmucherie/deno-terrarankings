@@ -69,3 +69,8 @@ export interface LatestMatches {
     elo_rating: number;
   } | null;
 }
+
+export interface RivalStat {
+  rival_name: string | null;
+  games_played: number | null;
+}

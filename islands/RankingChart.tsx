@@ -1,6 +1,5 @@
 import { Chart } from "$fresh_charts/island.tsx";
 import { MatchDetails } from "@/utils/types/types.ts";
-import { matchesUrl } from "$fresh/src/runtime/active_url.ts";
 import { nameToColor } from "@/utils/nameToColor.ts";
 
 interface RankingChartProps {
@@ -79,7 +78,6 @@ export default function RankingChart(props: RankingChartProps) {
             },
           },
         }}
-        canvas={{ style: { height: "1000px" } }}
         type="line"
         data={{
           labels: props.matches.map((_, i) => i + 1),

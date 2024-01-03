@@ -1,11 +1,7 @@
 import { Handlers, PageProps } from "$fresh/src/server/types.ts";
-import { State } from "../../../_middleware.ts";
-import {
-  createMatch,
-  getCorporations,
-  getRoomWithUsers,
-} from "../../../../utils/db.ts";
-import { Corporation, RoomWithUsers } from "../../../../utils/types/types.ts";
+import { State } from "@/routes/_middleware.ts";
+import { createMatch, getCorporations, getRoomWithUsers } from "@/utils/db.ts";
+import { Corporation, RoomWithUsers } from "@/utils/types/types.ts";
 
 interface NewMatchProps {
   roomWithUsers: RoomWithUsers;
@@ -79,7 +75,7 @@ export default function NewMatchPage(props: PageProps<NewMatchProps, State>) {
                     <div className="flex gap-2">
                       <input
                         name={`points`}
-                        className="border-solid border-2 border-stone-500 bg-stone-800 border-none rounded p-1"
+                        className="border-2 border-stone-500 bg-stone-800 border-none rounded p-1"
                         pattern="[0-9]*"
                         type="number"
                         min="0"
@@ -92,7 +88,7 @@ export default function NewMatchPage(props: PageProps<NewMatchProps, State>) {
                     <span className="font-bold">Corporation</span>
                     <select
                       name="corp"
-                      className="border-solid border-2 border-stone-500 bg-stone-800 border-none rounded p-1"
+                      className="border-2 border-stone-500 bg-stone-800 border-none rounded p-1"
                     >
                       <option value="">{" "}</option>
                       {props.data.corps.map((c) => {

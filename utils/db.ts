@@ -7,6 +7,7 @@ import {
   LatestMatches,
   MatchDetails,
   OneRoom,
+  RivalStat,
   Rooms,
   RoomWithUsers,
   User,
@@ -242,15 +243,17 @@ interface GameStat {
   total_plays: number;
   winrate: number;
 }
+
 function calculateAdjustedWinRates(data: GameStat[]) {
-  const totalWinRate = data.reduce((acc, game) => acc + game.winrate / 100, 0);
+  const totalWinRate = data.reduce((acc, game) => acc + game.winrate! / 100, 0);
   const M = totalWinRate / data.length;
-  const totalPlays = data.reduce((acc, game) => acc + game.total_plays, 0);
+  const totalPlays = data.reduce((acc, game) => acc + game.total_plays!, 0);
   const C = totalPlays / data.length;
 
   const getAdjustedWinRate = (game: GameStat): number => {
     return (
-      (C * M + game.total_plays * (game.winrate / 100)) / (C + game.total_plays)
+      (C * M + game.total_plays! * (game.winrate! / 100)) /
+      (C + game.total_plays!)
     );
   };
 
@@ -261,6 +264,7 @@ function calculateAdjustedWinRates(data: GameStat[]) {
     }))
     .sort((a, b) => b.adjustedWinRate - a.adjustedWinRate);
 }
+
 export const getCorporationPlayStats = async (
   sb: SupabaseClient<Database, "public">,
 ): Promise<CorporationData[]> => {
@@ -322,4 +326,23 @@ export async function getUserLatestMatches(
     return dateB.getTime() - dateA.getTime();
   });
   return data;
+}
+
+export async function getMainRival(
+  sb: SupabaseClient<Database, "public">,
+  playerId: string,
+): Promise<RivalStat> {
+  const { data, error } = await sb
+    .from("rival_stats")
+    .select("rival_name, games_played")
+    .eq("main_user_id", playerId)
+    .order("games_played", { ascending: false })
+    .limit(1);
+
+  if (error) {
+    console.error(error);
+    throw new Error(error.message);
+  }
+
+  return data[0];
 }
