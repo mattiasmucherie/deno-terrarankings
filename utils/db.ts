@@ -125,6 +125,7 @@ function checkUniqueElementsWithEmptyAllowed(arr: FormDataEntryValue[]) {
   }
   return true;
 }
+
 export const createMatch = async (
   sb: SupabaseClient<Database, "public">,
   roomId: string,
@@ -134,9 +135,11 @@ export const createMatch = async (
   const userIds = form.getAll("userIds");
   const points = form.getAll("points");
   const corps = form.getAll("corp");
+
   if (!checkUniqueElementsWithEmptyAllowed(corps)) {
     throw new Error("Cannot have the same corporation for multiple players");
   }
+
   const users: {
     user_id: string;
     points: number;
@@ -212,6 +215,10 @@ export async function fetchMatchDetails(
             id,
             created_at,
             room_id,
+            maps(
+              name,
+              color
+            ),
             match_participants (
                 standing,
                 new_elo,
@@ -234,6 +241,7 @@ export async function fetchMatchDetails(
     console.error("Error fetching data:", error);
     throw new Error(error.message);
   }
+
   return data;
 }
 

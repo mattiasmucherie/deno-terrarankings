@@ -95,10 +95,10 @@ export default function RoomPage(props: PageProps<RoomPageProps, State>) {
                 View all matches
               </a>
             </div>
-            <div className="flex flex-col justify-center ">
-              {props.data.matches.toSpliced(3).map((m) => {
-                return <MatchCard match={m} lang={props.data.lang} />;
-              })}
+            <div className="flex flex-col justify-center">
+              {props.data.matches.toSpliced(3).map((m) => (
+                <MatchCard match={m} lang={props.data.lang} />
+              ))}
             </div>
           </div>
         )}
@@ -110,17 +110,23 @@ export default function RoomPage(props: PageProps<RoomPageProps, State>) {
         </LinkButton>
       </div>
       <div>
-        <div className="my-4">
-          <h2 className="font-semibold text-lg font-sansman">
-            Ranking Chart
-          </h2>
-          <p className="font-light text-xs text-stone-400">
-            Max {NUMBER_OF_MATCHES} latest games
-          </p>
-        </div>
-        <RankingChart
-          matches={props.data.matches.toReversed()}
-        />
+        {props.data.matches.length > 0 &&
+          (
+            <>
+              <div className="my-4">
+                <h2 className="font-semibold text-lg font-sansman">
+                  Ranking Chart
+                </h2>
+                <p className="font-light text-xs text-stone-400">
+                  Max {NUMBER_OF_MATCHES} latest games
+                </p>
+              </div>
+
+              <RankingChart
+                matches={props.data.matches.toReversed()}
+              />
+            </>
+          )}
       </div>
     </div>
   );

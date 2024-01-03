@@ -27,6 +27,24 @@ export interface Database {
         };
         Relationships: [];
       };
+      maps: {
+        Row: {
+          color: string | null;
+          id: string;
+          name: string;
+        };
+        Insert: {
+          color?: string | null;
+          id?: string;
+          name: string;
+        };
+        Update: {
+          color?: string | null;
+          id?: string;
+          name?: string;
+        };
+        Relationships: [];
+      };
       match_participants: {
         Row: {
           corporation_id: string;
@@ -97,19 +115,29 @@ export interface Database {
         Row: {
           created_at: string;
           id: string;
+          map_id: string | null;
           room_id: string;
         };
         Insert: {
           created_at?: string;
           id?: string;
+          map_id?: string | null;
           room_id: string;
         };
         Update: {
           created_at?: string;
           id?: string;
+          map_id?: string | null;
           room_id?: string;
         };
         Relationships: [
+          {
+            foreignKeyName: "matches_map_id_fkey";
+            columns: ["map_id"];
+            isOneToOne: false;
+            referencedRelation: "maps";
+            referencedColumns: ["id"];
+          },
           {
             foreignKeyName: "matches_room_id_fkey";
             columns: ["room_id"];

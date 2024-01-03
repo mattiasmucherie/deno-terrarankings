@@ -33,6 +33,7 @@ export interface MatchDetails {
   id: string;
   created_at: string;
   room_id: string;
+  maps: { name: string; color: string | null } | null;
   match_participants: MatchParticipant[];
 }
 

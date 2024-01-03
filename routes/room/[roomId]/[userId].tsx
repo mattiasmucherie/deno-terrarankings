@@ -30,16 +30,20 @@ export default function UserPage(props: PageProps<UserPageProps, State>) {
   return (
     <>
       <div>
-        <UserStats
-          rival={props.data.rival}
-          usersLatestMatches={usersLatestMatches}
-        />
+        {usersLatestMatches.length > 0 && (
+          <UserStats
+            rival={props.data.rival}
+            usersLatestMatches={usersLatestMatches}
+          />
+        )}
       </div>
       <div className="overflow-x-scroll py-2">
-        <UserMatchTable
-          usersLatestMatches={usersLatestMatches}
-          lang={props.data.lang}
-        />
+        {usersLatestMatches.length > 0 && (
+          <UserMatchTable
+            usersLatestMatches={usersLatestMatches}
+            lang={props.data.lang}
+          />
+        )}
       </div>
     </>
   );

@@ -11,12 +11,22 @@ export const MatchCard = ({
 }) => {
   return (
     <div className="border border-carnation-950 shadow-lg bg-gradient-to-br from-carnation-900 via-black-pearl-950 to-black-pearl-950 rounded p-4 my-2 flex flex-col ">
-      <time
-        className="text-xs font-medium px-2.5 py-0.5 rounded bg-carnation-700 text-fantasy-100 w-fit mb-4 self-start"
-        dateTime={new Date(match.created_at).toString()}
-      >
-        {formattedDate(new Date(match.created_at), lang)}
-      </time>
+      <div className="flex justify-between">
+        <time
+          className="text-xs font-medium px-2.5 py-0.5 rounded bg-carnation-700 text-fantasy-100 w-fit mb-4 self-start"
+          dateTime={new Date(match.created_at).toString()}
+        >
+          {formattedDate(new Date(match.created_at), lang)}
+        </time>
+        {match.maps?.name && (
+          <p
+            className="text-xs font-medium px-2.5 py-0.5 rounded bg-stone-700 text-fantasy-100 w-fit mb-4 self-start"
+            style={{ backgroundColor: match.maps.color }}
+          >
+            {match.maps.name}
+          </p>
+        )}
+      </div>
       {match.match_participants.map((mp, index) => {
         const eloDiffColor = Math.round(mp.new_elo - mp.old_elo);
         return (
