@@ -17,7 +17,7 @@ export default function Nav({ loggedIn, roomId }: NavProps) {
   ];
 
   return (
-    <header className="bg-carnation-900 h-[96px] w-full bg-cover bg-no-repeat relative text-fantasy-100">
+    <header className="bg-rust-900 h-[96px] w-full bg-cover bg-no-repeat relative text-concrete-100">
       <img
         src={asset("/raindrops-animate.svg")}
         alt="raindrops"

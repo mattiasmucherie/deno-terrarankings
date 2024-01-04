@@ -3,15 +3,27 @@ import { State } from "./_middleware.ts";
 import { getAllRooms } from "../utils/db.ts";
 import { LinkButton } from "../components/LinkButton.tsx";
 import { Landing } from "../components/Landing.tsx";
-import { Rooms } from "../utils/types/types.ts";
+import { Room } from "@/utils/types/types.ts";
+import { RoomList } from "@/components/RoomList.tsx";
 
 type HomeProps = {
-  rooms: Rooms;
+  allowedRooms: Room[];
+  disallowedRooms: Room[];
 };
 export const handler: Handlers<HomeProps, State> = {
   async GET(_req, ctx) {
     const rooms = await getAllRooms(ctx.state.supabaseClient);
-    return ctx.render({ ...ctx.state, rooms });
+
+    const [allowedRooms, disallowedRooms] = rooms.reduce<[Room[], Room[]]>(
+      ([p, f], r) => {
+        return ctx.state.session.has(`room-${r.id}`)
+          ? [[...p, r], f]
+          : [p, [...f, r]];
+      },
+      [[], []],
+    );
+
+    return ctx.render({ ...ctx.state, allowedRooms, disallowedRooms });
   },
 };
 
@@ -20,41 +32,22 @@ export default function Home(props: PageProps<HomeProps, State>) {
     <div className=" px-5 mx-auto flex gap-6 max-w-screen-md flex-col justify-center">
       <div className="mx-auto text-center">
         <Landing />
-        <h2 className="text-md mb-3 font-sansman ">Choose a room to join</h2>
-        <ul className="flex flex-col gap-2">
-          {props.data.rooms.map((room) => (
-            <li>
-              <a href={`/join/${room.id}`} className="block">
-                <div className="bg-gradient-to-r from-black-pearl-950 to-carnation-950 via-black-pearl-950 hover:from-black-pearl-950 hover:to-carnation-900 p-3 rounded shadow-lg border-2 border-carnation-900">
-                  <div className="flex justify-between items-center">
-                    <span className="font-bold text-lg font-sansman tracking-wide">
-                      {room.name}
-                    </span>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm">
-                        {room.users.length} Players
-                      </span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 transform transition duration-150 ease-in-out"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </li>
-          ))}
-        </ul>
+        {props.data.allowedRooms.length > 0 && (
+          <>
+            <h2 className="text-md mb-3 font-sansman ">
+              Rooms you have access to
+            </h2>
+            <RoomList rooms={props.data.allowedRooms} />
+          </>
+        )}
+        {props.data.disallowedRooms.length > 0 && (
+          <>
+            <h2 className="text-md mb-3 font-sansman mt-4">
+              Rooms you need a password to access
+            </h2>
+            <RoomList rooms={props.data.disallowedRooms} />
+          </>
+        )}
       </div>
 
       {!props.state.token && (

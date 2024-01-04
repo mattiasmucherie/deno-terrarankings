@@ -40,15 +40,15 @@ export default function RoomPage(props: PageProps<RoomPageProps, State>) {
     <div className="mx-auto flex max-w-screen-md flex-col justify-center">
       <h2 className="font-bold text-2xl mb-1 font-sansman">{room.name}</h2>
       <time
-        className="font-light text-xs text-stone-400"
+        className="font-light text-xs text-concrete-400"
         dateTime={createdAt.toString()}
       >
         Created at {formattedDate(createdAt, props.data.lang)}
       </time>
       {!!users.length && (
-        <div className=" flex flex-col justify-center border border-black-pearl-900 shadow-lg bg-gradient-to-b from-black-pearl-900 to-black-pearl-950 rounded px-4 py-2 my-3">
+        <div className=" flex flex-col justify-center border border-bunker-900 shadow-lg bg-gradient-to-b from-bunker-900 to-bunker-950 rounded px-4 py-2 my-3">
           <h3 className="my-2 font-bold text-xl font-sansman">Ranking</h3>
-          <ul className="divide-y divide-stone-700">
+          <ul className="divide-y divide-concrete-700">
             {users.map((user, index) => {
               return (
                 <li>
@@ -90,7 +90,7 @@ export default function RoomPage(props: PageProps<RoomPageProps, State>) {
               </h2>
               <a
                 href={`/room/${props.params.roomId}/matches`}
-                className="text-md text-fantasy-100"
+                className="text-md text-concrete-100"
               >
                 View all matches
               </a>
@@ -117,7 +117,7 @@ export default function RoomPage(props: PageProps<RoomPageProps, State>) {
                 <h2 className="font-semibold text-lg font-sansman">
                   Ranking Chart
                 </h2>
-                <p className="font-light text-xs text-stone-400">
+                <p className="font-light text-xs text-concrete-400">
                   Max {NUMBER_OF_MATCHES} latest games
                 </p>
               </div>

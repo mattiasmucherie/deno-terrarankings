@@ -7,7 +7,7 @@ import Head from "../components/Head.tsx";
 
 export default defineApp<State>((_, ctx) => {
   return (
-    <html lang="en" className="dark bg-black-pearl-950">
+    <html lang="en" className="dark bg-bunker-950">
       <Head href={ctx.url.toString()}>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />

@@ -48,7 +48,7 @@ export default function JoinRoomPage(props: PageProps<unknown, State>) {
         <div className="w-full">
           <label
             htmlFor="password"
-            className="block mb-2 text-sm font-medium text-ivory"
+            className="block mb-2 text-sm font-medium text-concrete-100"
           >
             Room Password
           </label>
@@ -57,7 +57,7 @@ export default function JoinRoomPage(props: PageProps<unknown, State>) {
             type="password"
             id="roomPassword"
             name="roomPassword"
-            className="bg-licorice border border-ivory rounded-lg text-sm block w-full p-2.5 placeholder-ivory text-ivory"
+            className="bg-bunker-950 border border-concrete-100 rounded text-sm block w-full p-2.5 placeholder-concrete-100 text-concrete-100"
             placeholder="Enter room password"
             required
             autoFocus
@@ -65,7 +65,7 @@ export default function JoinRoomPage(props: PageProps<unknown, State>) {
         </div>
         <button
           type="submit"
-          className="px-6 py-2 w-fit font-semibold rounded-lg bg-transparent text-ivory border border-ivory "
+          className="px-6 py-2 w-fit font-semibold rounded bg-transparent text-concrete-100 border border-concrete-100 "
         >
           Enter room
         </button>

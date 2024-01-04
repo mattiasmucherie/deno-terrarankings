@@ -40,7 +40,7 @@ export default function NewPlayerPage() {
         <div className="w-full">
           <label
             htmlFor="playerName"
-            className="block mb-2 text-sm font-medium text-fantasy-100"
+            className="block mb-2 text-sm font-medium text-concrete-100"
           >
             New Player Name
           </label>
@@ -49,12 +49,12 @@ export default function NewPlayerPage() {
             type="name"
             name="playerName"
             placeholder="Enter player name"
-            className="bg-black-pearl-950 border border-fantasy-100 rounded-lg text-sm block w-full p-2.5 placeholder-stone-500 text-fantasy-100"
+            className="bg-bunker-950 border border-concrete-100 rounded-lg text-sm block w-full p-2.5 placeholder-concrete-500 text-concrete-100"
           />
         </div>
         <button
           type="submit"
-          className="px-6 py-2 w-fit font-semibold rounded-lg bg-transparent text-fantasy-100 border border-fantasy-100"
+          className="px-6 py-2 w-fit font-semibold rounded-lg bg-transparent text-concrete-100 border border-concrete-100"
         >
           Create New Player
         </button>

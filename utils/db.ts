@@ -323,7 +323,10 @@ export async function getUserLatestMatches(
         new_elo,
         points,
         matches (
-          created_at
+          created_at,
+          maps(
+            name
+          )
         ),
         corporations (
           name

@@ -1,6 +1,6 @@
 export type Rooms = Room[];
 
-interface Room {
+export interface Room {
   id: string;
   created_at: string;
   name: string;
@@ -63,7 +63,7 @@ export interface LatestMatches {
   old_elo: number;
   new_elo: number;
   points: number;
-  matches: { created_at: string } | null;
+  matches: { created_at: string; maps: { name: string } | null } | null;
   corporations: { name: string | null } | null;
   users: {
     name: string;

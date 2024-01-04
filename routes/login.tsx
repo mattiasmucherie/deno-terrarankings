@@ -44,10 +44,10 @@ export default function Login(props: PageProps) {
           <h2 class="text-2xl font-bold mb-5 text-center">Login</h2>
         </div>
 
-        <div class="w-full bg-black-pearl-900 rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
+        <div class="w-full bg-bunker-900 rounded shadow md:mt-0 sm:max-w-md xl:p-0">
           <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
             {err && (
-              <div class="bg-red-400 border-l-4 p-4" role="alert">
+              <div class="bg-red-700 border-l-4 p-4" role="alert">
                 <p class="font-bold">Error</p>
                 <p>{err}</p>
               </div>
@@ -61,9 +61,9 @@ export default function Login(props: PageProps) {
                   type="email"
                   name="email"
                   id="email"
-                  class="border bg-black-pearl-950 border-stone-800 sm:text-sm rounded-lg focus:border-carnation-600 block w-full p-2.5 focus:ring-carnation-500"
+                  class="border bg-bunker-950 border-concrete-800 sm:text-sm rounded focus:border-rust-600 block w-full p-2.5 focus:ring-rust-500"
                   placeholder="Enter email"
-                  autoComplete="username"
+                  autoComplete="email"
                 />
               </div>
               <div>
@@ -75,18 +75,18 @@ export default function Login(props: PageProps) {
                   name="password"
                   id="password"
                   placeholder="••••••••"
-                  class="border bg-black-pearl-950 border-stone-800 sm:text-sm rounded-lg focus:border-carnation-600 block w-full p-2.5 focus:ring-carnation-500"
+                  class="border bg-bunker-950 border-concrete-800 sm:text-sm rounded focus:border-rust-600 block w-full p-2.5 focus:ring-rust-500"
                   autoComplete="current-password"
                 />
               </div>
 
               <button
                 type="submit"
-                class="w-full text-white bg-fantasy-600 hover:bg-fantasy-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
+                class="w-full text-white bg-concrete-600 hover:bg-concrete-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 text-center "
               >
                 Login In
               </button>
-              <p class="text-sm font-light text-stone-500 dark:text-stone-300">
+              <p class="text-sm font-light text-concrete-500 dark:text-concrete-300">
                 Don't have an account yet?{" "}
                 <a
                   href="/signup"

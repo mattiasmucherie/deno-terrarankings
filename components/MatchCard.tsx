@@ -10,17 +10,17 @@ export const MatchCard = ({
   lang?: string;
 }) => {
   return (
-    <div className="border border-carnation-950 shadow-lg bg-gradient-to-br from-carnation-900 via-black-pearl-950 to-black-pearl-950 rounded p-4 my-2 flex flex-col ">
+    <div className="border border-rust-950 shadow-lg bg-gradient-to-br from-rust-900 via-bunker-950 to-bunker-950 rounded p-4 my-2 flex flex-col ">
       <div className="flex justify-between">
         <time
-          className="text-xs font-medium px-2.5 py-0.5 rounded bg-carnation-700 text-fantasy-100 w-fit mb-4 self-start"
+          className="text-xs font-medium px-2.5 py-0.5 rounded bg-rust-700 text-concrete-100 w-fit mb-4 self-start"
           dateTime={new Date(match.created_at).toString()}
         >
           {formattedDate(new Date(match.created_at), lang)}
         </time>
         {match.maps?.name && (
           <p
-            className="text-xs font-medium px-2.5 py-0.5 rounded bg-stone-700 text-fantasy-100 w-fit mb-4 self-start"
+            className="text-xs font-medium px-2.5 py-0.5 rounded  text-concrete-100 w-fit mb-4 self-start font-sansman"
             style={{ backgroundColor: match.maps.color }}
           >
             {match.maps.name}
@@ -34,7 +34,7 @@ export const MatchCard = ({
             <span className="shrink-0">{getPositionEmoji(index)}</span>
             <div className="grow flex flex-col">
               <span className="font-semibold col-span-2">{mp.user?.name}</span>
-              <span className="col-span-3 col-start-2 row-start-2 font-light text-xs text-stone-400">
+              <span className="col-span-3 col-start-2 row-start-2 font-light text-xs text-concrete-300">
                 {mp.corporation?.name}
               </span>
             </div>
@@ -49,7 +49,7 @@ export const MatchCard = ({
                   &#9660; {eloDiffColor}
                 </span>
               )}
-            <span className="font-normal text-xs text-stone-400 shrink-0">
+            <span className="font-normal text-xs text-concrete-300 shrink-0">
               {mp.points} VP
             </span>
           </div>
