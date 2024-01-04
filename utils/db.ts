@@ -58,6 +58,14 @@ export const getCorporations = async (
   return data;
 };
 
+export const getMaps = async (sb: SupabaseClient<Database, "public">) => {
+  const { data, error } = await sb.from("maps").select("*");
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data;
+};
+
 export const getUsersInRoom = async (
   sb: SupabaseClient<Database, "public">,
   id: string,
@@ -135,6 +143,7 @@ export const createMatch = async (
   const userIds = form.getAll("userIds");
   const points = form.getAll("points");
   const corps = form.getAll("corp");
+  const mapId = form.get("map")?.toString() || null;
 
   if (!checkUniqueElementsWithEmptyAllowed(corps)) {
     throw new Error("Cannot have the same corporation for multiple players");
@@ -179,6 +188,7 @@ export const createMatch = async (
     .from("matches")
     .upsert({
       room_id: roomId,
+      map_id: mapId,
     })
     .select("id");
   if (match) {

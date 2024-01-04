@@ -56,7 +56,7 @@ export default function RankingChart(props: RankingChartProps) {
           responsive: true,
           showLine: true,
           maintainAspectRatio: true,
-          aspectRatio: 1.5,
+          aspectRatio: 1,
           scales: {
             x: {
               type: "linear",

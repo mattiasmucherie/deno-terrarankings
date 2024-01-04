@@ -1,11 +1,17 @@
 import { Handlers, PageProps } from "$fresh/src/server/types.ts";
 import { State } from "@/routes/_middleware.ts";
-import { createMatch, getCorporations, getRoomWithUsers } from "@/utils/db.ts";
-import { Corporation, RoomWithUsers } from "@/utils/types/types.ts";
+import {
+  createMatch,
+  getCorporations,
+  getMaps,
+  getRoomWithUsers,
+} from "@/utils/db.ts";
+import { Corporation, Maps, RoomWithUsers } from "@/utils/types/types.ts";
 
 interface NewMatchProps {
   roomWithUsers: RoomWithUsers;
   corps: Corporation[];
+  maps: Maps[];
 }
 export const handler: Handlers<NewMatchProps, State> = {
   async GET(_req, ctx) {
@@ -14,8 +20,9 @@ export const handler: Handlers<NewMatchProps, State> = {
       ctx.params.roomId,
     );
     const corps = await getCorporations(ctx.state.supabaseClient);
+    const maps = await getMaps(ctx.state.supabaseClient);
 
-    return ctx.render({ ...ctx.state, roomWithUsers, corps });
+    return ctx.render({ ...ctx.state, roomWithUsers, corps, maps });
   },
   async POST(req, ctx) {
     const roomsWithUser = await getRoomWithUsers(
@@ -54,7 +61,7 @@ export default function NewMatchPage(props: PageProps<NewMatchProps, State>) {
   const err = props.url.searchParams.get("error");
   return (
     <>
-      <h2 className="text-xl font-bold mb-5">New match!</h2>
+      <h2 className="text-xl font-bold mb-5 font-sansman">New match</h2>
       <form
         method="post"
         className="flex flex-col"
@@ -100,6 +107,21 @@ export default function NewMatchPage(props: PageProps<NewMatchProps, State>) {
               );
             },
           )}
+        </div>
+        <div>
+          <label className="flex justify-between">
+            <span>Choose a map</span>
+            <select
+              name="map"
+              className="border-2 border-stone-500 bg-stone-800 border-none rounded p-1"
+              required
+            >
+              <option value="">{" "}</option>
+              {props.data.maps.map((m) => {
+                return <option value={m.id}>{m.name}</option>;
+              })}
+            </select>
+          </label>
         </div>
         <div className="flex justify-center divide-none">
           <button

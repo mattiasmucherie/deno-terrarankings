@@ -1,4 +1,4 @@
-import { Handlers, PageProps } from "$fresh/src/server/types.ts";
+import { Handlers } from "$fresh/src/server/types.ts";
 import { newNameSchema } from "@/utils/validationSchemas.ts";
 import { State } from "@/routes/_middleware.ts";
 
@@ -40,7 +40,7 @@ export default function NewPlayerPage() {
         <div className="w-full">
           <label
             htmlFor="playerName"
-            className="block mb-2 text-sm font-medium text-ivory"
+            className="block mb-2 text-sm font-medium text-fantasy-100"
           >
             New Player Name
           </label>
@@ -48,12 +48,13 @@ export default function NewPlayerPage() {
             id="playerName"
             type="name"
             name="playerName"
-            className="bg-licorice border border-ivory rounded-lg text-sm block w-full p-2.5 placeholder-ivory text-ivory"
+            placeholder="Enter player name"
+            className="bg-black-pearl-950 border border-fantasy-100 rounded-lg text-sm block w-full p-2.5 placeholder-stone-500 text-fantasy-100"
           />
         </div>
         <button
           type="submit"
-          className="px-6 py-2 w-fit font-semibold rounded-lg bg-transparent text-ivory border border-ivory"
+          className="px-6 py-2 w-fit font-semibold rounded-lg bg-transparent text-fantasy-100 border border-fantasy-100"
         >
           Create New Player
         </button>

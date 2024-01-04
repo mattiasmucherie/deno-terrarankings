@@ -75,3 +75,8 @@ export interface RivalStat {
   rival_name: string | null;
   games_played: number | null;
 }
+export interface Maps {
+  color: string | null;
+  id: string;
+  name: string;
+}

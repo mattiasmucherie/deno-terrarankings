@@ -68,7 +68,7 @@ export default function Create(props: PageProps) {
             id="roomName"
             type="text"
             name="roomName"
-            className="bg-licorice border border-ivory rounded-lg text-sm block w-full p-2.5 placeholder-ivory text-ivory"
+            className="bg-black-pearl-950 border border-fantasy-100 rounded-lg text-sm block w-full p-2.5 placeholder-fantasy-100 text-fantasy-100"
             placeholder="Enter room name"
             autoComplete="organization"
           />
@@ -81,14 +81,14 @@ export default function Create(props: PageProps) {
             type="password"
             name="roomPassword"
             id="roomPassword"
-            className="bg-licorice border border-ivory rounded-lg text-sm block w-full p-2.5 placeholder-ivory text-ivory"
+            className="bg-black-pearl-950 border border-fantasy-100 rounded-lg text-sm block w-full p-2.5 placeholder-fantasy-100 text-fantasy-100"
             placeholder="Enter room password"
             autoComplete="new-password"
           />
         </div>
         <button
           type="submit"
-          className="px-6 py-2 w-fit font-semibold rounded-lg bg-transparent text-ivory border border-ivory "
+          className="px-6 py-2 w-fit font-semibold rounded-lg bg-transparent text-fantasy-100 border border-fantasy-100 "
         >
           Create
         </button>
