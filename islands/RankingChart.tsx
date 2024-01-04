@@ -56,20 +56,20 @@ export default function RankingChart(props: RankingChartProps) {
           responsive: true,
           showLine: true,
           maintainAspectRatio: true,
-          aspectRatio: 1,
+          aspectRatio: 0.75,
           scales: {
             x: {
               type: "linear",
               ticks: { precision: 0 },
               display: true,
               title: { display: true, text: "Game #" },
-              grid: { color: "#48070a" },
+              grid: { color: "#441206" },
             },
             y: {
               display: true,
               type: "linear",
               title: { display: true, text: "Elo" },
-              grid: { color: "#48070a" },
+              grid: { color: "#441206", circular: true },
             },
           },
           plugins: {

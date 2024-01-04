@@ -5,8 +5,10 @@
 .env.production.local
 .env.local
 .idea
+.vscode
 
 # Fresh build directory
 _fresh/
 # npm dependencies
 node_modules/
+

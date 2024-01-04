@@ -17,11 +17,10 @@ export default function Nav({ loggedIn, roomId }: NavProps) {
   ];
 
   return (
-    <header className="bg-rust-900 h-[96px] w-full bg-cover bg-no-repeat relative text-concrete-100">
-      <img
-        src={asset("/raindrops-animate.svg")}
+    <header className="bg-midnight-950 h-[96px] w-full bg-cover bg-no-repeat relative text-concrete-100">
+      <div
         alt="raindrops"
-        className="bg-transparent  h-full object-cover absolute"
+        className="bg-transparent bg-[url('/raindrops-animate.svg')] w-full h-full object-cover absolute bg-repeat"
       />
       <nav className="w-11/12 h-24 max-w-5xl mx-auto flex items-center justify-between relative ">
         <div className="text-2xl ml-1 font-bold font-sansman">
