@@ -98,10 +98,9 @@ export default function NewMatchPage(props: PageProps<NewMatchProps, State>) {
                     <label className="flex gap-2 justify-between items-center border border-bunker-900 rounded ">
                       <span className="bg-bunker-900 p-1">VP</span>
                       <input
-                        name={`points`}
+                        name="points"
                         className="bg-bunker-950 p-1 rounded"
-                        pattern="\d+"
-                        required
+                        pattern="[0-9]*"
                         type="number"
                         min="0"
                         max="250"
