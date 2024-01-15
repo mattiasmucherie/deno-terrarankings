@@ -144,6 +144,8 @@ export const createMatch = async (
   const points = form.getAll("points");
   const corps = form.getAll("corp");
   const mapId = form.get("map")?.toString() || null;
+  const date = form.get("date")?.toString();
+  const isoDate = date ? (new Date(date)).toISOString() : undefined;
 
   if (!checkUniqueElementsWithEmptyAllowed(corps)) {
     throw new Error("Cannot have the same corporation for multiple players");
@@ -189,6 +191,7 @@ export const createMatch = async (
     .upsert({
       room_id: roomId,
       map_id: mapId,
+      created_at: isoDate,
     })
     .select("id");
   if (match) {

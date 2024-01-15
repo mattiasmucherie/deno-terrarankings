@@ -1,8 +1,10 @@
-@font-face {
+/* @font-face {
     font-family: "Enter Sansman";
     src: local("Enter Sansman"), url("/enter-sansman.ttf") format("truetype");
+} */
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    filter: brightness(0) invert(1);
 }
-
 
 @tailwind base;
 @tailwind components;

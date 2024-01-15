@@ -15,7 +15,7 @@ type UserStatsProps = {
 
 const StatCard = ({ children }: { children: ComponentChildren }) => {
   return (
-    <div className="text-sm font-light p-2 border rounded border-concrete-600 flex flex-col items-center justify-center text-center">
+    <div className="text-sm font-light p-2 border rounded border-mercury-600 flex flex-col items-center justify-center text-center">
       {children}
     </div>
   );
@@ -39,7 +39,7 @@ export const UserStats = (
         <span className="text-xl font-semibold font-sansman">
           {user && Math.round(user.elo_rating)}
         </span>
-        <span className="text-sm text-concrete-400 font-sansman">
+        <span className="text-sm text-mercury-400 font-sansman">
           {eloChange > 0
             ? <span className="text-emerald-500">&#9650;{eloChange}</span>
             : <span className="text-red-500">&#9660;{eloChange}</span>}{" "}
@@ -48,12 +48,12 @@ export const UserStats = (
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 my-4">
         <StatCard>
-          <div className="text-concrete-400 text-xs font-bold">Most played</div>
+          <div className="text-mercury-400 text-xs font-bold">Most played</div>
           <div className="font-extrabold text-lg font-sansman">{favCorp}</div>
           <div className="text-xs font-extralight">({favCorpNum} times)</div>
         </StatCard>
         <StatCard>
-          <div className="text-concrete-400 text-xs font-bold">
+          <div className="text-mercury-400 text-xs font-bold">
             Total matches
           </div>
           <div className="font-bold text-lg font-sansman">{numberOfGames}</div>
@@ -61,7 +61,7 @@ export const UserStats = (
         </StatCard>
         {bestCorpElo > 0 && (
           <StatCard>
-            <div className="font-bold text-concrete-400 text-xs">
+            <div className="font-bold text-mercury-400 text-xs">
               Best corporation
             </div>
             <div className="font-bold text-lg font-sansman">{bestCorp}</div>
@@ -73,7 +73,7 @@ export const UserStats = (
         )}
         {worstCorpElo < 0 && (
           <StatCard>
-            <div className="font-bold text-concrete-400 text-xs">
+            <div className="font-bold text-mercury-400 text-xs">
               Worst corporation
             </div>
             <div className="font-bold text-lg font-sansman">{worstCorp}</div>
@@ -84,7 +84,7 @@ export const UserStats = (
           </StatCard>
         )}
         <StatCard>
-          <div className="font-bold text-concrete-400 text-xs">Main rival</div>
+          <div className="font-bold text-mercury-400 text-xs">Main rival</div>
           <div className="font-extrabold text-lg font-sansman">
             {rival.rival_name}
           </div>
@@ -94,11 +94,11 @@ export const UserStats = (
         </StatCard>
         {mapCount > 0 && (
           <StatCard>
-            <div className="font-bold text-concrete-400 text-xs">
+            <div className="font-bold text-mercury-400 text-xs">
               Most played map
             </div>
             <div
-              className="text-md font-medium px-2.5 py-0.5 rounded bg-concrete-700 text-concrete-100 w-fit my-1 font-sansman"
+              className="text-md font-medium px-2.5 py-0.5 rounded bg-mercury-700 text-mercury-100 w-fit my-1 font-sansman"
               style={{
                 backgroundColor: maps.find((m) => m.name === favoriteMap)
                   ?.color,

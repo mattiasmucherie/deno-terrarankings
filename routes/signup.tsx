@@ -38,7 +38,7 @@ export default function SignUp(props: PageProps) {
           <h2 class="text-2xl font-bold mb-5 text-center">Create Account</h2>
         </div>
 
-        <div class="w-full bg-bunker-900 rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
+        <div class="w-full bg-cod-gray-900 rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
           <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
             {err && (
               <div class="bg-red-400 border-l-4 p-4" role="alert">
@@ -55,7 +55,7 @@ export default function SignUp(props: PageProps) {
                   type="email"
                   name="email"
                   id="email"
-                  class="border bg-bunker-950 border-concrete-800 sm:text-sm rounded-lg focus:border-rust-600 block w-full p-2.5 focus:ring-rust-500"
+                  class="border bg-cod-gray-950 border-mercury-800 sm:text-sm rounded-lg focus:border-alizarin-crimson-600 block w-full p-2.5 focus:ring-alizarin-crimson-500"
                   placeholder="Enter email"
                   autoComplete="username"
                 />
@@ -69,18 +69,18 @@ export default function SignUp(props: PageProps) {
                   name="password"
                   id="password"
                   placeholder="••••••••"
-                  class="border bg-bunker-950 border-concrete-800 sm:text-sm rounded-lg focus:border-rust-600 block w-full p-2.5 focus:ring-rust-500"
+                  class="border bg-cod-gray-950 border-mercury-800 sm:text-sm rounded-lg focus:border-alizarin-crimson-600 block w-full p-2.5 focus:ring-alizarin-crimson-500"
                   autoComplete="new-password"
                 />
               </div>
 
               <button
                 type="submit"
-                class="w-full text-white bg-concrete-600 hover:bg-concrete-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                class="w-full text-white bg-mercury-600 hover:bg-mercury-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
               >
                 Sign Up
               </button>
-              <p class="text-sm font-light text-concrete-500 dark:text-concrete-300">
+              <p class="text-sm font-light text-mercury-500 dark:text-mercury-300">
                 Already have an account?{" "}
                 <a
                   href="/login"

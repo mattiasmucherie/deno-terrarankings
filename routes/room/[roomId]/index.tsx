@@ -1,14 +1,13 @@
 import { Handlers, PageProps } from "$fresh/src/server/types.ts";
-import { State } from "../../_middleware.ts";
-import { fetchMatchDetails, getRoomWithUsers } from "../../../utils/db.ts";
-import { LinkButton } from "../../../components/LinkButton.tsx";
-import { MatchCard } from "../../../components/MatchCard.tsx";
-import { formattedDate } from "../../../utils/formattedDate.ts";
-import { getPositionEmoji } from "../../../utils/getPositionEmoji.ts";
-import { MatchDetails, RoomWithUsers } from "../../../utils/types/types.ts";
+import { State } from "@/routes/_middleware.ts";
+import { fetchMatchDetails, getRoomWithUsers } from "@/utils/db.ts";
+import { LinkButton } from "@/components/LinkButton.tsx";
+import { MatchCard } from "@/components/MatchCard.tsx";
+import { formattedDate } from "@/utils/formattedDate.ts";
+import { MatchDetails, RoomWithUsers } from "@/utils/types/types.ts";
 import RankingChart from "@/islands/RankingChart.tsx";
 
-const NUMBER_OF_MATCHES = 40;
+const NUMBER_OF_MATCHES = 30;
 
 interface RoomPageProps {
   matches: MatchDetails[];
@@ -40,34 +39,36 @@ export default function RoomPage(props: PageProps<RoomPageProps, State>) {
     <div className="mx-auto flex max-w-screen-md flex-col justify-center">
       <h2 className="font-bold text-2xl mb-1 font-sansman">{room.name}</h2>
       <time
-        className="font-light text-xs text-concrete-400"
+        className="font-light text-xs text-mercury-400"
         dateTime={createdAt.toString()}
       >
         Created at {formattedDate(createdAt, props.data.lang)}
       </time>
       {!!users.length && (
-        <div className=" flex flex-col justify-center border border-bunker-900 shadow-lg bg-gradient-to-b from-bunker-900 to-bunker-950 rounded px-4 py-2 my-3">
-          <h3 className="my-2 font-bold text-xl font-sansman">Ranking</h3>
-          <ul className="divide-y divide-concrete-700">
-            {users.map((user, index) => {
-              return (
-                <li>
-                  <a
-                    className="flex justify-between items-center py-2"
-                    href={`/room/${props.params.roomId}/${user.id}`}
-                  >
-                    <span>
-                      {getPositionEmoji(index)} {user.name}
-                    </span>{" "}
-                    <span className="font-semibold">
-                      {Math.round(user.elo_rating)} &#10140;
+        <ul className="flex flex-col justify-center text-wheatfield-100 gap-1 my-5">
+          {users.map((user, index) => {
+            return (
+              <li>
+                <a
+                  className="flex justify-between items-center gap-2"
+                  href={`/room/${props.params.roomId}/${user.id}`}
+                >
+                  <div className="flex gap-2 items-center flex-grow">
+                    <span className="text-lg font-bold basis-6">
+                      {index + 1 < 10 ? `0${index + 1}` : index + 1}
                     </span>
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
+                    <span className="text-cod-gray-950 bg-wheatfield-100 px-3 py-0.5 rounded-full flex-grow font-bold flex justify-between">
+                      <span>{user.name}</span> <span>&#10140;</span>
+                    </span>
+                  </div>
+                  <span className="font-bold basis-10">
+                    {Math.round(user.elo_rating)}
+                  </span>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
       )}
       <div className="flex gap-6 justify-end">
         <LinkButton
@@ -77,6 +78,7 @@ export default function RoomPage(props: PageProps<RoomPageProps, State>) {
         </LinkButton>
         <LinkButton
           href={`/room/${props.params.roomId}/new-match`}
+          variant="secondary"
         >
           New Match
         </LinkButton>
@@ -90,7 +92,7 @@ export default function RoomPage(props: PageProps<RoomPageProps, State>) {
               </h2>
               <a
                 href={`/room/${props.params.roomId}/matches`}
-                className="text-md text-concrete-100"
+                className="text-md text-mercury-100"
               >
                 View all matches
               </a>
@@ -117,7 +119,7 @@ export default function RoomPage(props: PageProps<RoomPageProps, State>) {
                 <h2 className="font-semibold text-lg font-sansman">
                   Ranking Chart
                 </h2>
-                <p className="font-light text-xs text-concrete-400">
+                <p className="font-light text-xs text-mercury-400">
                   Max {NUMBER_OF_MATCHES} latest games
                 </p>
               </div>

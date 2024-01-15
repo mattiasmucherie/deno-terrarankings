@@ -6,13 +6,13 @@ interface CorporationTableProps {
 
 const CorporationTable = ({ data }: CorporationTableProps) => {
   return (
-    <div className="p-2 text-concrete-100 rounded">
+    <div className="p-2 text-mercury-100 rounded">
       <h2 className="text-2xl font-bold mb-4 font-sansman">
         Corporations Statistics
       </h2>
       <div className="">
-        <table className="min-w-full text-sm text-left text-concrete-100">
-          <thead className="text-xs text-concrete-200 bg-bunker-900 font-sansman sticky top-0">
+        <table className="min-w-full text-sm text-left text-mercury-100">
+          <thead className="text-xs text-mercury-200 bg-cod-gray-900 font-sansman sticky top-0">
             <tr>
               <th scope="col" className="px-4 py-2">
                 Name
@@ -34,7 +34,7 @@ const CorporationTable = ({ data }: CorporationTableProps) => {
             {data.map((item) => (
               <tr
                 key={item.id}
-                className="border-b border-bunker-900 hover:bg-rust-900"
+                className="border-b border-cod-gray-900 hover:bg-alizarin-crimson-900"
               >
                 <td className="px-4 py-3  ">{item.name}</td>
                 <td className="px-4 py-3">{item.total_plays}</td>

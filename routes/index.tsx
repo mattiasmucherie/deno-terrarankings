@@ -29,9 +29,14 @@ export const handler: Handlers<HomeProps, State> = {
 
 export default function Home(props: PageProps<HomeProps, State>) {
   return (
-    <div className=" px-5 mx-auto flex gap-6 max-w-screen-md flex-col justify-center">
+    <div className="mx-auto flex gap-6 max-w-screen-md flex-col justify-center">
       <div className="mx-auto text-center">
         <Landing />
+        {props.state.token && (
+          <div className="mx-auto">
+            <LinkButton href="/auth/create">Create Room</LinkButton>
+          </div>
+        )}
         {props.data.allowedRooms.length > 0 && (
           <>
             <h2 className="text-md mb-3 font-sansman ">

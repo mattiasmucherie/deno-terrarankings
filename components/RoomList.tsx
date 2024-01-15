@@ -10,9 +10,9 @@ export const RoomList = ({ rooms }: RoomListProps) => {
       {rooms.map((room) => (
         <li>
           <a href={`/join/${room.id}`} className="block">
-            <div className="bg-gradient-to-r from-bunker-950 to-rust-950 via-bunker-950 hover:from-bunker-950 hover:to-rust-900 p-3 rounded shadow-lg border-2 border-rust-900">
+            <div className="bg-gradient-to-r from-cod-gray-950 to-alizarin-crimson-950 via-cod-gray-950 hover:from-cod-gray-950 hover:to-alizarin-crimson-900 p-3 rounded shadow-lg border-2 border-alizarin-crimson-900">
               <div className="flex justify-between items-center">
-                <span className="font-bold text-lg font-sansman tracking-wide">
+                <span className="font-bold text-lg font-sansman tracking-wide text-left basis-2/4">
                   {room.name}
                 </span>
                 <div className="flex items-center gap-2">
