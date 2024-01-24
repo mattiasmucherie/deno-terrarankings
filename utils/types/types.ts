@@ -6,19 +6,19 @@ export interface Room {
   name: string;
   users: User[];
 }
-
-export interface OneRoom {
-  id: string;
-  created_at: string;
-  name: string;
-  hashed_password: string;
-}
 export interface User {
   id: string;
   created_at: string;
   name: string;
   elo_rating: number;
   room_id: string | null;
+}
+
+export interface OneRoom {
+  id: string;
+  created_at: string;
+  name: string;
+  hashed_password: string;
 }
 
 export type CorporationData = {

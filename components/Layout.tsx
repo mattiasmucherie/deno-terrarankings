@@ -10,7 +10,7 @@ interface LayoutProps {
 export default function Layout(props: LayoutProps) {
   return (
     <>
-      <Nav loggedIn={props.isLoggedIn} roomId={props.roomId} />
+      <Nav loggedIn={props.isLoggedIn} />
       <div className="p-4 mx-auto max-w-screen-md text-mercury-100 font-exo">
         {props.children}
       </div>

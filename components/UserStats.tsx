@@ -1,11 +1,11 @@
-import { getFavoriteCorporation } from "@/utils/getFavoriteCorporation.ts";
-import { getEloChangeInLastMatches } from "@/utils/getEloChangeInLastMatches.ts";
-import { getBestCorporation } from "@/utils/getBestCorporation.ts";
-import { LatestMatches, Maps, RivalStat } from "@/utils/types/types.ts";
-import { calculateUserWinRate } from "@/utils/calculateUserWinRate.ts";
-import { getWorstCorporation } from "@/utils/getWorstCorporation.ts";
 import { type ComponentChildren } from "preact";
-import { getFavoriteMap } from "@/utils/getFavoriteMap.ts";
+import { getFavoriteCorporation } from "../utils/getFavoriteCorporation.ts";
+import { getEloChangeInLastMatches } from "../utils/getEloChangeInLastMatches.ts";
+import { getBestCorporation } from "../utils/getBestCorporation.ts";
+import { LatestMatches, Maps, RivalStat } from "../utils/types/types.ts";
+import { calculateUserWinRate } from "../utils/calculateUserWinRate.ts";
+import { getWorstCorporation } from "../utils/getWorstCorporation.ts";
+import { getFavoriteMap } from "../utils/getFavoriteMap.ts";
 
 type UserStatsProps = {
   usersLatestMatches: LatestMatches[];
@@ -13,37 +13,43 @@ type UserStatsProps = {
   maps: Maps[];
 };
 
-const StatCard = ({ children }: { children: ComponentChildren }) => {
-  return (
-    <div className="text-sm font-light p-2 border rounded border-mercury-600 flex flex-col items-center justify-center text-center">
-      {children}
-    </div>
-  );
-};
+const StatCard = ({ children }: { children: ComponentChildren }) => (
+  <div className="text-sm font-light p-2 border rounded border-mercury-600 flex flex-col items-center justify-center text-center">
+    {children}
+  </div>
+);
+
+const EloChangeIndicator = ({ eloChange }: { eloChange: number }) => (
+  eloChange > 0
+    ? <span className="text-emerald-500">&#9650;{eloChange}</span>
+    : <span className="text-red-500">&#9660;{eloChange}</span>
+);
+
 export const UserStats = (
   { usersLatestMatches, rival, maps }: UserStatsProps,
 ) => {
+  if (usersLatestMatches.length === 0) return <p>No match data available.</p>;
+
   const [favCorp, favCorpNum] = getFavoriteCorporation(usersLatestMatches);
   const eloChange = getEloChangeInLastMatches(usersLatestMatches);
   const [worstCorp, worstCorpElo] = getWorstCorporation(usersLatestMatches);
   const [bestCorp, bestCorpElo] = getBestCorporation(usersLatestMatches);
   const [favoriteMap, mapCount] = getFavoriteMap(usersLatestMatches);
   const winRate = calculateUserWinRate(usersLatestMatches);
-  const user = usersLatestMatches[0].users;
+  const user = usersLatestMatches[0]?.users;
   const numberOfGames = usersLatestMatches.length;
 
   return (
     <>
-      <h2 className="text-4xl font-bold font-sansman">{user?.name}</h2>
+      <h2 className="text-4xl font-bold font-sansman">
+        {user?.name || "Unknown User"}
+      </h2>
       <div className="flex gap-2 items-baseline">
         <span className="text-xl font-semibold font-sansman">
           {user && Math.round(user.elo_rating)}
         </span>
         <span className="text-sm text-mercury-400 font-sansman">
-          {eloChange > 0
-            ? <span className="text-emerald-500">&#9650;{eloChange}</span>
-            : <span className="text-red-500">&#9660;{eloChange}</span>}{" "}
-          on last four games
+          <EloChangeIndicator eloChange={eloChange} /> on last four games
         </span>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 my-4">

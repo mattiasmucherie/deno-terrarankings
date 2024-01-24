@@ -2,8 +2,8 @@ import { Handlers, PageProps } from "$fresh/src/server/types.ts";
 import { State } from "@/routes/_middleware.ts";
 import { getMainRival, getMaps, getUserLatestMatches } from "@/utils/db.ts";
 import { LatestMatches, Maps, RivalStat } from "@/utils/types/types.ts";
-import { UserMatchTable } from "@/components/UserMatchTable.tsx";
-import { UserStats } from "@/components/UserStats.tsx";
+import { UserMatchTable } from "../../../components/UserMatchTable.tsx";
+import { UserStats } from "../../../components/UserStats.tsx";
 
 type UserPageProps = {
   usersLatestMatches: LatestMatches[];
@@ -32,13 +32,11 @@ export default function UserPage(props: PageProps<UserPageProps, State>) {
   return (
     <>
       <div>
-        {usersLatestMatches.length > 0 && (
-          <UserStats
-            rival={props.data.rival}
-            usersLatestMatches={usersLatestMatches}
-            maps={props.data.maps}
-          />
-        )}
+        <UserStats
+          rival={props.data.rival}
+          usersLatestMatches={usersLatestMatches}
+          maps={props.data.maps}
+        />
       </div>
       <div className="overflow-x-scroll py-2">
         {usersLatestMatches.length > 0 && (
