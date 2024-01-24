@@ -44,47 +44,55 @@ export default function RoomPage(props: PageProps<RoomPageProps, State>) {
       >
         Created at {formattedDate(createdAt, props.data.lang)}
       </time>
-      {!!users.length && (
-        <ul className="flex flex-col justify-center text-wheatfield-100 gap-1 my-5">
-          {users.map((user, index) => {
-            return (
-              <li>
-                <a
-                  className="flex justify-between items-center gap-2"
-                  href={`/room/${props.params.roomId}/${user.id}`}
-                >
-                  <div className="flex gap-2 items-center flex-grow">
-                    <span className="text-lg font-bold basis-6">
-                      {index + 1 < 10 ? `0${index + 1}` : index + 1}
+      {users.length > 0
+        ? (
+          <ul className="flex flex-col justify-center text-wheatfield-100 gap-1 my-5">
+            {users.map((user, index) => {
+              return (
+                <li>
+                  <a
+                    className="flex justify-between items-center gap-2"
+                    href={`/room/${props.params.roomId}/${user.id}`}
+                  >
+                    <div className="flex gap-2 items-center flex-grow">
+                      <span className="text-lg font-bold basis-6">
+                        {index + 1 < 10 ? `0${index + 1}` : index + 1}
+                      </span>
+                      <span className="text-cod-gray-950 bg-wheatfield-100 px-3 py-0.5 rounded-full flex-grow font-bold flex justify-between">
+                        <span>{user.name}</span> <span>&#10140;</span>
+                      </span>
+                    </div>
+                    <span className="font-bold basis-10">
+                      {Math.round(user.elo_rating)}
                     </span>
-                    <span className="text-cod-gray-950 bg-wheatfield-100 px-3 py-0.5 rounded-full flex-grow font-bold flex justify-between">
-                      <span>{user.name}</span> <span>&#10140;</span>
-                    </span>
-                  </div>
-                  <span className="font-bold basis-10">
-                    {Math.round(user.elo_rating)}
-                  </span>
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      )}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        )
+        : (
+          <h2 className="font-semibold text-lg font-sansman py-2">
+            No users :(
+          </h2>
+        )}
       <div className="flex gap-6 justify-end">
         <LinkButton
           href={`/room/${props.params.roomId}/new-player`}
         >
           New Player
         </LinkButton>
-        <LinkButton
-          href={`/room/${props.params.roomId}/new-match`}
-          variant="secondary"
-        >
-          New Match
-        </LinkButton>
+        {
+          <LinkButton
+            href={`/room/${props.params.roomId}/new-match`}
+            variant={users.length > 1 ? "secondary" : "disabled"}
+          >
+            New Match
+          </LinkButton>
+        }
       </div>
-      {!!props.data.matches.length &&
-        (
+      {props.data.matches.length > 0
+        ? (
           <div className="my-3">
             <div className="flex justify-between items-baseline">
               <h2 className="font-semibold text-lg font-sansman">
@@ -103,6 +111,11 @@ export default function RoomPage(props: PageProps<RoomPageProps, State>) {
               ))}
             </div>
           </div>
+        )
+        : (
+          <h2 className="font-semibold text-lg font-sansman py-2">
+            No matches :(
+          </h2>
         )}
       <div className="flex justify-center">
         <LinkButton

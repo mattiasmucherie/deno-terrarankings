@@ -1,39 +1,51 @@
 import { Handlers, PageProps } from "$fresh/src/server/types.ts";
 import * as bcrypt from "$bcrypt";
 import { State } from "../_middleware.ts";
+import { z } from "https://deno.land/x/zod@v3.22.4/index.ts";
+import { passwordSchema } from "../../utils/validationSchemas.ts";
 
 export const handler: Handlers<unknown, State> = {
   async POST(req, ctx) {
-    const form = await req.formData();
-    const roomName = form.get("roomName") as string;
-    const roomPassword = form.get("roomPassword") as string;
-    const hash = bcrypt.hashSync(roomPassword);
+    try {
+      const form = await req.formData();
+      const roomName = form.get("roomName") as string;
+      const roomPassword = passwordSchema.parse(form.get("roomPassword"));
 
-    const { error } = await ctx.state.supabaseClient.from("rooms").insert([{
-      name: roomName,
-      hashed_password: hash,
-    }]);
+      const hash = bcrypt.hashSync(roomPassword);
 
-    const headers = new Headers();
+      const { error } = await ctx.state.supabaseClient.from("rooms").insert([{
+        name: roomName,
+        hashed_password: hash,
+      }]);
 
-    let redirect = "/";
-    if (error) {
-      if (error.code === "23505") {
-        const errorExists = "A room with that name already exists.";
-        redirect = `/auth/create?error=${errorExists}`;
-      } else {
-        redirect = `/auth/create?error=${error.message}`;
+      const headers = new Headers();
+
+      let redirect = "/";
+      if (error) {
+        if (error.code === "23505") {
+          const errorExists = "A room with that name already exists.";
+          redirect = `/auth/create?error=${errorExists}`;
+        } else {
+          redirect = `/auth/create?error=${error.message}`;
+        }
       }
-    }
 
-    headers.set("location", redirect);
-    return new Response(null, {
-      status: 303,
-      headers,
-    });
+      headers.set("location", redirect);
+      return new Response(null, {
+        status: 303,
+        headers,
+      });
+    } catch (e) {
+      if (e instanceof z.ZodError) {
+        return ctx.render({
+          error: e.errors.map((e) => e.message).join(", "),
+        });
+      }
+      return ctx.render({ error: e.message });
+    }
   },
 };
-export default function Create(props: PageProps) {
+export default function Create(props: PageProps<{ error?: string }, State>) {
   const err = props.url.searchParams.get("error");
 
   return (
@@ -94,9 +106,13 @@ export default function Create(props: PageProps) {
         </button>
       </form>
       {err && (
-        <div className="bg-red-400 border-l-4 p-4" role="alert">
-          <p className="font-bold">Error</p>
+        <div className="text-red-500 pt-2" role="alert">
           <p>{err}</p>
+        </div>
+      )}
+      {props.data?.error && (
+        <div className="text-red-500 pt-2" role="alert">
+          <p>{props.data.error}</p>
         </div>
       )}
     </div>
