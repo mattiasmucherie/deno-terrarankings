@@ -1,11 +1,6 @@
 import { Handlers, PageProps } from "$fresh/src/server/types.ts";
 import { State } from "@/routes/_middleware.ts";
-import {
-  createMatch,
-  getCorporations,
-  getMaps,
-  getRoomWithUsers,
-} from "@/utils/db.ts";
+import { getCorporations, getMaps, getRoomWithUsers } from "@/utils/db.ts";
 import { Corporation, Maps, RoomWithUsers } from "@/utils/types/types.ts";
 
 function formatDateTimeLocal(date: Date) {
@@ -34,37 +29,61 @@ export const handler: Handlers<NewMatchProps, State> = {
 
     return ctx.render({ ...ctx.state, roomWithUsers, corps, maps });
   },
-  async POST(req, ctx) {
-    const roomsWithUser = await getRoomWithUsers(
-      ctx.state.supabaseClient,
-      ctx.params.roomId,
-    );
+  async POST(req, _ctx) {
     const form = await req.formData();
-    try {
-      await createMatch(
-        ctx.state.supabaseClient,
-        ctx.params.roomId,
-        form,
-        roomsWithUser.users,
-      );
-    } catch (err) {
-      const headers = new Headers();
-      headers.set(
-        "location",
-        `/room/${ctx.params.roomId}/new-match?error=${err.message}`,
-      );
-      return new Response(null, {
-        status: 303,
-        headers,
-      });
-    }
+    const userIds = form.getAll("userIds");
+    const points = form.getAll("points");
+    const corps = form.getAll("corp");
+    const mapId = form.get("map")?.toString() || null;
+    const date = form.get("date")?.toString();
 
+    const users = points.map((p, i) => {
+      if (p && Number(p)) {
+        return { userId: userIds[i], points: p, corp: corps[i] };
+      }
+      return undefined;
+    }).filter((e) => e);
+    const data = JSON.stringify({ users, date, mapId });
+    const encodedData = encodeURIComponent(data);
+
+    const redirect = `new-match/confirm?data=${encodedData}`;
     const headers = new Headers();
-    headers.set("location", `/room/${ctx.params.roomId}`);
+
+    headers.set("location", redirect);
     return new Response(null, {
       status: 303,
       headers,
     });
+
+    // try {
+    //   const roomsWithUser = await getRoomWithUsers(
+    //     ctx.state.supabaseClient,
+    //     ctx.params.roomId,
+    //   );
+    //   await createMatch(
+    //     ctx.state.supabaseClient,
+    //     ctx.params.roomId,
+    //     form,
+    //     roomsWithUser.users,
+    //   );
+    // } catch (err) {
+    //   const headers = new Headers();
+    //   headers.set(
+    //     "location",
+    //     `/room/${ctx.params.roomId}/new-match?error=${err.message}`,
+    //   );
+    //   return new Response(null, {
+    //     status: 303,
+    //     headers,
+    //   });
+    // }
+
+    // const headers = new Headers();
+    // headers.set("location", `/room/${ctx.params.roomId}`);
+    // return new Response(null, {
+    //   status: 303,
+    //   headers,
+    // });
   },
 };
 export default function NewMatchPage(props: PageProps<NewMatchProps, State>) {
@@ -164,16 +183,16 @@ export default function NewMatchPage(props: PageProps<NewMatchProps, State>) {
         </div>
       </form>
       {err && <span className="text-red-500">Error: {err}</span>}
-      <details class="bg-cod-gray-950 py-4">
-        <summary class="text-white text-lg font-semibold">
+      <details className="bg-cod-gray-950 py-4">
+        <summary className="text-white text-lg font-semibold">
           How Game Submission Works
         </summary>
-        <div class="text-gray-300 mt-2">
+        <div className="text-gray-300 mt-2">
           <p>
             Submitting your game of Terraforming Mars is straightforward, but
             here are some key points to keep in mind:
           </p>
-          <ul class="list-disc list-inside">
+          <ul className="list-disc list-inside">
             <li>
               <strong>Chronological Order:</strong>{" "}
               All games must be submitted in the order they were played. This
