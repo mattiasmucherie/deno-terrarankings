@@ -1,4 +1,5 @@
 import { Handlers, PageProps } from "$fresh/src/server/types.ts";
+import { Button } from "@/components/Button.tsx";
 import { newNameSchema } from "../../../utils/validationSchemas.ts";
 import { State } from "../../_middleware.ts";
 import { z } from "https://deno.land/x/zod@v3.22.4/index.ts";
@@ -69,12 +70,9 @@ export default function NewPlayerPage(props: PageProps<NewPlayerProps, State>) {
           )}
         </div>
 
-        <button
-          type="submit"
-          className="px-6 py-2 w-fit font-semibold rounded-lg bg-transparent text-mercury-100 border border-mercury-100"
-        >
+        <Button type="submit">
           Create New Player
-        </button>
+        </Button>
       </form>
     </div>
   );

@@ -1,9 +1,9 @@
 import { defineApp, type PageProps } from "$fresh/server.ts";
 import { asset } from "$fresh/runtime.ts";
-import { SITE_DESCRIPTION } from "../utils/constants.ts";
-import Layout from "../components/Layout.tsx";
-import { State } from "./_middleware.ts";
-import Head from "../components/Head.tsx";
+import { SITE_DESCRIPTION } from "@/utils/constants.ts";
+import Layout from "@/components/Layout.tsx";
+import { State } from "@/routes/_middleware.ts";
+import Head from "@/components/Head.tsx";
 
 export default defineApp<State>((_, ctx) => {
   return (

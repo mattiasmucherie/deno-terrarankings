@@ -21,3 +21,13 @@ export const passwordSchema = z.string()
     message: "Password must contain at least one uppercase letter",
   })
   .regex(/[0-9]/, { message: "Password must contain at least one number" });
+
+export const matchSchema = {
+  users: z.array(z.string().uuid()),
+  points: z.array(z.string().optional())
+    .refine(
+      (points) =>
+        points.filter((point) => point && point.trim() !== "").length >= 2,
+      { message: "At least two players must play!" },
+    ),
+};

@@ -7,6 +7,8 @@ import {
   getRoomWithUsers,
 } from "@/utils/db.ts";
 import { Corporation, Maps, RoomWithUsers } from "@/utils/types/types.ts";
+import { Button } from "@/components/Button.tsx";
+import { z } from "https://deno.land/x/zod@v3.22.4/index.ts";
 
 function formatDateTimeLocal(date: Date) {
   const year = date.getFullYear();
@@ -17,67 +19,88 @@ function formatDateTimeLocal(date: Date) {
 
   return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
-
 interface NewMatchProps {
-  roomWithUsers: RoomWithUsers;
-  corps: Corporation[];
-  maps: Maps[];
+  roomWithUsers?: RoomWithUsers;
+  corps?: Corporation[];
+  maps?: Maps[];
+  error?: string;
 }
+
 export const handler: Handlers<NewMatchProps, State> = {
   async GET(_req, ctx) {
-    const roomWithUsers = await getRoomWithUsers(
-      ctx.state.supabaseClient,
-      ctx.params.roomId,
-    );
-    const corps = await getCorporations(ctx.state.supabaseClient);
-    const maps = await getMaps(ctx.state.supabaseClient);
+    try {
+      const roomWithUsers = await getRoomWithUsers(
+        ctx.state.supabaseClient,
+        ctx.params.roomId,
+      );
+      const corps = await getCorporations(ctx.state.supabaseClient);
+      const maps = await getMaps(ctx.state.supabaseClient);
 
-    return ctx.render({ ...ctx.state, roomWithUsers, corps, maps });
+      return ctx.render({ ...ctx.state, roomWithUsers, corps, maps });
+    } catch (error) {
+      console.error("Error in GET handler:", error);
+      const errorMessage = "An error occurred while fetching data.";
+      return ctx.render({ ...ctx.state, error: errorMessage });
+    }
   },
   async POST(req, ctx) {
-    const roomsWithUser = await getRoomWithUsers(
-      ctx.state.supabaseClient,
-      ctx.params.roomId,
-    );
-    const form = await req.formData();
     try {
+      const roomsWithUser = await getRoomWithUsers(
+        ctx.state.supabaseClient,
+        ctx.params.roomId,
+      );
+      const form = await req.formData();
+
       await createMatch(
         ctx.state.supabaseClient,
         ctx.params.roomId,
         form,
         roomsWithUser.users,
       );
+
+      const headers = new Headers();
+      headers.set("location", `/room/${ctx.params.roomId}`);
+      return new Response(null, {
+        status: 303,
+        headers,
+      });
     } catch (err) {
+      console.error("Error in POST handler:", err);
+      let errMessage = err.message || "An error occurred";
+      if (err instanceof z.ZodError) {
+        errMessage = err.errors.map((e) => e.message).join(", ");
+      }
+
+      const errorMessage = encodeURIComponent(
+        errMessage,
+      );
       const headers = new Headers();
       headers.set(
         "location",
-        `/room/${ctx.params.roomId}/new-match?error=${err.message}`,
+        `/room/${ctx.params.roomId}/new-match?error=${errorMessage}`,
       );
       return new Response(null, {
         status: 303,
         headers,
       });
     }
-
-    const headers = new Headers();
-    headers.set("location", `/room/${ctx.params.roomId}`);
-    return new Response(null, {
-      status: 303,
-      headers,
-    });
   },
 };
 export default function NewMatchPage(props: PageProps<NewMatchProps, State>) {
-  const err = props.url.searchParams.get("error");
+  const err = props.data.error;
+  const postError = props.url.searchParams.get("error");
   return (
     <>
       <h2 className="text-xl font-bold mb-5 font-sansman">New match</h2>
+      {(err || postError) && (
+        <span className="text-red-500">Error: {err || postError}</span>
+      )}
       <form
         method="post"
         className="flex flex-col  shadow-lg bg-gradient-to-br from-alizarin-crimson-900 via-cod-gray-950 to-cod-gray-950 rounded p-2"
       >
         <div className="flex flex-col gap-2 divide-y divide-mercury-500">
-          {props.data.roomWithUsers.users.map(
+          {props.data.roomWithUsers?.users.map(
             (user) => {
               return (
                 <div className="py-3 flex flex-col gap-2 rounded p-2">
@@ -100,7 +123,7 @@ export default function NewMatchPage(props: PageProps<NewMatchProps, State>) {
                         className="bg-cod-gray-950 border border-cod-gray-900 rounded p-1 w-40 text-ellipsis text-sm"
                       >
                         <option value="">{"Select Corporation"}</option>
-                        {props.data.corps.map((c) => {
+                        {props.data.corps?.map((c) => {
                           return <option value={c.id}>{c.name}</option>;
                         })}
                       </select>
@@ -129,7 +152,7 @@ export default function NewMatchPage(props: PageProps<NewMatchProps, State>) {
               required
             >
               <option value="">{"Select map"}</option>
-              {props.data.maps.map((m) => {
+              {props.data.maps?.map((m) => {
                 return (
                   <option className="bg-green-500" value={m.id}>
                     {m.name}
@@ -155,15 +178,12 @@ export default function NewMatchPage(props: PageProps<NewMatchProps, State>) {
         </div>
 
         <div className="flex justify-center divide-none">
-          <button
-            type="submit"
-            className=" my-2 px-6 py-2 w-fit font-semibold rounded bg-transparent text-mercury-100 border-2 border-mercury-100 hover:bg-mercury-800 focus:bg-mercury-800"
-          >
+          <Button type="submit" variant="outline" disabled={!!err}>
             Create match
-          </button>
+          </Button>
         </div>
       </form>
-      {err && <span className="text-red-500">Error: {err}</span>}
+
       <details class="bg-cod-gray-950 py-4">
         <summary class="text-white text-lg font-semibold">
           How Game Submission Works

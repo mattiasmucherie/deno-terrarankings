@@ -1,8 +1,8 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { State } from "./_middleware.ts";
-import { getAllRooms } from "../utils/db.ts";
-import { LinkButton } from "../components/LinkButton.tsx";
-import { Landing } from "../components/Landing.tsx";
+import { State } from "@/routes/_middleware.ts";
+import { getAllRooms } from "@/utils/db.ts";
+import { LinkButton } from "@/components/LinkButton.tsx";
+import { Landing } from "@/components/Landing.tsx";
 import { Room } from "@/utils/types/types.ts";
 import { RoomList } from "@/components/RoomList.tsx";
 

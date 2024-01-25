@@ -12,6 +12,7 @@ import {
   RoomWithUsers,
   User,
 } from "@/utils/types/types.ts";
+import { matchSchema } from "@/utils/validationSchemas.ts";
 
 export const getAllRooms = async (
   sb: SupabaseClient<Database, "public">,
@@ -141,7 +142,7 @@ export const createMatch = async (
   userProfiles: User[],
 ) => {
   const userIds = form.getAll("userIds");
-  const points = form.getAll("points");
+  const points = matchSchema.points.parse(form.getAll("points"));
   const corps = form.getAll("corp");
   const mapId = form.get("map")?.toString() || null;
   const date = form.get("date")?.toString();

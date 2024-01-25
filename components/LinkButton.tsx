@@ -13,7 +13,7 @@ export const LinkButton = ({
   ...rest
 }: LinkButtonProps) => {
   const baseClass =
-    "relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium rounded-xl px-5 py-2.5";
+    "inline-flex items-center justify-center overflow-hidden text-sm font-medium rounded-lg hover:rounded-2xl active:rounded-2xl focus:rounded-2xl px-5 py-2.5 transition-[border-radius] duration-[400ms] ease-in-out";
   let variantClass = "";
 
   switch (variant) {
