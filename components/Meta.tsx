@@ -20,6 +20,7 @@ export default function Meta(props: MetaProps) {
       <meta itemProp="name" content={props.title} />
       <meta itemProp="description" content={props.description} />
       {props.imageUrl && <meta itemProp="image" content={props.imageUrl} />}
+      <meta name="msvalidate.01" content="F4D0011168F493432AFA03121392EB96" />
 
       {/* Facebook Meta Tags */}
       <meta property="og:type" content="website" />
