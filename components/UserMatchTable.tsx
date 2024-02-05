@@ -11,7 +11,7 @@ type UserMatchTableProps = {
 const TableRow = (
   { match, lang, maps }: { match: LatestMatches; lang?: string; maps: Maps[] },
 ) => {
-  const eloChange = Math.round(match.new_elo - match.old_elo);
+  const eloChange = match.new_elo - match.old_elo;
   const eloChangeClass = eloChange > 0 ? "text-emerald-500" : "text-red-500";
   const mapColor = maps.find((map) => map.name === match.matches?.maps?.name)
     ?.color;
@@ -27,7 +27,7 @@ const TableRow = (
       <td
         className={`px-5 py-2 border-b border-mercury-700 text-sm ${eloChangeClass}`}
       >
-        {eloChange > 0 ? `▲` : `▼`} {Math.abs(eloChange)}
+        {eloChange > 0 ? `▲` : `▼`} {Math.abs(Math.round(eloChange))}
       </td>
       <td className="px-5 py-2 border-b border-mercury-700 text-sm text-white font-sansman">
         <div className="w-28 truncate">{match.corporations?.name}</div>

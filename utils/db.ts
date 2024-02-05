@@ -12,7 +12,7 @@ import {
   RoomWithUsers,
   User,
 } from "@/utils/types/types.ts";
-import { matchSchema } from "@/utils/validationSchemas.ts";
+import { matchSchema, matchSchema2 } from "@/utils/validationSchemas.ts";
 
 export const getAllRooms = async (
   sb: SupabaseClient<Database, "public">,
@@ -90,7 +90,9 @@ export const getRoomWithUsers = async (
     .from("rooms")
     .select(
       `
-      *,
+      created_at,
+      id,
+      name,
       users (
         *
       )
@@ -122,89 +124,77 @@ export async function getRoomDetailsWithMatches(
   return data;
 }
 
-function checkUniqueElementsWithEmptyAllowed(arr: FormDataEntryValue[]) {
-  const uniqueElements = new Set();
-
-  for (const elem of arr) {
-    if (elem === "") continue;
-    if (uniqueElements.has(elem)) {
-      return false;
-    }
-    uniqueElements.add(elem);
-  }
-  return true;
-}
-
+type UserForMatch = {
+  user_id: string;
+  points: number;
+  corporation_id: string;
+  old_elo: number;
+  match_id: string;
+  standing: number;
+  new_elo: number;
+  money: number;
+};
 export const createMatch = async (
   sb: SupabaseClient<Database, "public">,
   roomId: string,
-  form: FormData,
+  body: any,
   userProfiles: User[],
 ) => {
-  const userIds = form.getAll("userIds");
-  const points = matchSchema.points.parse(form.getAll("points"));
-  const corps = form.getAll("corp");
-  const mapId = form.get("map")?.toString() || null;
-  const date = form.get("date")?.toString();
-  const isoDate = date ? (new Date(date)).toISOString() : undefined;
+  const { users, matchDate, matchMap } = matchSchema2.parse(body);
+  const isoDate = (new Date(matchDate)).toISOString();
 
-  if (!checkUniqueElementsWithEmptyAllowed(corps)) {
-    throw new Error("Cannot have the same corporation for multiple players");
-  }
-
-  const users: {
-    user_id: string;
-    points: number;
-    corporation_id: string;
-    old_elo: number;
-    match_id: string;
-    standing: number;
-    new_elo: number;
-  }[] = [];
-  points.forEach((p, i) => {
-    if (p && Number(p)) {
-      users.push({
-        user_id: userIds[i] as string,
-        points: Number(p),
-        corporation_id: corps[i] as string,
-        old_elo: 0,
-        new_elo: 0,
-        standing: 0,
-        match_id: "",
-      });
-    }
+  const usersForMatch: UserForMatch[] = [];
+  users.forEach((u) => {
+    usersForMatch.push({
+      user_id: u.userId,
+      points: Number(u.points),
+      corporation_id: u.corporation.id,
+      old_elo: 0,
+      new_elo: 0,
+      standing: 0,
+      match_id: "",
+      money: Number(u.money),
+    });
   });
-  users.sort((a, b) => b.points - a.points);
+  usersForMatch.sort((a, b) => {
+    if (a.points !== b.points) {
+      return b.points - a.points;
+    }
+    return b.money - a.money;
+  });
   const eloMap = new Map(
     userProfiles.map((item) => [item.id, item.elo_rating]),
   );
-  users.forEach((item) => {
+  usersForMatch.forEach((item) => {
     item.old_elo = eloMap.get(item.user_id) || 1000;
   });
+  console.warn("usersForMAtch", usersForMatch);
 
   const newElo = elo(
-    users.map((u) => u.old_elo),
-    users.map((u) => u.points),
+    usersForMatch.map((u) => u.old_elo),
+    usersForMatch.map((u) => u.points),
   );
-
   const { data: match } = await sb
     .from("matches")
     .upsert({
       room_id: roomId,
-      map_id: mapId,
+      map_id: matchMap.id,
       created_at: isoDate,
     })
     .select("id");
   if (match) {
-    users.forEach((item, index) => {
+    usersForMatch.forEach((item: any, index) => {
       item.standing = index + 1;
       item.new_elo = newElo[index];
       item.match_id = match[0].id;
+      delete item.money;
     });
   }
-  const { error } = await sb.from("match_participants").upsert(users);
+  console.warn("usersForMAtch", usersForMatch);
 
-  for (const user of users) {
+  const { error } = await sb.from("match_participants").upsert(usersForMatch);
+
+  for (const user of usersForMatch) {
     await sb
       .from("users")
       .update({ elo_rating: user.new_elo })

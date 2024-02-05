@@ -49,7 +49,6 @@ export interface RoomWithUsers {
   id: string;
   created_at: string;
   name: string;
-  hashed_password: string;
   users: User[];
 }
 export interface Corporation {

@@ -24,10 +24,42 @@ export const passwordSchema = z.string()
 
 export const matchSchema = {
   users: z.array(z.string().uuid()),
-  points: z.array(z.string().optional())
+  points: z.array(z.string())
     .refine(
       (points) =>
         points.filter((point) => point && point.trim() !== "").length >= 2,
-      { message: "At least two players must play!" },
+      { message: "At least two players must play" },
+    ),
+  corps: z.array(z.string())
+    .refine(
+      (points) =>
+        points.filter((point) => point && point.trim() !== "").length >= 2,
+      { message: "At least two corporations must be filled in" },
     ),
 };
+
+export const matchSchema2 = z.object({
+  users: z.array(
+    z.object({
+      userId: z.string(),
+      userName: z.string(),
+      points: z.number(),
+      corporation: z.object({ name: z.string(), id: z.string() }),
+      money: z.number(),
+    }),
+  ).superRefine((users, ctx) => {
+    const corporationIds = users.map((user) => user.corporation.id);
+    const uniqueCorporationIds = new Set(corporationIds);
+
+    if (corporationIds.length !== uniqueCorporationIds.size) {
+      // There are duplicates
+      ctx.addIssue({
+        code: "custom",
+        message: "Corporation IDs must be unique",
+        path: [ctx.path[0]], // Adjust the path according to your needs
+      });
+    }
+  }),
+  matchMap: z.object({ name: z.string(), id: z.string() }),
+  matchDate: z.string(),
+});

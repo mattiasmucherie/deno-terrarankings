@@ -3,10 +3,12 @@ import { type ComponentChildren, type JSX } from "preact";
 interface ButtonProps extends JSX.HTMLAttributes<HTMLButtonElement> {
   children: ComponentChildren;
   variant?: "primary" | "secondary" | "outline";
+  isLoading?: boolean;
 }
 
 export const Button = (
-  { children, variant = "primary", disabled, ...rest }: ButtonProps,
+  { children, variant = "primary", disabled, isLoading = false, ...rest }:
+    ButtonProps,
 ) => {
   let variantClasses = "";
 
@@ -31,14 +33,20 @@ export const Button = (
       break;
     case "outline":
       variantClasses =
-        `bg-transparent text-mercury-200 border-mercury-200 hover:rounded-2xl active:rounded-2xl focus:rounded-2xl
+        `bg-transparent text-mercury-100 border-mercury-100 hover:rounded-2xl active:rounded-2xl focus:rounded-2xl
         ${
           disabled
-            ? "text-mercury-400 border-mercury-400 cursor-not-allowed"
+            ? "text-mercury-400 border-mercury-400 bg-cod-gray-400 cursor-not-allowed"
             : ""
         }`;
       break;
   }
+  const content = isLoading
+    ? (
+      <span class="loader inline-block relative w-4 h-4 rounded-full border-solid border-1 border-transparent border-t-white border-r-white">
+      </span>
+    )
+    : children;
 
   return (
     <button
@@ -46,7 +54,7 @@ export const Button = (
       disabled={disabled}
       {...rest}
     >
-      {children}
+      {content}
     </button>
   );
 };

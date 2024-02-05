@@ -5,7 +5,7 @@ import { MatchDetails, MatchParticipant } from "../utils/types/types.ts";
 const ParticipantRow = (
   { participant, index }: { participant: MatchParticipant; index: number },
 ) => {
-  const eloDiff = Math.round(participant.new_elo - participant.old_elo);
+  const eloDiff = participant.new_elo - participant.old_elo;
   const eloDiffColor = eloDiff > 0 ? "text-emerald-500" : "text-red-500";
   const eloDiffSymbol = eloDiff > 0 ? "▲" : "▼";
 
@@ -23,7 +23,7 @@ const ParticipantRow = (
       <span
         className={`font-semibold ${eloDiffColor} col-start-4 justify-self-end shrink-0`}
       >
-        {eloDiffSymbol} {Math.abs(eloDiff)}
+        {eloDiffSymbol} {Math.abs(Math.round(eloDiff))}
       </span>
       <span className="font-normal text-xs text-mercury-300 shrink-0">
         {participant.points} VP
@@ -40,7 +40,7 @@ export const MatchCard = ({
   lang?: string;
 }) => {
   return (
-    <div className="border border-alizarin-crimson-950 shadow-lg bg-gradient-to-br from-alizarin-crimson-900 via-cod-gray-950 to-cod-gray-950 rounded-xl p-4 my-2 flex flex-col ">
+    <div className="border border-alizarin-crimson-950 shadow-lg bg-gradient-to-br from-alizarin-crimson-900 via-cod-gray-950 to-cod-gray-950 rounded-xl p-4 my-2 flex flex-col">
       <div className="flex justify-between">
         <time
           className="text-xs font-medium px-2.5 py-0.5 rounded bg-alizarin-crimson-700 text-mercury-100 w-fit mb-4 self-start"

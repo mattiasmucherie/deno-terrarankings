@@ -6,6 +6,7 @@ import * as $_404 from "./routes/_404.tsx";
 import * as $_500 from "./routes/_500.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $_middleware from "./routes/_middleware.ts";
+import * as $api_test from "./routes/api/test.ts";
 import * as $auth_middleware from "./routes/auth/_middleware.ts";
 import * as $auth_create from "./routes/auth/create.tsx";
 import * as $corporations from "./routes/corporations.tsx";
@@ -21,6 +22,7 @@ import * as $room_roomId_new_match_preview from "./routes/room/[roomId]/new-matc
 import * as $room_roomId_new_player from "./routes/room/[roomId]/new-player.tsx";
 import * as $room_middleware from "./routes/room/_middleware.ts";
 import * as $signup from "./routes/signup.tsx";
+import * as $MatchSubmission from "./islands/MatchSubmission.tsx";
 import * as $RankingChart from "./islands/RankingChart.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
@@ -30,6 +32,7 @@ const manifest = {
     "./routes/_500.tsx": $_500,
     "./routes/_app.tsx": $_app,
     "./routes/_middleware.ts": $_middleware,
+    "./routes/api/test.ts": $api_test,
     "./routes/auth/_middleware.ts": $auth_middleware,
     "./routes/auth/create.tsx": $auth_create,
     "./routes/corporations.tsx": $corporations,
@@ -48,6 +51,7 @@ const manifest = {
     "./routes/signup.tsx": $signup,
   },
   islands: {
+    "./islands/MatchSubmission.tsx": $MatchSubmission,
     "./islands/RankingChart.tsx": $RankingChart,
   },
   baseUrl: import.meta.url,

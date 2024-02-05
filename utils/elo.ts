@@ -12,7 +12,8 @@ export const elo = (players: number[], VP: number[]) => {
     return acc + curr - Math.min(...VP);
   }, 0);
   const scores = VP.map((v) => {
-    return (v - Math.min(...VP)) / sumForScores;
+    const score = (v - Math.min(...VP)) / sumForScores;
+    return isNaN(score) ? 0.5 : score;
   });
 
   return players.map(

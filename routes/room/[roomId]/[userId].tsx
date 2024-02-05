@@ -28,6 +28,7 @@ export const handler: Handlers<UserPageProps, State> = {
 };
 export default function UserPage(props: PageProps<UserPageProps, State>) {
   const usersLatestMatches = props.data.usersLatestMatches;
+  console.warn(usersLatestMatches);
 
   return (
     <>
