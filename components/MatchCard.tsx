@@ -2,12 +2,20 @@ import { formattedDate } from "../utils/formattedDate.ts";
 import { getPositionEmoji } from "../utils/getPositionEmoji.ts";
 import { MatchDetails, MatchParticipant } from "../utils/types/types.ts";
 
+const getEloDiffProperties = (eloDiff: number) => {
+  return {
+    color: eloDiff > 0 ? "text-emerald-500" : "text-red-500",
+    symbol: eloDiff > 0 ? "▲" : "▼",
+  };
+};
+
 const ParticipantRow = (
   { participant, index }: { participant: MatchParticipant; index: number },
 ) => {
   const eloDiff = participant.new_elo - participant.old_elo;
-  const eloDiffColor = eloDiff > 0 ? "text-emerald-500" : "text-red-500";
-  const eloDiffSymbol = eloDiff > 0 ? "▲" : "▼";
+  const { color: eloDiffColor, symbol: eloDiffSymbol } = getEloDiffProperties(
+    eloDiff,
+  );
 
   return (
     <div className="flex flex-no-wrap gap-2 items-baseline">

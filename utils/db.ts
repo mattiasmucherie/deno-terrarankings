@@ -12,7 +12,7 @@ import {
   RoomWithUsers,
   User,
 } from "@/utils/types/types.ts";
-import { matchSchema, matchSchema2 } from "@/utils/validationSchemas.ts";
+import { matchSchema } from "@/utils/validationSchemas.ts";
 
 export const getAllRooms = async (
   sb: SupabaseClient<Database, "public">,
@@ -140,7 +140,7 @@ export const createMatch = async (
   body: any,
   userProfiles: User[],
 ) => {
-  const { users, matchDate, matchMap } = matchSchema2.parse(body);
+  const { users, matchDate, matchMap } = matchSchema.parse(body);
   const isoDate = (new Date(matchDate)).toISOString();
 
   const usersForMatch: UserForMatch[] = [];
@@ -168,7 +168,6 @@ export const createMatch = async (
   usersForMatch.forEach((item) => {
     item.old_elo = eloMap.get(item.user_id) || 1000;
   });
-  console.warn("usersForMAtch", usersForMatch);
 
   const newElo = elo(
     usersForMatch.map((u) => u.old_elo),

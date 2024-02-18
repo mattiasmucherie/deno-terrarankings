@@ -1,5 +1,7 @@
 export const elo = (players: number[], VP: number[]) => {
   const amountOfPlayers = players.length;
+  const minVP = Math.min(...VP);
+
   const expected = players.map((_p, i) => {
     const sumPart = players.reduce((prev, acc, ri) => {
       if (ri === i) return prev;
@@ -9,10 +11,10 @@ export const elo = (players: number[], VP: number[]) => {
   });
 
   const sumForScores = VP.reduce((acc, curr) => {
-    return acc + curr - Math.min(...VP);
+    return acc + curr - minVP;
   }, 0);
   const scores = VP.map((v) => {
-    const score = (v - Math.min(...VP)) / sumForScores;
+    const score = (v - minVP) / sumForScores;
     return isNaN(score) ? 0.5 : score;
   });
 

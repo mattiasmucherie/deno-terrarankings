@@ -5,6 +5,19 @@
 input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     filter: brightness(0) invert(1);
 }
+@keyframes scale-a-lil {
+    from {
+        scale: .8;
+      }
+  }
+    
+  @media (prefers-reduced-motion: no-preference) {
+    .testing {
+      animation: scale-a-lil linear both;
+      animation-timeline: view();
+      animation-range: 0 20vh;
+    }
+  }
 
 @tailwind base;
 @tailwind components;

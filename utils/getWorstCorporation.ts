@@ -5,27 +5,27 @@ export function getWorstCorporation(
 ): [string, number] {
   const eloChangesByCorporation: Record<string, number> = {};
 
-  matchData.forEach((match) => {
+  for (const match of matchData) {
     if (match?.corporations?.name) {
       const corporationName = match.corporations.name;
       const eloChange = match.new_elo - match.old_elo;
 
-      if (eloChangesByCorporation[corporationName]) {
+      if (corporationName in eloChangesByCorporation) {
         eloChangesByCorporation[corporationName] += eloChange;
       } else {
         eloChangesByCorporation[corporationName] = eloChange;
       }
     }
-  });
+  }
 
   let worstCorporation = "";
   let maxEloLoss = 0;
 
-  Object.entries(eloChangesByCorporation).forEach(([name, eloChange]) => {
+  for (const [name, eloChange] of Object.entries(eloChangesByCorporation)) {
     if (eloChange < maxEloLoss) {
       maxEloLoss = eloChange;
       worstCorporation = name;
     }
-  });
-  return [worstCorporation, Math.round(maxEloLoss)];
+  }
+  return [worstCorporation, Math.floor(maxEloLoss)];
 }

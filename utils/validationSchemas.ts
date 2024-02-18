@@ -22,23 +22,7 @@ export const passwordSchema = z.string()
   })
   .regex(/[0-9]/, { message: "Password must contain at least one number" });
 
-export const matchSchema = {
-  users: z.array(z.string().uuid()),
-  points: z.array(z.string())
-    .refine(
-      (points) =>
-        points.filter((point) => point && point.trim() !== "").length >= 2,
-      { message: "At least two players must play" },
-    ),
-  corps: z.array(z.string())
-    .refine(
-      (points) =>
-        points.filter((point) => point && point.trim() !== "").length >= 2,
-      { message: "At least two corporations must be filled in" },
-    ),
-};
-
-export const matchSchema2 = z.object({
+export const matchSchema = z.object({
   users: z.array(
     z.object({
       userId: z.string(),

@@ -13,7 +13,7 @@ export const handler: Handlers<MatchPageProps, State> = {
     const matches = await fetchMatchDetails(
       ctx.state.supabaseClient,
       ctx.params.roomId,
-      false,
+      false
     );
     const lang = req.headers.get("Accept-Language")?.split(",")[0];
 
@@ -26,7 +26,9 @@ export default function MatchPage(props: PageProps<MatchPageProps, State>) {
     <>
       <h2 className="font-semibold text-lg font-sansman">Matches</h2>
       {props.data.matches.map((m) => (
-        <MatchCard match={m} lang={props.data.lang} />
+        <div className="testing">
+          <MatchCard match={m} lang={props.data.lang} />
+        </div>
       ))}
     </>
   );
